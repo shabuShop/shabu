@@ -53,13 +53,19 @@
 				</div>
 
 				<form action="/" class="login100-form validate-form" method="post">
+					
+					
 					<span class="login100-form-title">
 						Member Login
 					</span>
 
+					<% if(data.status == 0){%> 
+						<div class="alert alert-danger">รหัสไม่ถูกต้อง</div>
+					<%	} %> 
 
 					<!-- ================================ Username ================================ -->
 					<div class="wrap-input100 validate-input" data-validate = "Valid Username is required">
+						
 						<input class="input100" type="text" name="username" placeholder="Username">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
