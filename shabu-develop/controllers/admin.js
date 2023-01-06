@@ -6,7 +6,7 @@ exports.getAdmin = (req, res,next) => {
         res.render('main_page', {
             session_user_id:req.session.user_id,
             session_user:req.session.user,
-            session_role:"Admin"
+            session_role:"a"
         });
     }else{
         res.redirect("/");
