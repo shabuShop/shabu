@@ -98,9 +98,9 @@
                 <% if( session_role == "admin"){ %>
 
                   <%- include('../menu/data_manage'); %>
-                  <%- include('../menu/set_materials'); %>
+                  <%- include('../menu/set_materials',{role:"admin"}); %>
                   <%- include('../menu/open_sale'); %>
-                  <%- include('../menu/sale'); %>
+                  <%- include('../menu/sale',{role:"admin"}); %>
                   <%- include('../menu/stock'); %>
                   <%- include('../menu/expenses'); %>
                   <%- include('../menu/report'); %>
@@ -110,8 +110,8 @@
                       
                 <%}else if( session_role == "user"){%>
                   
-                  <%- include('../menu/sale'); %>
-                  <%- include('../menu/set_materials'); %>
+                  <%- include('../menu/sale',{role:"user"}); %>
+                  <%- include('../menu/set_materials',{role:"user"}); %>
 
 
                 <%} %> 
