@@ -27,10 +27,10 @@
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="" class="nav-link">Home</a>
+          <a href="/" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="#" class="nav-link">Contact</a>
+          <a href="/" class="nav-link">Contact</a>
         </li>
       </ul>
   
@@ -59,11 +59,7 @@
       <a href="#" class="brand-link">
         <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">
-          <% if( session_role == "a"){%>
-              Admin
-          <%}else if( session_role == "e"){%>
-              Employee
-          <%} %> 
+          <%= session_role %> 
         </span>
       </a>
   
@@ -99,25 +95,23 @@
             <li class="nav-item menu-open">
 
               
-                <% if( session_role == "a"){ %>
+                <% if( session_role == "admin"){ %>
 
                   <%- include('../menu/data_manage'); %>
-                  <%- include('../menu/in_materials'); %>
-                  <%- include('../menu/expenses'); %>
-                  <%- include('../menu/get_paid'); %>
-                  <%- include('../menu/in_materials'); %>
+                  <%- include('../menu/set_materials'); %>
                   <%- include('../menu/open_sale'); %>
                   <%- include('../menu/sale'); %>
                   <%- include('../menu/stock'); %>
+                  <%- include('../menu/expenses'); %>
                   <%- include('../menu/report'); %>
                     
 
 
                       
-                <%}else if( session_role == "e"){%>
-
-                  <%- include('../menu/in_materials'); %>
-                  <%- include('../menu/get_paid'); %>
+                <%}else if( session_role == "user"){%>
+                  
+                  <%- include('../menu/sale'); %>
+                  <%- include('../menu/set_materials'); %>
 
 
                 <%} %> 

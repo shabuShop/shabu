@@ -14,7 +14,10 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')))
+app.use('/admin', express.static(path.join(__dirname, 'public')))
+app.use('/user', express.static(path.join(__dirname, 'public')))
+
 app.use("/axios",express.static('node_modules/axios/dist'));
 app.use(session({
     secret:'secret',

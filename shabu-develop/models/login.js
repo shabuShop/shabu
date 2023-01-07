@@ -8,13 +8,13 @@ const Data = [
         user_id:"1000",
         user:"admin",
         pass:"123",
-        role:"a",
+        role:"admin",
     },
     {
         user_id:"2000",
         user:"user",
         pass:"123",
-        role:"e",
+        role:"user",
     }
 ]
 

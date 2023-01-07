@@ -9,12 +9,13 @@ exports.logout = (req, res) => {
 };
 
 exports.getLogin = (req, res) => {
+    // test
+    // req.session.user_id = "test";
+    // req.session.user = "admin";
+    // req.session.role = "admin";
+    
     if(req.session.user_id){
-        if(req.session.role == "a"){
-            res.redirect("/admin");
-        }else if(req.session.role == "e"){
-            res.redirect("/user");
-        }
+        res.redirect("/"+req.session.role);
     }else{
         res.render('login', {data:[]});
     }
@@ -22,6 +23,7 @@ exports.getLogin = (req, res) => {
 
 exports.postLogin_valid = (req, res) => {
     let getLogin=login.valid(req.body.username,req.body.pass);
+    
     if(getLogin.status == 1){
         req.session.user_id = getLogin.user_id;
         req.session.user = getLogin.user;
