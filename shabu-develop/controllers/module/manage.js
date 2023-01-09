@@ -1,15 +1,20 @@
 
-
+const data_manage = require('../../models/module/manage')
 
 
 exports.getEmployee = (req, res) => {
     // get db of employee
     if(req.session.role == "admin"){
-        res.render('manage/manage_employee', {
-            session_user_id:req.session.user_id,
-            session_user:req.session.user,
-            session_role:req.session.role
+        data_manage.getData_Employee().then((data)=>{
+            res.render('manage/manage_employee', {
+                session_user_id:req.session.user_id,
+                session_user:req.session.user,
+                session_role:req.session.role,
+                data_employee:data
+            });
+    
         });
+        
     }else{
         res.redirect("/");
     }
