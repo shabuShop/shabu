@@ -20,6 +20,27 @@ exports.getEmployee = (req, res) => {
         res.redirect("/");
     }
 };
+exports.setEmployee = (req, res) => {
+    if(req.session.role == "admin"){
+        if(req.params.action === "add"){
+            data_manage.setData_Employee(req.body).then(()=>{
+                res.redirect("/admin/manage_employee");
+            });
+        }else if(req.params.action === "delete"){
+            data_manage.deleteData_Employee(req.body).then(()=>{
+                res.redirect("/admin/manage_employee");
+            });
+        }else if(req.params.action === "update"){
+            data_manage.updateData_Employee(req.body).then(()=>{
+                console.log("update done");
+                res.redirect("/admin/manage_employee");
+            });
+        }
+    }else{
+        res.redirect("/");
+    }
+};
+
 exports.getFood = (req, res) => {
     if(req.session.role == "admin"){
         res.render('template', {

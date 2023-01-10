@@ -7,66 +7,11 @@
         
     </div>
     <div class="d-flex  justify-content-start mb-1">
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-lg">
+        <button  type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add" onclick="add()">
             เพิ่มพนักงาน
         </button>
     </div>
 
-    
-    
-    <div class="modal fade" id="modal-lg">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header bg-purple">
-              <h4 class="modal-title ">ใส่ข้อมูลพนักงาน</h4>
-              <button type="button " class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true" class="text-light">&times;</span>
-              </button>
-            </div>
-            <form action="" method="post">
-                <div class="modal-body">
-                <!-- ============================== Form ==============================-->
-                    <blockquote id="alert" class="quote-danger d-none">
-                        <h3>! กรุณาใส่ข้อมูลให้ครบ</h3>
-                    </blockquote>
-
-                    <div class="form-group">
-                        <label >ชื่อ</label>
-                        <input type="text" class="form-control" name="Fname">
-                    </div>
-                    <div class="form-group">
-                        <label >นามสกุล</label>
-                        <input type="text" class="form-control" name="Lname">
-                    </div>
-                    <div class="form-group">
-                        <label >ที่อยู่</label>
-                        <input type="text" class="form-control" name="address">
-                    </div>
-                    <div class="form-group">
-                        <label >เบอร์โทร</label>
-                        <input type="text" class="form-control" name="tel">
-                    </div>
-                    <!-- <div class="form-group">
-                        <label >Username</label>
-                        <input type="text" class="form-control" name="username">
-                    </div> -->
-                    <div class="form-group">
-                        <label >Password</label>
-                        <input type="password" class="form-control" name="password" >
-                    </div>
-
-                </div>
-
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" onclick="return vali()">Save changes</button>
-                </div>
-
-            </form>
-
-          </div>
-        </div>
-    </div>
 
     <div class="row">
         <div class="col-12">
@@ -80,9 +25,7 @@
                             <th>นามสกุล</th>
                             <th>ที่อยู่</th>
                             <th>เบอร์</th>
-                            <th>Username</th>
-                            <th>Password</th>
-                            <th>ต่ำเเหน่ง</th>
+                            <th>ตำเเหน่ง</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -94,16 +37,27 @@
                                 <td><%= i.Emp_Lname%></td>
                                 <td><%= i.Emp_Address%></td>
                                 <td><%= i.Emp_Tel%></td>
-                                <td><%= i.Emp_Username%></td>
-                                <td><%= i.Emp_Password%></td>
                                 <td><%= i.Position_Name%></td>
                                 <td>
-                                    <p class="btn btn-warning p-1 " >แก้</p>
-                                    <p class="btn btn-danger p-1 " >ลบ</p>
+
+                                    <div class="d-flex">
+                                        <p class="btn btn-warning p-1 px-1 mr-1" data-toggle="modal" data-target="#modal-update"onclick=" 
+                                            update(
+                                                    '<%= i.Emp_Fname%>',
+                                                    '<%= i.Emp_Lname%>',
+                                                    '<%= i.Emp_Address%>',
+                                                    '<%= i.Emp_Tel%>',
+                                                    '<%= i.Emp_Password%>',
+                                                    '<%= i.ID%>'
+                                                ) "  >แก้
+                                        </p>
+                                        <p class="btn btn-danger p-1 px-1 " onclick="del('<%=i.ID%>')" >ลบ</p>
+                                    </div>
                                 </td>
                                 
                             </tr>
                         <%} %> 
+                        
                     </tbody>
                 </table>
             </div>
@@ -113,9 +67,122 @@
 </div>
 
 
+<form id="delete" action="manage_employee/delete" method="post" class="d-inline">
+    <input type="number" name="id_del" class="d-none" value="">
+</form>
+
+<!-- =================== Modal Add ===================-->
+<div class="modal fade" id="modal-add">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-purple">
+          <h4 class="modal-title ">ใส่ข้อมูลพนักงาน</h4>
+          <button type="button " class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-light">&times;</span>
+          </button>
+        </div>
+        <form action="manage_employee/add" method="post">
+            <div class="modal-body">
+            <!-- ============================== Form ==============================-->
+                <div class="form-group">
+                    <blockquote id="alert" class="quote-danger m-0">
+                        <h3>! กรุณาใส่ข้อมูลให้ครบ</h3>
+                    </blockquote>
+                </div>
+
+                <div class="form-group">
+                    <label >ชื่อ</label>
+                    <input type="text" class="form-control" name="Fname">
+                </div>
+                <div class="form-group">
+                    <label >นามสกุล</label>
+                    <input type="text" class="form-control" name="Lname">
+                </div>
+                <div class="form-group">
+                    <label >ที่อยู่</label>
+                    <input type="text" class="form-control" name="address">
+                </div>
+                <div class="form-group">
+                    <label >เบอร์โทร</label>
+                    <input type="text" class="form-control" name="tel">
+                </div>
+
+                <div class="form-group">
+                    <label >Password</label>
+                    <input type="text" class="form-control" name="password" >
+                </div>
+
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" onclick="return vali('add')">Save changes</button>
+            </div>
+
+        </form>
+
+      </div>
+    </div>
+</div>
+<!-- =================== Modal Update ===================-->
+<div class="modal fade" id="modal-update">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-purple">
+          <h4 class="modal-title ">อัปเดตข้อมูลพนักงาน</h4>
+          <button type="button " class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-light">&times;</span>
+          </button>
+        </div>
+
+        <form action="manage_employee/update" method="post">
+            <div class="modal-body">
+            <!-- ============================== Form ==============================-->
+            
+                <div class="form-group">
+                    <blockquote id="Ualert" class="quote-danger m-0">
+                        <h3>! กรุณาใส่ข้อมูลให้ครบ</h3>
+                    </blockquote>
+                </div>
+
+                <div class="form-group">
+                    <label >ชื่อ</label>
+                    <input type="text" class="form-control" name="UFname">
+                </div>
+                <div class="form-group">
+                    <label >นามสกุล</label>
+                    <input type="text" class="form-control" name="ULname">
+                </div>
+                <div class="form-group">
+                    <label >ที่อยู่</label>
+                    <input type="text" class="form-control" name="Uaddress">
+                </div>
+                <div class="form-group">
+                    <label >เบอร์โทร</label>
+                    <input type="text" class="form-control" name="Utel">
+                </div>
+                <div class="form-group">
+                    <label >Password</label>
+                    <input type="text" class="form-control" name="Upassword" >
+                </div>
+                <input type="number" name="id_update" class="d-none" value="">
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" onclick="return vali('update')">Save changes</button>
+            </div>
+
+        </form>
+
+      </div>
+    </div>
+</div>
+
 
 
 <script>
+    
     $(function () {
       $('#employee').DataTable({
         "paging": true,
@@ -129,23 +196,63 @@
       
     });
 
-    function vali(){
-        // (document.querySelector("input[name=Fname]").innerText).trim()
-        
-        let Fname = ($("input[name=Fname]").val()).trim() === "";
-        let Lname = ($("input[name=Lname]").val()).trim() === "";
-        let address = ($("input[name=address]").val()).trim() === "";
-        let tel = ($("input[name=tel]").val()).trim() === "";
-        let password = ($("input[name=password]").val()).trim() === "";
+    // init
+    $("#alert").addClass("d-none")
+    $("#Ualert").addClass("d-none")
 
-        if( !Fname && !Lname && !address && !tel && !password ){
-            console.log("yes");
-        }else{
+    function add(){
+        $("#alert").addClass("d-none")
+    }
+    function update(...data){
+        $("input[name=UFname]").val(data[0]);
+        $("input[name=ULname]").val(data[1])
+        $("input[name=Uaddress]").val(data[2])
+        $("input[name=Utel]").val(data[3])          
+        $("input[name=Upassword]").val(data[4]) 
+        $("input[name=id_update]").val(data[5])
 
-            $("#alert").removeClass("d-none")
+        $("#Ualert").addClass("d-none")
 
+    }
+    function del(id){
+        $("input[name=id_del]").val(parseInt(id))
+        if(confirm("ยืนการลบข้อมูล") == true){
+            $("#delete").submit();
         }
-        return false;
+    }
+
+    function vali(mode){
+        // (document.querySelector("input[name=Fname]").innerText).trim()
+        if(mode === "add"){
+            let Fname = ($("input[name=Fname]").val()).trim() === "";
+            let Lname = ($("input[name=Lname]").val()).trim() === "";
+            let address = ($("input[name=address]").val()).trim() === "";
+            let tel = ($("input[name=tel]").val()).trim() === "";
+            let password = ($("input[name=password]").val()).trim() === "";
+    
+            if( !Fname && !Lname && !address && !tel && !password ){
+                return true;
+            }else{
+    
+                $("#alert").removeClass("d-none")
+                return false;
+            }
+        }else if(mode === "update"){
+            let Fname = ($("input[name=UFname]").val()).trim() === "";
+            let Lname = ($("input[name=ULname]").val()).trim() === "";
+            let address = ($("input[name=Uaddress]").val()).trim() === "";
+            let tel = ($("input[name=Utel]").val()).trim() === "";
+            let password = ($("input[name=Upassword]").val()).trim() === "";
+    
+            if( !Fname && !Lname && !address && !tel && !password ){
+                return true;
+            }else{
+    
+                $("#Ualert").removeClass("d-none")
+                return false;
+            }
+        }
+        
     }
   
 </script>

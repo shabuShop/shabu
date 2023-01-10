@@ -21,6 +21,9 @@ router.get('/', conUser.getAdmin);
 
 // ====================== Route Manage Data ======================
 router.get('/manage_employee', conManage.getEmployee);
+router.post('/manage_employee/:action', conManage.setEmployee);
+
+
 router.get('/manage_food', conManage.getFood);
 router.get('/manage_material', conManage.getMaterial);
 router.get('/manage_expense', conManage.getExpense);
