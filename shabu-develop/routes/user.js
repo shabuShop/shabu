@@ -4,8 +4,8 @@ const express = require('express');
 
 const user = require('../controllers/user')
 
-const conSet_materials = require('../controllers/module/set_materials')
-const conSale = require('../controllers/module/sale')
+const conSet_materials = require('../controllers/manage/set_materials')
+const conSale = require('../controllers/manage/sale')
 
 const router = express.Router();
 

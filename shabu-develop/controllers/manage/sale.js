@@ -1,9 +1,10 @@
-exports.getSet_materials = (req, res,next) => {
+exports.getSale = (req, res,next) => {
     if(req.session.role){
-        res.render('module/set_materials', {
+        res.render('template', {
             session_user_id:req.session.user_id,
             session_user:req.session.user,
-            session_role:req.session.role
+            session_role:req.session.role,
+            file:'manage/sale'
         });
     }else{
         res.redirect("/");

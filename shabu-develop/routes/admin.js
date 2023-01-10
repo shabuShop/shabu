@@ -5,13 +5,13 @@ const express = require('express');
 const conUser = require('../controllers/admin')
 
 
-const conManage = require('../controllers/module/manage')
-const conSet_materials = require('../controllers/module/set_materials')
-const conOpen_sale = require('../controllers/module/open_sale')
-const conSale = require('../controllers/module/sale')
-const conStock = require('../controllers/module/stock')
-const conExpenses = require('../controllers/module/expenses')
-const conReport = require('../controllers/module/report')
+const conManage = require('../controllers/manage/manage')
+const conSet_materials = require('../controllers/manage/set_materials')
+const conOpen_sale = require('../controllers/manage/open_sale')
+const conSale = require('../controllers/manage/sale')
+const conStock = require('../controllers/manage/stock')
+const conExpenses = require('../controllers/manage/expenses')
+const conReport = require('../controllers/manage/report')
 
 const router = express.Router();
 

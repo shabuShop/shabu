@@ -6,11 +6,12 @@ exports.getEmployee = (req, res) => {
     // get db of employee
     if(req.session.role == "admin"){
         data_manage.getData_Employee().then((data)=>{
-            res.render('manage/manage_employee', {
+            res.render('template', {
                 session_user_id:req.session.user_id,
                 session_user:req.session.user,
                 session_role:req.session.role,
-                data_employee:data
+                data_employee:data,
+                file:'manage/manage_employee'
             });
     
         });
@@ -21,10 +22,11 @@ exports.getEmployee = (req, res) => {
 };
 exports.getFood = (req, res) => {
     if(req.session.role == "admin"){
-        res.render('manage/manage_food', {
+        res.render('template', {
             session_user_id:req.session.user_id,
             session_user:req.session.user,
-            session_role:req.session.role
+            session_role:req.session.role,
+            file:'manage/manage_food'
         });
     }else{
         res.redirect("/");
@@ -32,10 +34,11 @@ exports.getFood = (req, res) => {
 };
 exports.getMaterial = (req, res) => {
     if(req.session.role == "admin"){
-        res.render('manage/manage_material', {
+        res.render('template', {
             session_user_id:req.session.user_id,
             session_user:req.session.user,
-            session_role:req.session.role
+            session_role:req.session.role,
+            file:'manage/manage_material'
         });
     }else{
         res.redirect("/");
@@ -43,10 +46,11 @@ exports.getMaterial = (req, res) => {
 };
 exports.getExpense = (req, res) => {
     if(req.session.role == "admin"){
-        res.render('manage/manage_expense', {
+        res.render('template', {
             session_user_id:req.session.user_id,
             session_user:req.session.user,
-            session_role:req.session.role
+            session_role:req.session.role,
+            file:'manage/manage_expense'
         });
     }else{
         res.redirect("/");
