@@ -2,18 +2,18 @@
 const data_manage = require('../../models/module/manage')
 
 
-exports.getEmployee = (req, res) => {
+exports.getEmployee = async (req, res) => {
     // get db of employee
     if(req.session.role == "admin"){
-        data_manage.getData_Employee().then((data)=>{
-            res.render('template', {
-                session_user_id:req.session.user_id,
-                session_user:req.session.user,
-                session_role:req.session.role,
-                data_employee:data,
-                file:'manage/manage_employee'
-            });
-    
+        let data_employee = await (data_manage.getData_Employee().then((data)=>{return data}));
+        let data_position = await (data_manage.getPosition().then((data)=>{return data}));
+        res.render('template', {
+            session_user_id:req.session.user_id,
+            session_user:req.session.user,
+            session_role:req.session.role,
+            data_employee:data_employee,
+            data_position:data_position,
+            file:'manage/manage_employee'
         });
         
     }else{

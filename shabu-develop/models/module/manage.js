@@ -16,11 +16,21 @@ exports.getData_Employee = async function() {
         return [];
     }
 }
+exports.getPosition = async function() {
+    try {
+        let sql = `SELECT ps.ID , ps.Position_Name FROM [Position_data] ps;`
+        const data = await connection.query(sql);
+        return data;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+}
 
 exports.setData_Employee = async function(data) {
     try {
         let sql = `INSERT INTO Employee( Emp_Fname , Emp_Lname , Emp_Address , Emp_Tel , Emp_Username , Emp_Password , Position_ID) 
-                   VALUES ("${data.Fname}", "${data.Lname}", "${data.address}", "${data.tel}","employee","${data.password}",2);
+                   VALUES ("${data.Fname}", "${data.Lname}", "${data.address}", "${data.tel}","${data.username}","${data.password}",${data.position});
                   `
         const con = await connection.execute(sql);
     } catch (error) {
@@ -38,10 +48,10 @@ exports.deleteData_Employee = async function(data) {
 }
 exports.updateData_Employee = async function(data) {
     try {
-        // UPDATE `test_time` SET `id`='[value-1]',`open`='[value-2]',`money_open`='[value-3]',`close`='[value-4]',`money_close`='[value-5]',`name`='[value-6]' WHERE 1
         let sql = `UPDATE Employee SET Emp_Fname = "${data.UFname}" ,
                    Emp_Lname = "${data.ULname}" , Emp_Address = "${data.Uaddress}" ,
-                   Emp_Tel="${data.Utel}"  , Emp_Password ="${data.Upassword}" where ID = ${data.id_update} 
+                   Emp_Tel="${data.Utel}" ,Emp_Username ="${data.Uusername}" , 
+                   Emp_Password ="${data.Upassword}", Position_ID =${data.Uposition} where ID = ${data.id_update} 
                   `
         const con = await connection.execute(sql);
     } catch (error) {
