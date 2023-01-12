@@ -9,12 +9,14 @@ exports.getFood = async function() {
                   `
 
         const con = await connection.query(sql);
+        // console.log(con);
         return con;
     } catch (error) {
         console.log(error);
         return [];
     }
 }
+
 exports.getFood_Category = async function() {
     try {
         let sql = `SELECT Food_category.[ID], Food_category.[Fd_Category]

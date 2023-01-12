@@ -34,7 +34,9 @@ router.post('/manage_employee/:action', conManage_employee.setEmployee);
 
 router.get('/manage_buffet', conManage_buffet.getBuffet);
 router.post('/manage_buffet/:action', conManage_buffet.setBuffet);
-router.post('/buffet_detail', conManage_buffet.getBuffet_detail);
+
+router.get('/buffet_detail', conManage_buffet.getBuffet_detail);
+router.post('/buffet_detail/:action', conManage_buffet.setBuffet_detail);
 
 
 router.get('/manage_food', conManage_food.getFood);

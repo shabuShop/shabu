@@ -1,7 +1,138 @@
 
+<div class="container-fluid">
 
-รายระเอียดเมนู
+    
+    <div class="d-flex pt-2 justify-content-center">
+        <h3>บุฟเฟต์ : <%= buffet_name[0].Bf_Name %> </h3>
+    </div>
+    <div class="d-flex  justify-content-start mb-1">
+        <button  type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add" onclick="update('<%=match%>')">
+            แก้ไขรายการอาหาร
+        </button>
+    </div>
 
-<% for(let i of data_buffet_dt){%>
-    <p><%= i.Fd_List_ID %> </p>
-<%} %> 
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body">
+                
+                <table id="employee" class="table table-bordered table-hover " >
+                    <thead>
+                        <tr>
+                            <th>ลำดับ</th>
+                            <th>ชื่ออาหาร</th>
+                            <th>ประเภทอาหาร</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% let count = 1; %> 
+                        <% for(let i of buffet_dt){%>
+                            <tr>
+                                <td><%= count%></td>
+                                <td><%= i.Fd_Name%></td>
+                                <td><%= i.Fd_Category%></td>
+                            </tr>
+                            <% count += 1; %> 
+                        <%} %> 
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- =================== Modal Add ===================-->
+<div class="modal fade" id="modal-add">
+    <div class="modal-dialog modal-xl">
+      <div id="modal_action" class="modal-content">
+        <div class="modal-header bg-purple">
+          <h4 class="modal-title ">แก้ไขรายการอาหาร</h4>
+          <button type="button " class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-light">&times;</span>
+          </button>
+        </div>
+        <form action="buffet_detail/add" method="post">
+            <input type="text" class="d-none" name="id" value="<%=buffet_name[0].ID%>">
+            <div class="modal-body">
+                <!-- ============================== Form ==============================-->
+                <table id="setFood" class="table table-bordered table-hover  "  >
+                    <thead>
+                        <tr>
+                            <th>เลือก</th>
+                            <th>ชื่ออาหาร</th>
+                            <th>ประเภทอาหาร</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let i of data_food){%>
+                            <tr>
+                                <td>
+                                    <div class="form-check text-center">
+                                        <input id="F<%= i.ID%>" name="F<%= i.ID%>" class="form-check-input" type="checkbox">
+                                    </div>
+                                </td>
+                                <td><%= i.Fd_Name%></td>
+                                <td><%= i.Fd_Category%></td>
+                            </tr>
+                        <%} %> 
+                        
+                    </tbody>
+                </table>
+
+           
+            </div>
+            
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" >Save changes</button>
+            </div>
+
+        </form>
+
+      </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(function () {
+       $('#setFood').DataTable({
+        order: [[2, 'asc']],
+        lengthMenu: [
+            [-1],
+            ['All'],
+        ]
+      });
+
+      
+      $('#employee').DataTable({
+        "paging": true,
+        "lengthMenu": [[5, 10, 20], [5, 10, 20]],
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+     
+    });
+
+    $( "#modal_action" ).click(update('<%=match%>'));
+    function update(data){
+        data = data.split(",");
+        for(let i of data){
+            console.log(`F${i}`);
+            $(`input[id=F${i}]`).attr("checked","true");
+        }
+    }
+
+   
+  
+
+    
+  
+</script>
