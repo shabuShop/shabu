@@ -35,6 +35,7 @@ exports.setFood  = async function(data) {
                   `
         const con = await connection.execute(sql);
     } catch (error) {
+        // .
         console.log(error);
     }
 }
