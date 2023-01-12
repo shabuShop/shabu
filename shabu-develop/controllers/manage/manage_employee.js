@@ -1,5 +1,5 @@
 
-const data_manage = require('../../models/module/manage')
+const data_manage = require('../../models/manage/manage_employee')
 
 
 exports.getEmployee = async (req, res) => {
@@ -20,7 +20,7 @@ exports.getEmployee = async (req, res) => {
         res.redirect("/");
     }
 };
-exports.setEmployee = (req, res) => {
+exports.setEmployee =async (req, res) => {
     if(req.session.role == "admin"){
         if(req.params.action === "add"){
             data_manage.setData_Employee(req.body).then(()=>{
@@ -41,40 +41,8 @@ exports.setEmployee = (req, res) => {
     }
 };
 
-exports.getFood = (req, res) => {
-    if(req.session.role == "admin"){
-        res.render('template', {
-            session_user_id:req.session.user_id,
-            session_user:req.session.user,
-            session_role:req.session.role,
-            file:'manage/manage_food'
-        });
-    }else{
-        res.redirect("/");
-    }
-};
-exports.getMaterial = (req, res) => {
-    if(req.session.role == "admin"){
-        res.render('template', {
-            session_user_id:req.session.user_id,
-            session_user:req.session.user,
-            session_role:req.session.role,
-            file:'manage/manage_material'
-        });
-    }else{
-        res.redirect("/");
-    }
-};
-exports.getExpense = (req, res) => {
-    if(req.session.role == "admin"){
-        res.render('template', {
-            session_user_id:req.session.user_id,
-            session_user:req.session.user,
-            session_role:req.session.role,
-            file:'manage/manage_expense'
-        });
-    }else{
-        res.redirect("/");
-    }
-};
+
+
+
+
 

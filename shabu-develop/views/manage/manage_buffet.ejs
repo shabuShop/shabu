@@ -1,17 +1,15 @@
 
 <div class="container-fluid">
 
-    
     <div class="d-flex pt-2 justify-content-center">
-        <h3>ข้อมูลอาหาร</h3>
+        <h3>ข้อมูลบุฟเฟ่ต์</h3>
         
     </div>
     <div class="d-flex  justify-content-start mb-1">
         <button  type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add" onclick="add()">
-            เพิ่มอาหาร
+            เพิ่มบุฟเฟ่ต์
         </button>
     </div>
-
 
     <div class="row">
         <div class="col-12">
@@ -20,18 +18,24 @@
                 <table id="employee" class="table table-bordered table-hover " >
                     <thead>
                         <tr>
-                            <th>รหัสอาหาร</th>
-                            <th>ชื่ออาหาร</th>
-                            <th>ประเภท</th>
+                            <th>รหัส</th>
+                            <th>ชื่อ</th>
+                            <th>ราคา</th>
+                            <th>รายระเอียดเพิ่มเติม</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <% for(let i of data_food){%>
+                        <% for(let i of data_buffet){%>
                             <tr>
                                 <td><%= i.ID%></td>
-                                <td><%= i.Fd_Name%></td>
-                                <td><%= i.Fd_Category%></td>
+                                <td><%= i.Bf_Name%></td>
+                                <td><%= i.Bf_Price%></td>
+                                <td>
+                                    <p class="btn btn-primary p-1 px-1 mr-1" onclick="detail('<%=i.ID%>')">
+                                         รายระเอียด
+                                    </p>    
+                                </td>
                                 <td>
                                     <div class="d-flex">
                                         <p class="btn btn-warning p-1 px-1 mr-1" data-toggle="modal" data-target="#modal-update"onclick="update('<%= Object.values(i) %>') ">แก้
@@ -49,25 +53,29 @@
         </div>
     </div>
 
+
 </div>
-
-
-<form id="delete" action="manage_employee/food" method="post" class="d-inline">
-    <input type="number" name="id_del" class="d-none" value="">
+<!-- =================== page Detail =================== -->
+<form id="detail" action="buffet_detail" method="post" class="d-inline">
+    <input type="number" name="id_detail" class="d-none" value="">
 </form>
 
+<!-- =================== delete =================== -->
+<form id="delete" action="manage_buffet/delete" method="post" class="d-inline">
+    <input type="number" name="id_del" class="d-none" value="">
+</form>
 
 <!-- =================== Modal Add ===================-->
 <div class="modal fade" id="modal-add">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header bg-purple">
-          <h4 class="modal-title ">ใส่ข้อมูลอาหาร</h4>
+          <h4 class="modal-title ">ใส่ข้อมูลบุฟเฟ่ต์</h4>
           <button type="button " class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" class="text-light">&times;</span>
           </button>
         </div>
-        <form action="manage_food/add" method="post">
+        <form action="manage_buffet/add" method="post">
             <div class="modal-body">
             <!-- ============================== Form ==============================-->
                 <div class="form-group">
@@ -77,17 +85,15 @@
                 </div>
                 
                 <div class="form-group">
-                    <label >ชื่ออาหาร</label>
-                    <input type="text" class="form-control" name="food">
+                    <label >ชื่อ</label>
+                    <input type="text" class="form-control" name="type">
                 </div>
+
                 <div class="form-group">
-                    <label >ประเภท</label>
-                    <select class="form-control" name="type" >
-                        <% for(i of food_category){%> 
-                            <option value="<%=i.ID%>"><%=i.Fd_Category%></option>
-                        <%} %> 
-                    </select>
+                    <label >ราคา</label>
+                    <input type="number" class="form-control" name="price">
                 </div>
+
 
             </div>
             
@@ -102,18 +108,20 @@
     </div>
 </div>
 
+
+
 <!-- =================== Modal Update ===================-->
 <div class="modal fade" id="modal-update">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header bg-purple">
-          <h4 class="modal-title ">อัปเดตข้อมูลพนักงาน</h4>
+          <h4 class="modal-title ">อัปเดตข้อมูลบุฟเฟ่ต์</h4>
           <button type="button " class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" class="text-light">&times;</span>
           </button>
         </div>
 
-        <form action="manage_food/update" method="post">
+        <form action="manage_buffet/update" method="post">
             <div class="modal-body">
             <!-- ============================== Form ==============================-->
             
@@ -123,19 +131,16 @@
                     </blockquote>
                 </div>
 
-                
                 <div class="form-group">
-                    <label >ชื่ออาหาร</label>
-                    <input type="text" class="form-control" name="Ufood">
+                    <label >ชื่อ</label>
+                    <input type="text" class="form-control" name="Utype">
                 </div>
+
                 <div class="form-group">
-                    <label >ประเภท</label>
-                    <select class="form-control" name="Utype" >
-                        <% for(i of food_category){%> 
-                            <option id="<%=i.Fd_Category%>" value="<%=i.ID%>"><%=i.Fd_Category%></option>
-                        <%} %> 
-                    </select>
+                    <label >ราคา</label>
+                    <input type="number" class="form-control" name="Uprice">
                 </div>
+
                 <input type="number" name="id_update" class="d-none" value="">
             </div>
 
@@ -150,9 +155,7 @@
     </div>
 </div>
 
-
 <script>
-
     $(function () {
       $('#employee').DataTable({
         "paging": true,
@@ -163,9 +166,7 @@
         "autoWidth": false,
         "responsive": true,
       });
-      
     });
-
     // init
     $("#alert").addClass("d-none")
     $("#Ualert").addClass("d-none")
@@ -174,22 +175,13 @@
         $("#alert").addClass("d-none")
     }
 
-    let oldOp ="";
     function update(data){
         data = data.split(",");
-        console.log(data);
+        $("input[name=Utype]").val(data[1]);
+        $("input[name=Uprice]").val(data[2])
         $("input[name=id_update]").val(data[0])
-        $("input[name=Ufood]").val(data[1]);
 
-        $(`option[id=${data[3]}]`).attr("selected","true");
-        if(oldOp !== data[3]){
-            if(oldOp != ""){
-                $(`option[id=${oldOp}]`).removeAttr("selected");
-            }
-            oldOp = data[3];
-        }
-        
-
+    
         $("#Ualert").addClass("d-none")
 
     }
@@ -199,11 +191,17 @@
             $("#delete").submit();
         }
     }
+    function detail(id){
+        $("input[name=id_detail]").val(parseInt(id))
+        $("#detail").submit();
+    }
 
     function vali(mode){
         if(mode === "add"){
-            let food = ($("input[name=food]").val()).trim() === "";
-            if( !food ){
+            let type = ($("input[name=type]").val()).trim() === "";
+            let price = ($("input[name=price]").val()).trim() === "";
+
+            if( !type && !price){
                 return true;
             }else{
     
@@ -211,8 +209,10 @@
                 return false;
             }
         }else if(mode === "update"){
-            let food = ($("input[name=Ufood]").val()).trim() === "";
-            if( !food ){
+            let type = ($("input[name=Utype]").val()).trim() === "";
+            let price = ($("input[name=Uprice]").val()).trim() === "";
+
+            if( !type && !price){
                 return true;
             }else{
     

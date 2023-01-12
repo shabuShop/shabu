@@ -1,10 +1,10 @@
-exports.getSale = (req, res,next) => {
-    if(req.session.role){
+exports.getExpense = (req, res) => {
+    if(req.session.role == "admin"){
         res.render('template', {
             session_user_id:req.session.user_id,
             session_user:req.session.user,
             session_role:req.session.role,
-            file:'manage/sale'
+            file:'manage/manage_expense'
         });
     }else{
         res.redirect("/");
