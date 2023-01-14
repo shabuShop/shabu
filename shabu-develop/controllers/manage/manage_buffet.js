@@ -42,9 +42,7 @@ exports.setBuffet =(req, res) => {
 // To get value that match betweed All Food  and Food in Buffet now
 exports.getBuffet_detail=async (req, res) => {
     if(req.session.role == "admin"){
-        console.log(req.query);
         let buffet_dt = await (data_manage.getBuffet_detail(req.query).then((data)=>{return data}));
-        let buffet_name = await (data_manage.getBuffet_name(req.query).then((data)=>{return data}));
         let data_food = await (data_manage_food.getFood().then((data)=>{return data}));
         match =[];
         // buffet_dt.Food_list_ID
@@ -61,7 +59,8 @@ exports.getBuffet_detail=async (req, res) => {
             session_user:req.session.user,
             session_role:req.session.role,
             buffet_dt:buffet_dt,
-            buffet_name:buffet_name,
+            buffet_name:req.query.buffet_detail,
+            buffet_ID:req.query.id_detail,
             data_food:data_food,
             match:match,
             file:'manage/manage_buffet_detail'
@@ -73,7 +72,6 @@ exports.getBuffet_detail=async (req, res) => {
 
 exports.setBuffet_detail =async (req, res) => {
     if(req.session.role == "admin"){
-        console.log(req.body);
         if(req.params.action === "add"){
             let now_data = Object.keys(req.body);
             let update = [];

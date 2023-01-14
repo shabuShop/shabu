@@ -19,6 +19,7 @@ app.use('/admin', express.static(path.join(__dirname, 'public')))
 app.use('/user', express.static(path.join(__dirname, 'public')))
 
 app.use("/axios",express.static('node_modules/axios/dist'));
+
 app.use(session({
     secret:'secret',
     resave:false,

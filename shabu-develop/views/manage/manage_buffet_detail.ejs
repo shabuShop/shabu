@@ -3,7 +3,7 @@
 
     
     <div class="d-flex pt-2 justify-content-center">
-        <h3>บุฟเฟต์ : <%= buffet_name[0].Bf_Name %> </h3>
+        <h3>บุฟเฟต์ : <%= buffet_name %> </h3>
     </div>
     <div class="d-flex  justify-content-start mb-1">
         <button  type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add" onclick="update('<%=match%>')">
@@ -55,7 +55,7 @@
           </button>
         </div>
         <form action="buffet_detail/add" method="post">
-            <input type="text" class="d-none" name="id" value="<%=buffet_name[0].ID%>">
+            <input type="text" class="d-none" name="id" value="<%=buffet_ID%>">
             <div class="modal-body">
                 <!-- ============================== Form ==============================-->
                 <table id="setFood" class="table table-bordered table-hover  "  >

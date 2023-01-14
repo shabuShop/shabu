@@ -44,6 +44,9 @@ router.post('/manage_food/:action', conManage_food.setFood);
 
 
 router.get('/manage_material', conManage_material.getMaterial);
+router.post('/manage_material/:action', conManage_material.setMaterial);
+
+
 router.get('/manage_expense', conManage_expense.getExpense);
 
 // ====================== Route รับวัตถุดิบเข้า======================

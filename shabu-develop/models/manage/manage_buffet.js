@@ -80,8 +80,6 @@ exports.getBuffet_name = async function(data) {
 
 exports.deleteBuffetALL = async function(data) {
     try {
-        console.log(data);
-        // DELETE FROM Buffet_Category  WHERE Buffet_Category.ID = ${data.id_del};
         let sql = ` DELETE FROM Buffet_Food_List  WHERE Buffet_Food_List.[Bf_Category_ID] = ${data.id};
                   `
         const con = await connection.execute(sql);
@@ -94,7 +92,6 @@ exports.deleteBuffetALL = async function(data) {
 
 exports.setBuffetMulti = async function(data) {
     try {
-        console.log(data);
         let sql =''
         for(let i=0;i<data.update.length;i++){
             sql = `INSERT INTO Buffet_Food_List( Fd_List_ID , Bf_Category_ID ) VALUES  (${data.update[i]}, ${data.id}) ;`

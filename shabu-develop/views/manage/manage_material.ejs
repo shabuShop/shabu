@@ -1,7 +1,208 @@
 
 
+<div class="container-fluid">
+
+    <div class="d-flex pt-2 justify-content-center">
+        <h3>หมวดหมู่วัตถุดิบ</h3>
+        
+    </div>
+    <div class="d-flex  justify-content-start mb-1">
+        <button  type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add" onclick="add()">
+            เพิ่มหมวดหมู่วัตถุดิบ
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body">
+                
+                <table id="employee" class="table table-bordered table-hover " >
+                    <thead>
+                        <tr>
+                            <th>รหัส</th>
+                            <th>ชื่อ</th>
+                            <th>รายระเอียดเพิ่มเติม</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let i of material){%>
+                            <tr>
+                                <td><%= i.ID%></td>
+                                <td><%= i.St_Name%></td>
+                                <td>
+                                    <p class="btn btn-primary p-1 px-1 mr-1" onclick="detail('<%=i.ID%>')">
+                                         รายระเอียด
+                                    </p>    
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <p class="btn btn-warning p-1 px-1 mr-1" data-toggle="modal" data-target="#modal-update"onclick="update('<%= Object.values(i) %>') ">แก้
+                                        </p>
+                                        <p class="btn btn-danger p-1 px-1 " onclick="del('<%=i.ID%>')" >ลบ</p>
+                                    </div>
+                                </td>
+                                
+                            </tr>
+                        <%} %> 
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
 
-<h1>manage วัตถุดิบ</h1>
+</div>
 
 
+
+<!-- =================== delete =================== -->
+<form id="delete" action="manage_material/delete" method="post" class="d-inline">
+    <input type="number" name="id_del" class="d-none" value="">
+</form>
+
+
+<!-- =================== Modal Add ===================-->
+<div class="modal fade" id="modal-add">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-purple">
+          <h4 class="modal-title ">ใส่ชื่อประเภทของวัตถุดิบ</h4>
+          <button type="button " class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-light">&times;</span>
+          </button>
+        </div>
+        <form action="manage_material/add" method="post">
+            <div class="modal-body">
+            <!-- ============================== Form ==============================-->
+                <div class="form-group">
+                    <blockquote id="alert" class="quote-danger m-0">
+                        <h3>! กรุณาใส่ข้อมูลให้ครบ</h3>
+                    </blockquote>
+                </div>
+                
+                <div class="form-group">
+                    <label >ชื่อ</label>
+                    <input type="text" class="form-control" name="type">
+                </div>
+            </div>
+            
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" onclick="return vali('add')">Save changes</button>
+            </div>
+
+        </form>
+
+      </div>
+    </div>
+</div>
+
+<!-- =================== Modal Update ===================-->
+<div class="modal fade" id="modal-update">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-purple">
+          <h4 class="modal-title ">อัปเดตชื่อประเภทของวัตถุดิบ</h4>
+          <button type="button " class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-light">&times;</span>
+          </button>
+        </div>
+
+        <form action="manage_material/update" method="post">
+            <div class="modal-body">
+            <!-- ============================== Form ==============================-->
+            
+                <div class="form-group">
+                    <blockquote id="Ualert" class="quote-danger m-0">
+                        <h3>! กรุณาใส่ข้อมูลให้ครบ</h3>
+                    </blockquote>
+                </div>
+
+                <div class="form-group">
+                    <label >ชื่อ</label>
+                    <input type="text" class="form-control" name="Utype">
+                </div>
+
+                <input type="number" name="id_update" class="d-none" value="">
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" onclick="return vali('update')">Save changes</button>
+            </div>
+
+        </form>
+
+      </div>
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+      $('#employee').DataTable({
+        "paging": true,
+        "lengthMenu": [[5, 10, 20], [5, 10, 20]],
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+    // init
+    $("#alert").addClass("d-none")
+    $("#Ualert").addClass("d-none")
+
+    function add(){
+        $("#alert").addClass("d-none")
+    }
+
+    function update(data){
+        data = data.split(",");
+
+        console.log(data);
+        $("input[name=Utype]").val(data[1]);
+        $("input[name=id_update]").val(data[0])
+
+    
+        $("#Ualert").addClass("d-none")
+
+    }
+    function del(id){
+        $("input[name=id_del]").val(parseInt(id))
+        if(confirm("ยืนการลบข้อมูล") == true){
+            $("#delete").submit();
+        }
+    }
+    function detail(id,name){
+        $("input[name=id_detail]").val(parseInt(id))
+        $("input[name=buffet_detail]").val(name)
+        $("#detail").submit();
+    }
+
+    function vali(mode){
+        if(mode === "add"){
+            let name = ($("input[name=type]").val()).trim() === "";
+            if( !name){
+                return true;
+            }else{
+    
+                $("#alert").removeClass("d-none")
+                return false;
+            }
+        }else if(mode === "update"){
+            let name = ($("input[name=Utype]").val()).trim() === "";
+            if( !name){
+                return true;
+            }else{
+                $("#Ualert").removeClass("d-none")
+                return false;
+            }
+        }
+        
+    }
+  
+</script>

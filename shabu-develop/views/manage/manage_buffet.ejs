@@ -32,7 +32,7 @@
                                 <td><%= i.Bf_Name%></td>
                                 <td><%= i.Bf_Price%></td>
                                 <td>
-                                    <p class="btn btn-primary p-1 px-1 mr-1" onclick="detail('<%=i.ID%>')">
+                                    <p class="btn btn-primary p-1 px-1 mr-1" onclick="detail('<%=i.ID%>','<%=i.Bf_Name%>')">
                                          รายระเอียด
                                     </p>    
                                 </td>
@@ -55,9 +55,14 @@
 
 
 </div>
+
+
+
+
 <!-- =================== page Detail =================== -->
 <form id="detail" action="buffet_detail" method="get" class="d-inline">
     <input type="number" name="id_detail" class="d-none" value="">
+    <input type="text" name="buffet_detail" class="d-none" value="">
 </form>
 
 <!-- =================== delete =================== -->
@@ -191,8 +196,9 @@
             $("#delete").submit();
         }
     }
-    function detail(id){
+    function detail(id,name){
         $("input[name=id_detail]").val(parseInt(id))
+        $("input[name=buffet_detail]").val(name)
         $("#detail").submit();
     }
 
