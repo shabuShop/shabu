@@ -38,3 +38,53 @@ exports.setMaterial =async (req, res) => {
         res.redirect("/");
     }
 };
+
+exports.getMaterial_detail=async (req, res) => {
+    if(req.session.role == "admin"){
+
+        let material = await (data_manage.getMaterial_detail(req.query).then((data)=>{return data}));
+        let count_unit = await (data_manage.getCount_unit().then((data)=>{return data}));
+
+        // let data_food = await (data_manage_food.getFood().then((data)=>{return data}));
+        // buffet_dt.Food_list_ID
+        // data_food.ID
+        res.render('template', {
+            session_user_id:req.session.user_id,
+            session_user:req.session.user,
+            session_role:req.session.role,
+            material_name:req.query.material_detail,
+            material_ID:req.query.id_detail,
+            material:material,
+            count_unit:count_unit,
+            file:'manage/manage_material_detail'
+        });
+    }else{
+        res.redirect("/");
+    }
+};
+
+
+exports.setMaterial_detail =async (req, res) => {
+    if(req.session.role == "admin"){
+        if(req.params.action === "add"){
+            await data_manage.setMaterial_detail(req.body).then(()=>{});
+            let maxID = await data_manage.getMaterial_detail_max_id().then((data)=>{return data});
+            await data_manage.setMaterial_amount({id:maxID}).then(()=>{});
+
+            res.redirect(`/admin/material_detail?id_detail=${req.body.id_material}&material_detail=${req.body.name_material}`);
+
+        }else if(req.params.action === "delete"){
+            await data_manage.deleteMaterial_detail(req.body).then(()=>{});
+            await data_manage.deleteMaterial_amount(req.body).then(()=>{});
+
+            res.redirect(`/admin/material_detail?id_detail=${req.body.id_material}&material_detail=${req.body.name_material}`);
+
+        }else if(req.params.action === "update"){
+            await data_manage.updateMaterial_detail(req.body).then(()=>{});
+
+            res.redirect(`/admin/material_detail?id_detail=${req.body.id_material}&material_detail=${req.body.name_material}`);
+        }
+    }else{
+        res.redirect("/");
+    }
+};

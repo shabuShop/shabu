@@ -67,9 +67,13 @@ exports.getBuffet_detail = async function(data) {
 
 exports.getBuffet_name = async function(data) {
     try {
-        let sql = ` SELECT Buffet_Category.[Bf_Name],Buffet_Category.[ID] FROM Buffet_Category where Buffet_Category.[ID] = ${data.id_detail};        
+        let sql = ` SELECT Buffet_Category.[Bf_Name],Buffet_Category.[ID] FROM Buffet_Category where Buffet_Category.[ID] = ${data.id};        
                   `
         const con = await connection.query(sql);
+        // Bf_Name:
+        if(con.length > 0){
+            return con[0].Bf_Name;
+        }
         return con;
    
     } catch (error) {

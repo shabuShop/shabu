@@ -1,16 +1,16 @@
 
-
 <div class="container-fluid">
 
+    
     <div class="d-flex pt-2 justify-content-center">
-        <h3>หมวดหมู่วัตถุดิบ</h3>
-        
+        <h3>หมวดหมู่ : <%= material_name %> </h3>
     </div>
     <div class="d-flex  justify-content-start mb-1">
-        <button  type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add" onclick="add()">
-            เพิ่มหมวดหมู่วัตถุดิบ
+        <button  type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add" onclick="update('')">
+            เพิ่มวัตถุดิบ
         </button>
     </div>
+
 
     <div class="row">
         <div class="col-12">
@@ -19,22 +19,18 @@
                 <table id="employee" class="table table-bordered table-hover " >
                     <thead>
                         <tr>
-                            <th>รหัส</th>
-                            <th>ชื่อ</th>
-                            <th>รายระเอียดเพิ่มเติม</th>
+                            <th>ชื่อวัตถุดิบ</th>
+                            <th>หน่วยนับ</th>
+                            <th>จำนวน</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <% for(let i of material){%>
                             <tr>
-                                <td><%= i.ID%></td>
-                                <td><%= i.St_Name%></td>
-                                <td>
-                                    <p class="btn btn-primary p-1 px-1 mr-1" onclick="detail('<%=i.ID%>','<%=i.St_Name%>')">
-                                         รายระเอียด
-                                    </p>    
-                                </td>
+                                <td><%= i.It_name%></td>
+                                <td><%= i.Un_Name%></td>
+                                <td><%= 0%></td>
                                 <td>
                                     <div class="d-flex">
                                         <p class="btn btn-warning p-1 px-1 mr-1" data-toggle="modal" data-target="#modal-update"onclick="update('<%= Object.values(i) %>') ">แก้
@@ -42,7 +38,6 @@
                                         <p class="btn btn-danger p-1 px-1 " onclick="del('<%=i.ID%>')" >ลบ</p>
                                     </div>
                                 </td>
-                                
                             </tr>
                         <%} %> 
                         
@@ -52,20 +47,9 @@
         </div>
     </div>
 
-
 </div>
 
-<!-- =================== page Detail =================== -->
-<form id="detail" action="material_detail" method="get" class="d-inline">
-    <input type="number" name="id_detail" class="d-none" value="">
-    <input type="text" name="material_detail" class="d-none" value="">
-</form>
 
-
-<!-- =================== delete =================== -->
-<form id="delete" action="manage_material/delete" method="post" class="d-inline">
-    <input type="number" name="id_del" class="d-none" value="">
-</form>
 
 
 <!-- =================== Modal Add ===================-->
@@ -73,12 +57,12 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header bg-purple">
-          <h4 class="modal-title ">ใส่ชื่อประเภทของวัตถุดิบ</h4>
+          <h4 class="modal-title ">ใส่ชื่อวัตถุดิบ</h4>
           <button type="button " class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" class="text-light">&times;</span>
           </button>
         </div>
-        <form action="manage_material/add" method="post">
+        <form action="material_detail/add" method="post">
             <div class="modal-body">
             <!-- ============================== Form ==============================-->
                 <div class="form-group">
@@ -91,6 +75,18 @@
                     <label >ชื่อ</label>
                     <input type="text" class="form-control" name="type">
                 </div>
+
+                <div class="form-group">
+                    <label >หน่วยนับ</label>
+                    <select class="form-control" name="unit" >
+                        <% for(i of count_unit){%> 
+                            <option value="<%=i.ID%>"><%=i.Un_Name%></option>
+                        <%} %> 
+                    </select>
+                </div>
+                <input type="number" name="id_material" class="d-none" value="<%=material_ID%>">
+                <input type="text" name="name_material" class="d-none" value="<%=material_name%>">
+
             </div>
             
             <div class="modal-footer justify-content-between">
@@ -104,18 +100,19 @@
     </div>
 </div>
 
+
 <!-- =================== Modal Update ===================-->
 <div class="modal fade" id="modal-update">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header bg-purple">
-          <h4 class="modal-title ">อัปเดตชื่อประเภทของวัตถุดิบ</h4>
+          <h4 class="modal-title ">อัปเดตข้อมูลบุฟเฟ่ต์</h4>
           <button type="button " class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" class="text-light">&times;</span>
           </button>
         </div>
 
-        <form action="manage_material/update" method="post">
+        <form action="material_detail/update" method="post">
             <div class="modal-body">
             <!-- ============================== Form ==============================-->
             
@@ -130,7 +127,19 @@
                     <input type="text" class="form-control" name="Utype">
                 </div>
 
+                <div class="form-group">
+                    <label >หน่วยนับ</label>
+                    <select class="form-control" name="Uunit" >
+                        <% for(i of count_unit){%> 
+                            <option id="<%=i.Un_Name%>" value="<%=i.ID%>"><%=i.Un_Name%></option>
+                        <%} %> 
+                    </select>
+                </div>
                 <input type="number" name="id_update" class="d-none" value="">
+                <input type="number" name="id_material" class="d-none" value="<%=material_ID%>">
+                <input type="text" name="name_material" class="d-none" value="<%=material_name%>">
+
+
             </div>
 
             <div class="modal-footer justify-content-between">
@@ -144,6 +153,13 @@
     </div>
 </div>
 
+
+<!-- =================== delete =================== -->
+<form id="delete" action="material_detail/delete" method="post" class="d-inline">
+    <input type="number" name="id_del" class="d-none" value="">
+    <input type="number" name="id_material" class="d-none" value="<%=material_ID%>">
+    <input type="text" name="name_material" class="d-none" value="<%=material_name%>">
+</form>
 
 <script>
     $(function () {
@@ -165,14 +181,22 @@
         $("#alert").addClass("d-none")
     }
 
+    let oldOp ="";
     function update(data){
-        data = data.split(",");
 
+        data = data.split(",");
         console.log(data);
         $("input[name=Utype]").val(data[1]);
         $("input[name=id_update]").val(data[0])
 
-    
+        $(`option[id=${data[2]}]`).attr("selected","true");
+        if(oldOp !== data[2]){
+            if(oldOp != ""){
+                $(`option[id=${oldOp}]`).removeAttr("selected");
+            }
+            oldOp = data[2];
+        }
+        
         $("#Ualert").addClass("d-none")
 
     }

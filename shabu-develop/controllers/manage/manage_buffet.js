@@ -73,6 +73,8 @@ exports.getBuffet_detail=async (req, res) => {
 exports.setBuffet_detail =async (req, res) => {
     if(req.session.role == "admin"){
         if(req.params.action === "add"){
+            console.log(req.body);
+
             let now_data = Object.keys(req.body);
             let update = [];
             for(let i of now_data){
@@ -83,7 +85,9 @@ exports.setBuffet_detail =async (req, res) => {
             }
             await data_manage.deleteBuffetALL({id:req.body.id}).then((data)=>{return data});
             await data_manage.setBuffetMulti({update:update,id:req.body.id}).then((data)=>{return data});
-            res.redirect("/admin/buffet_detail?id_detail="+req.body.id);
+            
+            const getName = await data_manage.getBuffet_name({id:req.body.id}).then((data)=>{return data});
+            res.redirect(`/admin/buffet_detail?id_detail=${req.body.id}&buffet_detail=${getName}`);
         }
 
     }else{

@@ -34,7 +34,6 @@ router.post('/manage_employee/:action', conManage_employee.setEmployee);
 
 router.get('/manage_buffet', conManage_buffet.getBuffet);
 router.post('/manage_buffet/:action', conManage_buffet.setBuffet);
-
 router.get('/buffet_detail', conManage_buffet.getBuffet_detail);
 router.post('/buffet_detail/:action', conManage_buffet.setBuffet_detail);
 
@@ -45,6 +44,10 @@ router.post('/manage_food/:action', conManage_food.setFood);
 
 router.get('/manage_material', conManage_material.getMaterial);
 router.post('/manage_material/:action', conManage_material.setMaterial);
+router.get('/material_detail', conManage_material.getMaterial_detail);
+router.post('/material_detail/:action', conManage_material.setMaterial_detail);
+// router.post('/material_detail/:action', conManage_material.setMaterial_detail);
+
 
 
 router.get('/manage_expense', conManage_expense.getExpense);
