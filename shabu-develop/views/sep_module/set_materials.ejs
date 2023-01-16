@@ -1,6 +1,73 @@
 
 
+<div class="container-fluid">
 
-<h1>รับวัตถุดิบเข้า</h1>
+    <div class="d-flex pt-2 justify-content-center ">
+        <h3 class="mt-1">รับวัตถุดิบเข้า : วันที่ <%= date_time %> </h3>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body">
+                <table id="employee" class="table table-bordered table-hover " >
+                    <thead>
+                        <tr>
+                            <th>รหัส</th>
+                            <th>ชื่อ</th>
+                            <th>รับเข้า</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let i of type_material){%>
+                            <tr>
+                                <td><%= i.ID%></td>
+                                <td><%= i.St_Name%></td>
+                                <td>
+                                    <p class="btn btn-success p-1 px-1 mr-1" onclick="detail('<%=i.ID%>','<%=i.St_Name%>')">
+                                         รับวัตถุดิบเข้า
+                                    </p>    
+                                </td>
+                            </tr>
+                        <%} %> 
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
 
+</div>
+
+<!-- =================== page Detail =================== -->
+<form id="detail" action="set_materials_detail" method="get" class="d-inline">
+    <input type="number" name="id_detail" class="d-none" value="">
+    <input type="text" name="material_detail" class="d-none" value="">
+</form>
+
+
+
+<script>
+
+    $(function () {
+      $('#employee').DataTable({
+        "paging": true,
+        "lengthMenu": [[5, 10, 20], [5, 10, 20]],
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+      
+    });
+
+    function detail(id,name){
+        $("input[name=id_detail]").val(parseInt(id))
+        $("input[name=material_detail]").val(name)
+        $("#detail").submit();
+    }
+        
+    
+  
+</script>

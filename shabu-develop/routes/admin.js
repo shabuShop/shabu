@@ -45,15 +45,20 @@ router.post('/manage_food/:action', conManage_food.setFood);
 router.get('/manage_material', conManage_material.getMaterial);
 router.post('/manage_material/:action', conManage_material.setMaterial);
 router.get('/material_detail', conManage_material.getMaterial_detail);
-router.post('/material_detail/:action', conManage_material.setMaterial_detail);
 // router.post('/material_detail/:action', conManage_material.setMaterial_detail);
 
 
 
 router.get('/manage_expense', conManage_expense.getExpense);
 
+
 // ====================== Route รับวัตถุดิบเข้า======================
 router.get('/set_materials', conSet_materials.getSet_materials);
+router.get('/set_materials_detail', conSet_materials.getSet_materials_detail);
+router.post('/set_materials_detail/:action', conSet_materials.setSet_materials_detail);
+
+
+
 
 // ====================== Route เปิดการขาย ======================
 router.get('/open_sale', conOpen_sale.getOpen_sale);

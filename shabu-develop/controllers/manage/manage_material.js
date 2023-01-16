@@ -64,7 +64,7 @@ exports.getMaterial_detail=async (req, res) => {
 };
 
 
-exports.setMaterial_detail =async (req, res) => {
+exports.setSet_materials_detail =async (req, res) => {
     if(req.session.role == "admin"){
         if(req.params.action === "add"){
             await data_manage.setMaterial_detail(req.body).then(()=>{});

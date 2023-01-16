@@ -5,11 +5,8 @@ exports.getMaterial = async function() {
     try {
         let sql = ` SELECT Stock_Card_List.[ID], Stock_Card_List.[St_Name]
                     FROM Stock_Card_List;
-            
                   `
-
         const con = await connection.query(sql);
-        
         return con;
     } catch (error) {
         console.log(error);
@@ -58,14 +55,24 @@ exports.getMaterial_detail = async function(data) {
                   `
 
         const con = await connection.query(sql);
-        console.log(con);
         return con;
     } catch (error) {
         console.log(error);
         return [];
     }
 }
-
+exports.getAll_Material_detail = async function() {
+    try {
+        let sql = ` SELECT Item_On_Stock.ID, Item_On_Stock.It_name, Count_Unit.Un_Name
+                    FROM Count_Unit INNER JOIN Item_On_Stock ON Count_Unit.[ID] = Item_On_Stock.[Un_ID];
+                  `
+        const con = await connection.query(sql);
+        return con;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+}
 
 
 exports.setMaterial_detail  = async function(data) {

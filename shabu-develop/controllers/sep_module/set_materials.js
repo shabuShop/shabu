@@ -1,11 +1,105 @@
-exports.getSet_materials = (req, res,next) => {
+const data_manage = require('../../models/sep_module/set_materials')
+const data_material = require('../../models/manage/manage_material')
+
+exports.getSet_materials =async (req, res,next) => {
     if(req.session.role){
+
+        // create now time
+        const date = new Date();
+        const [month, day, year] = [
+            date.getMonth()+1,
+            date.getDate(),
+            date.getFullYear(),
+        ];
+        const date_time = day+"/"+month+"/"+year;
+        // get หมวดหมู่
+        let type_material = await (data_material.getMaterial().then((data)=>{return data}));
+
+        /**
+         * [
+            { ID: 1, St_Name: 'เครื่องปรุง' },
+            { ID: 2, St_Name: 'เครื่องครัว' },
+            { ID: 4, St_Name: 'หน้าร้าน' }
+            ]
+            console.log(type_material);
+            console.log(material);
+         */
+
         res.render('template', {
             session_user_id:req.session.user_id,
             session_user:req.session.user,
             session_role:req.session.role,
+            type_material:type_material,
+            date_time:date_time,
             file:'sep_module/set_materials'
         });
+    }else{
+        res.redirect("/");
+    }
+};
+
+exports.getSet_materials_detail =async (req, res,next) => {
+    if(req.session.role){
+
+        // create now time
+        const date = new Date();
+        const [month, day, year] = [
+            date.getMonth()+1,
+            date.getDate(),
+            date.getFullYear(),
+        ];
+        const date_time = day+"/"+month+"/"+year;
+        let add_stock = await (data_manage.getAdd_stock({date_time:date_time,typeMaterial:req.query.id_detail}).then((data)=>{return data}));
+
+        let material = await (data_material.getMaterial_detail(req.query).then((data)=>{return data}));
+        let count_unit = await (data_material.getCount_unit().then((data)=>{return data}));
+        /**
+            ID: 1,
+            Item_On_Stock_ID: 28,
+            Item_amount: 10,
+            Item_all_price: 150,
+            Item_date: '2023-01-15T17:00:00Z',
+            Item_isDone: 0,
+            It_name: 'เกลือ',
+            Un_Name: 'ถุง'
+         */
+        /*{ ID: 28, It_name: 'เกลือ', Un_Name: 'ถุง' }, */
+        res.render('template', {
+            session_user_id:req.session.user_id,
+            session_user:req.session.user,
+            session_role:req.session.role,
+            add_stock:add_stock,
+            date_time:date_time,
+            material:material,
+            count_unit:count_unit,
+            material_name:req.query.material_detail,
+            material_ID:req.query.id_detail,
+            file:'sep_module/set_materials_detail'
+        });
+    }else{
+        res.redirect("/");
+    }
+};
+
+
+
+exports.setSet_materials_detail =async (req, res) => {
+    if(req.session.role){
+        if(req.params.action === "add"){
+
+            await data_manage.setAdd_stock(req.body).then(()=>{});
+            res.redirect(`/admin/set_materials_detail?id_detail=${req.body.id_detail}&material_detail=${req.body.material_detail}`);
+
+        }else if(req.params.action === "delete"){
+
+            await data_manage.deleteAdd_stock(req.body).then(()=>{});
+            res.redirect(`/admin/set_materials_detail?id_detail=${req.body.id_detail}&material_detail=${req.body.material_detail}`);
+
+        }else if(req.params.action === "update"){
+            await data_manage.updateAdd_stock(req.body).then(()=>{});
+
+            res.redirect(`/admin/set_materials_detail?id_detail=${req.body.id_detail}&material_detail=${req.body.material_detail}`);
+        }
     }else{
         res.redirect("/");
     }

@@ -1,0 +1,291 @@
+
+<div class="container-fluid">
+
+    
+    <div class="d-flex pt-2 justify-content-center">
+        <h3>รับวัตถุดิบเข้า : <%= material_name %>  วันที่ <%= date_time %> </h3>
+    </div>
+    <div class="d-flex  justify-content-start mb-1">
+        <button  type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add" onclick="">
+            รับวัตถุดิบเข้า
+        </button>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body">
+                
+                <table id="employee" class="table table-bordered table-hover " >
+                    <thead>
+                        <tr>
+                            <th>รหัสวัตถุดิบ</th>
+                            <th>ชื่อวัตถุดิบ</th>
+                            <th>หน่วยนับ</th>
+                            <th>จำนวน</th>
+                            <th>ราคา</th>
+                            <th>สถานะ</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let i of add_stock){%>
+                            <tr>
+                                <td><%= i.Item_On_Stock_ID%></td>
+                                <td><%= i.It_name%></td>
+                                <td><%= i.Un_Name%></td>
+                                <td><%= i.Item_amount%></td>
+                                <td><%= i.Item_all_price%></td>
+                                <td>
+                                    <% if(i.Item_isDone === 0){%>
+                                        ยังไม่ได้ตัดสต็อก
+                                    <%}else{%>
+                                        ตัดสต็อกเเล้ว
+                                    <%} %>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <p class="btn btn-warning p-1 px-1 mr-1" data-toggle="modal" data-target="#modal-update"onclick="update('<%= Object.values(i) %>') ">แก้
+                                        </p>
+                                        <p class="btn btn-danger p-1 px-1 " onclick="del('<%=i.ID%>')" >ลบ</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        <%} %> 
+                        
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<!-- =================== Modal Add ===================-->
+<div class="modal fade" id="modal-add">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-purple">
+          <h4 class="modal-title ">ใส่วัตถุดิบ</h4>
+          <button type="button " class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-light">&times;</span>
+          </button>
+        </div>
+        <form action="set_materials_detail/add" method="post">
+            <div class="modal-body">
+            <!-- ============================== Form ==============================-->
+                <div class="form-group">
+                    <blockquote id="alert" class="quote-danger m-0">
+                        <h3>! กรุณาใส่ข้อมูลให้ครบ</h3>
+                    </blockquote>
+                </div>
+
+                <div class="form-group">
+                    <label>วันที่</label>
+                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" name="date" value="<%=date_time%>" readonly>
+                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label >วัตถุดิบ</label>
+                    <select class="form-control" name="material" >
+                        <% for(i of material){%> 
+                            <option value="<%=i.ID%>"><%=i.It_name%></option>
+                        <%} %> 
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label >จำนวน</label>
+                    <input type="number" class="form-control" name="amount">
+                </div>
+
+                <div class="form-group">
+                    <label >ราคา</label>
+                    <input type="number" class="form-control" name="price">
+                </div>
+
+
+                <input type="number" name="id_detail" class="d-none" value="<%=material_ID%>">
+                <input type="text" name="material_detail" class="d-none" value="<%=material_name%>">
+
+            </div>
+            
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" onclick="return vali('add')">Save changes</button>
+            </div>
+
+        </form>
+
+      </div>
+    </div>
+</div>
+
+
+
+<!-- =================== Modal Update ===================-->
+<div class="modal fade" id="modal-update">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-purple">
+          <h4 class="modal-title ">อัปเดตข้อมูลบุฟเฟ่ต์</h4>
+          <button type="button " class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-light">&times;</span>
+          </button>
+        </div>
+
+        <form action="set_materials_detail/update" method="post">
+            <div class="modal-body">
+            <!-- ============================== Form ==============================-->
+            
+                <div class="form-group">
+                    <blockquote id="Ualert" class="quote-danger m-0">
+                        <h3>! กรุณาใส่ข้อมูลให้ครบ</h3>
+                    </blockquote>
+                </div>
+
+                
+                <div class="form-group">
+                    <label>วันที่</label>
+                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" name="date" value="<%=date_time%>" readonly>
+                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label >วัตถุดิบ</label>
+                    <select class="form-control" name="Umaterial" >
+                        <% for(i of material){%> 
+                            <option id="<%=i.It_name%>" value="<%=i.ID%>"><%=i.It_name%></option>
+                        <%} %> 
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label >จำนวน</label>
+                    <input type="number" class="form-control" name="Uamount">
+                </div>
+
+                <div class="form-group">
+                    <label >ราคา</label>
+                    <input type="number" class="form-control" name="Uprice">
+                </div>
+
+                <input type="number" name="id_update" class="d-none" value="">
+                <input type="number" name="id_detail" class="d-none" value="<%=material_ID%>">
+                <input type="text" name="material_detail" class="d-none" value="<%=material_name%>">
+
+
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" onclick="return vali('update')">Save changes</button>
+            </div>
+
+        </form>
+
+      </div>
+    </div>
+</div>
+
+<!-- =================== delete =================== -->
+<form id="delete" action="set_materials_detail/delete" method="post" class="d-inline">
+    <input type="number" name="id_del" class="d-none" value="">
+    <input type="number" name="id_detail" class="d-none" value="<%=material_ID%>">
+    <input type="text" name="material_detail" class="d-none" value="<%=material_name%>">
+</form>
+
+<script>
+    $(function () {
+      $('#employee').DataTable({
+        "paging": true,
+        "lengthMenu": [[5, 10, 20], [5, 10, 20]],
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+    // init
+    $("#alert").addClass("d-none")
+    $("#Ualert").addClass("d-none")
+
+    function add(){
+        $("#alert").addClass("d-none")
+    }
+
+    let oldOp ="";
+    function update(data){
+           
+        data = data.split(",");
+        // console.log(data);
+      
+        $("input[name=Uamount]").val(data[2])
+        $("input[name=Uprice]").val(data[3])
+        $("input[name=id_update]").val(data[0])
+
+        $(`option[id=${data[6]}]`).attr("selected","true");
+
+        if(oldOp != data[6]){
+            if(oldOp != ""){
+                $(`option[id=${oldOp}]`).removeAttr("selected");
+            }
+            oldOp = data[6];
+        }
+        
+        $("#Ualert").addClass("d-none")
+
+    }
+    function del(id){
+        $("input[name=id_del]").val(parseInt(id))
+        if(confirm("ยืนการลบข้อมูล") == true){
+            $("#delete").submit();
+        }
+    }
+    function detail(id,name){
+        $("input[name=id_detail]").val(parseInt(id))
+        $("input[name=material_detail]").val(name)
+        $("#detail").submit();
+    }
+
+    function vali(mode){
+        if(mode === "add"){
+            let amount = ($("input[name=amount]").val()).trim() === "";
+            let price = ($("input[name=price]").val()).trim() === "";
+            if( !amount && !price  ){
+                return true;
+            }else{
+    
+                $("#alert").removeClass("d-none")
+                return false;
+            }
+        }else if(mode === "update"){
+            let amount = ($("input[name=Uamount]").val()).trim() === "";
+            let price = ($("input[name=Uprice]").val()).trim() === "";
+            if( !amount && !price  ){
+                return true;
+            }else{
+                $("#Ualert").removeClass("d-none")
+                return false;
+            }
+        }
+        
+    }
+  
+</script>
