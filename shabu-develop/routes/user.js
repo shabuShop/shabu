@@ -14,6 +14,9 @@ router.get('/', user.getEmployee);
 
 // ====================== Route รับวัตถุดิบเข้า======================
 router.get('/set_materials', conSet_materials.getSet_materials);
+router.get('/set_materials_detail', conSet_materials.getSet_materials_detail);
+router.post('/set_materials_detail/:action', conSet_materials.setSet_materials_detail);
+
 
 // ====================== Route การขาย ======================
 router.get('/sale', conSale.getSale);

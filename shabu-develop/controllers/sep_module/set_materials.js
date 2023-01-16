@@ -14,17 +14,6 @@ exports.getSet_materials =async (req, res,next) => {
         const date_time = day+"/"+month+"/"+year;
         // get หมวดหมู่
         let type_material = await (data_material.getMaterial().then((data)=>{return data}));
-
-        /**
-         * [
-            { ID: 1, St_Name: 'เครื่องปรุง' },
-            { ID: 2, St_Name: 'เครื่องครัว' },
-            { ID: 4, St_Name: 'หน้าร้าน' }
-            ]
-            console.log(type_material);
-            console.log(material);
-         */
-
         res.render('template', {
             session_user_id:req.session.user_id,
             session_user:req.session.user,
@@ -85,20 +74,21 @@ exports.getSet_materials_detail =async (req, res,next) => {
 
 exports.setSet_materials_detail =async (req, res) => {
     if(req.session.role){
+        let role = req.session.role ;
         if(req.params.action === "add"){
 
             await data_manage.setAdd_stock(req.body).then(()=>{});
-            res.redirect(`/admin/set_materials_detail?id_detail=${req.body.id_detail}&material_detail=${req.body.material_detail}`);
+            res.redirect(`/${role}/set_materials_detail?id_detail=${req.body.id_detail}&material_detail=${req.body.material_detail}`);
 
         }else if(req.params.action === "delete"){
 
             await data_manage.deleteAdd_stock(req.body).then(()=>{});
-            res.redirect(`/admin/set_materials_detail?id_detail=${req.body.id_detail}&material_detail=${req.body.material_detail}`);
+            res.redirect(`/${role}/set_materials_detail?id_detail=${req.body.id_detail}&material_detail=${req.body.material_detail}`);
 
         }else if(req.params.action === "update"){
             await data_manage.updateAdd_stock(req.body).then(()=>{});
 
-            res.redirect(`/admin/set_materials_detail?id_detail=${req.body.id_detail}&material_detail=${req.body.material_detail}`);
+            res.redirect(`/${role}/set_materials_detail?id_detail=${req.body.id_detail}&material_detail=${req.body.material_detail}`);
         }
     }else{
         res.redirect("/");
