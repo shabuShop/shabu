@@ -50,6 +50,7 @@ router.get('/material_detail', conManage_material.getMaterial_detail);
 
 
 router.get('/manage_expense', conManage_expense.getExpense);
+router.post('/manage_expense/:action', conManage_expense.setExpense);
 
 
 // ====================== Route รับวัตถุดิบเข้า======================

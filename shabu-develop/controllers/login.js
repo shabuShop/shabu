@@ -12,7 +12,7 @@ exports.getLogin = (req, res) => {
     // test
     // req.session.user_id = "test";
     // req.session.user = "admin";
-    // req.session.role = "user";
+    // req.session.role = "admin";
     
     if(req.session.user_id){
         res.redirect("/"+req.session.role);

@@ -58,3 +58,19 @@ exports.updateData_Employee = async function(data) {
         console.log(error);
     }
 }
+
+
+
+
+exports.getEmployee_admin = async function() {
+    try {
+        let sql = ` SELECT Employee.ID AS Employee_ID, Employee.Emp_Fname, Position_data.ID AS Position_data_ID
+                    FROM Position_data INNER JOIN Employee ON Position_data.[ID] = Employee.[Position_ID] where Position_data.[ID] = 1 ;
+                    `
+        const data = await connection.query(sql);
+        return data;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+}

@@ -1,7 +1,279 @@
 
 
 
+<div class="container-fluid">
 
-<h1>manage รายจ่าย</h1>
+    
+    <div class="d-flex pt-2 justify-content-center">
+        <h3>จัดการค่าใช้จ่าย</h3>
+        
+    </div>
+    <div class="d-flex  justify-content-start mb-1">
+        <button  type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add" onclick="add()">
+            เพิ่มค่าใช้จ่าย
+        </button>
+    </div>
 
 
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body">
+                
+                <table id="employee" class="table table-bordered table-hover " >
+                    <thead>
+                        <tr>
+                            <th>เลบที่ใบเสร็จ</th>
+                            <th>วันที่</th>
+                            <th>ชื่อรายการ</th>
+                            <th>จำนวนเงิน</th>
+                            <th>ชื่อผู้จ่าย</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let i of expense){%>
+                            <tr>
+                                <td><%= i.ID%></td>
+                                <td><%= i.Exp_Date%></td>
+                                <td><%= i.Exp_Name%></td>
+                                <td><%= i.Exp_Money%></td>
+                                <td><%= i.Emp_Fname%></td>
+                                
+                                <td>
+                                    <div class="d-flex">
+                                        <p class="btn btn-warning p-1 px-1 mr-1" data-toggle="modal" data-target="#modal-update"onclick="update('<%= Object.values(i) %>') ">แก้
+                                        </p>
+                                        <p class="btn btn-danger p-1 px-1 " onclick="del('<%=i.ID%>')" >ลบ</p>
+                                    </div>
+                                </td>
+                                
+                            </tr>
+                        <%} %> 
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- =================== Modal Add ===================-->
+<div class="modal fade" id="modal-add">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-purple">
+          <h4 class="modal-title ">เพิ่มค่าใช้จ่าย</h4>
+          <button type="button " class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-light">&times;</span>
+          </button>
+        </div>
+        <form action="manage_expense/add" method="post">
+            <div class="modal-body">
+            <!-- ============================== Form ==============================-->
+                <div class="form-group">
+                    <blockquote id="alert" class="quote-danger m-0">
+                        <h3>! กรุณาใส่ข้อมูลให้ครบ</h3>
+                    </blockquote>
+                </div>
+                
+                <div class="form-group">
+                    <label>วันที่</label>
+                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" name="date" value="<%=date_time%>" readonly>
+                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label >ชื่อรายการ</label>
+                    <input type="text" class="form-control" name="name_exp">
+                </div>
+
+                <div class="form-group">
+                    <label >จำนวนเงิน</label>
+                    <input type="number" class="form-control" name="money_exp">
+                </div>
+
+                <div class="form-group">
+                    <label >ชื่อผู้จ่าย</label>
+                    <select class="form-control" name="type" >
+                        <% for(i of employee){%> 
+                            <option value="<%=i.Employee_ID%>"><%=i.Emp_Fname%></option>
+                        <%} %> 
+                    </select>
+                </div>
+
+            </div>
+            
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" onclick="return vali('add')">Save changes</button>
+            </div>
+
+        </form>
+
+      </div>
+    </div>
+</div>
+
+
+
+<!-- =================== Modal Update ===================-->
+<div class="modal fade" id="modal-update">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-purple">
+          <h4 class="modal-title ">อัปเดตข้อมูลพนักงาน</h4>
+          <button type="button " class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="text-light">&times;</span>
+          </button>
+        </div>
+
+        <form action="manage_expense/update" method="post">
+            <div class="modal-body">
+            <!-- ============================== Form ==============================-->
+            
+                <div class="form-group">
+                    <blockquote id="Ualert" class="quote-danger m-0">
+                        <h3>! กรุณาใส่ข้อมูลให้ครบ</h3>
+                    </blockquote>
+                </div>
+
+                
+                <div class="form-group">
+                    <label>วันที่</label>
+                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" name="date" value="<%=date_time%>" readonly>
+                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label >ชื่อรายการ</label>
+                    <input type="text" class="form-control" name="Uname_exp">
+                </div>
+
+                <div class="form-group">
+                    <label >จำนวนเงิน</label>
+                    <input type="number" class="form-control" name="Umoney_exp">
+                </div>
+
+
+                <div class="form-group">
+                    <label >ชื่อผู้จ่าย</label>
+                    <select class="form-control" name="Utype" >
+                        <% for(i of employee){%> 
+                            <option id="<%=i.Emp_Fname%>" value="<%=i.Employee_ID%>"><%=i.Emp_Fname%></option>
+                        <%} %> 
+                    </select>
+                </div>
+
+                <input type="number" name="id_update" class="d-none" value="">
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" onclick="return vali('update')">Save changes</button>
+            </div>
+
+        </form>
+
+      </div>
+    </div>
+</div>
+
+
+
+<form id="delete" action="manage_expense/delete" method="post" class="d-inline">
+    <input type="number" name="id_del" class="d-none" value="">
+</form>
+
+
+
+<script>
+
+    $(function () {
+      $('#employee').DataTable({
+        "paging": true,
+        "lengthMenu": [[5, 10, 20], [5, 10, 20]],
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+      
+    });
+
+    // init
+    $("#alert").addClass("d-none")
+    $("#Ualert").addClass("d-none")
+
+    function add(){
+        $("#alert").addClass("d-none")
+    }
+
+    let oldOp ="";
+    function update(data){
+        // ['1', '17/1/2023', 'ค่าน้ำ', '3000', '38', 'ภูริกรณ์']
+        data = data.split(",");
+        $("input[name=id_update]").val(data[0])
+        $("input[name=date]").val(data[1]);
+        $("input[name=Uname_exp]").val(data[2]);
+        $("input[name=Umoney_exp]").val(data[3]);
+        
+        // Utype
+        
+
+
+        $(`option[id=${data[5]}]`).attr("selected","true");
+        if(oldOp !== data[5]){
+            if(oldOp != ""){
+                $(`option[id=${oldOp}]`).removeAttr("selected");
+            }
+            oldOp = data[5];
+        }
+        
+
+        $("#Ualert").addClass("d-none")
+
+    }
+    function del(id){
+        $("input[name=id_del]").val(parseInt(id))
+        if(confirm("ยืนการลบข้อมูล") == true){
+            $("#delete").submit();
+        }
+    }
+
+    function vali(mode){
+        if(mode === "add"){
+            let money_exp = ($("input[name=money_exp]").val()).trim() === ""
+            let name_exp = ($("input[name=name_exp]").val()).trim() === ""
+
+            if( !money_exp && !name_exp ){
+                return true;
+            }else{
+    
+                $("#alert").removeClass("d-none")
+                return false;
+            }
+        }else if(mode === "update"){
+            let money_exp = ($("input[name=Umoney_exp]").val()).trim() === ""
+            let name_exp = ($("input[name=Uname_exp]").val()).trim() === ""
+            if( !money_exp && !name_exp ){
+                return true;
+            }else{
+    
+                $("#Ualert").removeClass("d-none")
+                return false;
+            }
+        }
+        
+    }
+  
+</script>
