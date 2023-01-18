@@ -39,6 +39,8 @@ exports.setMaterial =async (req, res) => {
     }
 };
 
+
+
 exports.getMaterial_detail=async (req, res) => {
     if(req.session.role == "admin"){
 
@@ -69,7 +71,7 @@ exports.setSet_materials_detail =async (req, res) => {
         if(req.params.action === "add"){
             await data_manage.setMaterial_detail(req.body).then(()=>{});
             let maxID = await data_manage.getMaterial_detail_max_id().then((data)=>{return data});
-            await data_manage.setMaterial_amount({id:maxID}).then(()=>{});
+            await data_manage.setMaterial_amount({id:maxID,amount:0}).then(()=>{});
 
             res.redirect(`/admin/material_detail?id_detail=${req.body.id_material}&material_detail=${req.body.name_material}`);
 

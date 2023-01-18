@@ -31,25 +31,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% for(let i of expense){%>
-                            <tr>
-                                <td><%= i.ID%></td>
-                                <td><%= i.Exp_Date%></td>
-                                <td><%= i.Exp_Name%></td>
-                                <td><%= i.Exp_Money%></td>
-                                <td><%= i.Emp_Fname%></td>
-                                
-                                <td>
-                                    <div class="d-flex">
-                                        <p class="btn btn-warning p-1 px-1 mr-1" data-toggle="modal" data-target="#modal-update"onclick="update('<%= Object.values(i) %>') ">แก้
-                                        </p>
-                                        <p class="btn btn-danger p-1 px-1 " onclick="del('<%=i.ID%>')" >ลบ</p>
-                                    </div>
-                                </td>
-                                
-                            </tr>
-                        <%} %> 
-                        
+
+                            <% for(let i of expense){%>
+
+                                <tr>
+
+                                    <td><%= i.ID%></td>
+                                    <td><%= i.Exp_Date%></td>
+                                    <td><%= i.Exp_Name%></td>
+                                    <td><%= i.Exp_Money%></td>
+                                    <td><%=i.Emp_Fname%> <%=i.Emp_Lname%></td>
+                                    
+                                    <td>
+                                        <div class="d-flex">
+                                            <p class="btn btn-warning p-1 px-1 mr-1" data-toggle="modal" data-target="#modal-update"onclick="update('<%= Object.values(i) %>') ">แก้
+                                            </p>
+                                            <p class="btn btn-danger p-1 px-1 " onclick="del('<%=i.ID%>')" >ลบ</p>
+                                        </div>
+                                    </td>
+                                    
+                                </tr>
+
+                               
+                            <%} %> 
                     </tbody>
                 </table>
             </div>
@@ -101,7 +105,7 @@
                     <label >ชื่อผู้จ่าย</label>
                     <select class="form-control" name="type" >
                         <% for(i of employee){%> 
-                            <option value="<%=i.Employee_ID%>"><%=i.Emp_Fname%></option>
+                            <option value="<%=i.Employee_ID%>"><%=i.Emp_Fname%> <%=i.Emp_Lname%></option>
                         <%} %> 
                     </select>
                 </div>
@@ -168,7 +172,7 @@
                     <label >ชื่อผู้จ่าย</label>
                     <select class="form-control" name="Utype" >
                         <% for(i of employee){%> 
-                            <option id="<%=i.Emp_Fname%>" value="<%=i.Employee_ID%>"><%=i.Emp_Fname%></option>
+                            <option id="<%=i.Emp_Fname%>" value="<%=i.Employee_ID%>"><%=i.Emp_Fname%> <%=i.Emp_Lname%></option>
                         <%} %> 
                     </select>
                 </div>

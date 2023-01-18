@@ -1,5 +1,6 @@
 const data_manage = require('../../models/sep_module/set_materials')
 const data_material = require('../../models/manage/manage_material')
+const data_stock = require('../../models/sep_module/stock')
 
 exports.getSet_materials =async (req, res,next) => {
     if(req.session.role){
@@ -12,6 +13,9 @@ exports.getSet_materials =async (req, res,next) => {
             date.getFullYear(),
         ];
         const date_time = day+"/"+month+"/"+year;
+
+        let done_stock = await (data_stock.GetMaterial_stock_date({date_time:date_time}).then((data)=>{return data}));
+
         // get หมวดหมู่
         let type_material = await (data_material.getMaterial().then((data)=>{return data}));
         res.render('template', {
@@ -20,6 +24,7 @@ exports.getSet_materials =async (req, res,next) => {
             session_role:req.session.role,
             type_material:type_material,
             date_time:date_time,
+            done_stock:done_stock,
             file:'sep_module/set_materials'
         });
     }else{
@@ -38,6 +43,16 @@ exports.getSet_materials_detail =async (req, res,next) => {
             date.getFullYear(),
         ];
         const date_time = day+"/"+month+"/"+year;
+
+        // ===================================== vailidation stock =====================================
+        let done_stock = await (data_stock.GetMaterial_stock_date({date_time:date_time}).then((data)=>{return data}));
+        if( done_stock.indexOf(parseInt(req.query.id_detail)) >= 0 ){
+            res.redirect("/");
+            return ;
+        }
+        // ===================================== vailidation stock =====================================
+ 
+
         let add_stock = await (data_manage.getAdd_stock({date_time:date_time,typeMaterial:req.query.id_detail}).then((data)=>{return data}));
 
         let material = await (data_material.getMaterial_detail(req.query).then((data)=>{return data}));

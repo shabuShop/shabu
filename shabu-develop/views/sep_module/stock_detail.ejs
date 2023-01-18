@@ -1,0 +1,174 @@
+
+
+
+<div class="container-fluid">
+
+    <div class="d-flex pt-2 justify-content-center ">
+        <h3 class="mt-1">สต๊อกของ : วันที่ <%= date_time %> </h3>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body">
+                <table id="employee" class="table table-bordered table-hover " >
+                    <thead>
+                        <tr>
+                            <th>รหัส</th>
+                            <th>ชื่อวัตถุดิบ</th>
+                            <th>หน่วยนับ</th>
+                            <th>มีอยู่</th>
+                            <th>รับเข้า</th>
+                            <th>ใช้ไป</th>
+                            <th>คงเหลือ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            <% for(let i of material){%>
+                                <tr>
+                                    <td><%= i.ID%></td>
+                                    <td><%= i.It_name%></td>
+                                    <td><%= i.Un_Name%></td>
+                                    <td><%= i.Item_Amount%></td>
+
+                                    <% 
+                                        let isMatch = false; 
+                                        let value = 0; 
+                                        for(let x of add_stock ){
+                                            if( i.ID === x.Item_On_Stock_ID){
+                                                value = x.Item_amount;
+                                                isMatch = true;
+                                                break;
+                                            }
+                                        } 
+                                    %> 
+
+                                    <% if(isMatch === true){%>
+                                        <td><%= value %></td>
+                                    <%}else{%>
+                                        <td>0</td>
+                                    <%} %> 
+                                    <td>
+                                        <input type="number" name="U<%=i.ID%>" onchange="in_change('<%=i.Item_Amount%>','<%=value%>','U<%=i.ID%>','R<%=i.ID%>','<%=i.ID%>')" 
+                                        placeholder="กรอกจำนวน และ กดEnter">
+                                    </td>
+                                    <td id="R<%=i.ID%>"><%= value + i.Item_Amount %></td>
+                                </tr>
+                            <%} %> 
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+</div>
+
+
+
+
+<div class="container-fluid">
+
+    <form id="stock_add" action="stock_detail/add" method="post">
+        <% for(let i of material){%>
+                <% 
+                    let isMatch = false; 
+                    let value = 0; 
+                    for(let x of add_stock ){
+                        if( i.ID === x.Item_On_Stock_ID){
+                            value = x.Item_amount;
+                            break;
+                        }
+                    } 
+                %> 
+
+            <!-- for input form -->
+            <input type="text" name="ID<%=i.ID%>" value="<%=i.ID%>" class="d-none">
+            <input type="text" name="ID<%=i.ID%>" value="<%=i.Item_Amount%>" class="d-none">
+            <input type="text" name="ID<%=i.ID%>" value="<%=value%>" class="d-none">
+
+            <!-- Have to add value when input have change -->
+            <input type="text" id="US<%=i.ID%>" name="ID<%=i.ID%>" value="0" class="d-none">
+            <input type="text" id="RM<%=i.ID%>" name="ID<%=i.ID%>" value="0" class="d-none">
+
+        <%} %> 
+        <input type="text"  name="date" value="<%= date_time %>" class="d-none">
+        <input type="text"  name="material_ID" value="<%= material_ID %>" class="d-none">
+        
+        <div class="card card-body w-25 mb-4">
+
+            <div class="form-group">
+                <blockquote id="alert" class="quote-danger m-0">
+                    <h3>! กรุณาใส่ข้อมูลให้ครบ</h3>
+                </blockquote>
+            </div>
+
+            <div class="form-group">
+                <label >ชื่อผู้ตัดสต๊อก</label>
+                <select class="form-control" name="emp_id" >
+                    <% for(i of employee){%> 
+                        <option id="<%=i.Emp_Fname%>" value="<%=i.Employee_ID%>" >  <%=i.Emp_Fname%> <%=i.Emp_Lname%></option>
+                    <%} %> 
+                </select>
+            </div>
+
+            <button  type="button" class="btn btn-success"  onclick="to_sumit()">
+                ยืนยันการสต๊อก
+            </button>
+        </div>
+    </form>
+
+</div>
+
+
+
+
+
+<script>
+    $("#alert").addClass("d-none")
+
+    $(function () {
+      $('#employee').DataTable({
+    //     scrollY: '500px',
+    //     // scrollCollapse: true,
+        paging: false,
+      });
+    });
+   
+   function in_change(...data){
+        console.log(data);
+        let m_now = parseInt(data[0]);
+        let m_add = parseInt(data[1]);
+        let m_use = parseInt($(`input[name=${data[2]}]`).val()) || 0;
+        let m_remain = ( m_now + m_add ) - m_use;
+
+        $(`td[id=${data[3]}]`).text(m_remain);
+
+
+        $(`input[id=US${data[4]}]`).val(m_use);
+        $(`input[id=RM${data[4]}]`).val(m_remain);
+        // console.log("Remain : ",m_remain);
+   }
+
+   function to_sumit(){
+        let vail =document.querySelectorAll("input[type=number]");
+        let state = true;
+        for(let i of vail){
+            if( i.value.trim() === ""){
+                state = false;
+                break;
+            }
+        }
+        if( state === true && confirm("ยืนยันการสต๊อก") === true ){
+            document.getElementById("stock_add").submit();
+        }else if( state === false ) {
+            $("#alert").removeClass("d-none")
+        }
+    // <input type="number"
+        // 
+   }
+</script>

@@ -130,7 +130,7 @@ exports.setMaterial_amount  = async function(data) {
     try {
 
         let sql = ` INSERT  INTO Item_Amount ( Item_On_Stock_ID, Item_Amount ) 
-                    VALUES(${data.id}, 0);
+                    VALUES(${data.id}, ${data.amount});
                   `
         const con = await connection.execute(sql);
     } catch (error) {
@@ -140,6 +140,17 @@ exports.setMaterial_amount  = async function(data) {
 exports.deleteMaterial_amount = async function(data) {
     try {
         let sql = ` DELETE FROM Item_Amount  WHERE Item_Amount.Item_On_Stock_ID = ${data.id_del};
+                  `
+        const con = await connection.execute(sql);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.updateMaterial_amount  = async function(data) {
+    try {
+        console.log(data);
+        let sql = ` UPDATE   Item_Amount  SET Item_Amount = ${data.amount} where Item_On_Stock_ID = ${data.id};
                   `
         const con = await connection.execute(sql);
     } catch (error) {
