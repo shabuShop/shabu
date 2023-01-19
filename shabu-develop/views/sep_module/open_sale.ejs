@@ -1,6 +1,148 @@
 
 
 
-<h1>เปิด/ปิดการขาย</h1>
+
+<div class="d-flex pt-2 justify-content-center ">
+        <div class="d-flex pt-2 justify-content-center ">
+            <h3 class="mt-1">เปิด/ปิดการขาย : <%=date_time%> </h3><br>
+        </div>
+</div>
 
 
+<% if( open_sale.length <= 0 ){%> 
+    
+    <div class="container d-flex justify-content-center" >
+        <div class="card card-success w-75 ">
+            <div class="card-header">
+            <h3 class="card-title">เปิดการขาย</h3>
+            </div>
+            <form action="/admin/open_sale/open" method="post">
+                <div class="card-body">
+                    <div class="form-group">
+                        <blockquote id="alertOpen" class="quote-danger m-0">
+                            <h3>! กรุณาใส่ข้อมูลให้ครบ</h3>
+                        </blockquote>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="">ใส่จำนวนเงินทอน</label>
+                        <input type="number" class="form-control" name="open_n" >
+                    </div>
+                </div>
+                <div class="card-footer ">
+                    <button type="submit" class="btn btn-success float-right" onclick="return vali('open')">ยืนยัน</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<% }else{%> 
+
+    <% if(open_sale[0].Os_status === 1 ){%>
+
+        <div class="container d-flex justify-content-center" >
+            <div class="card card-warning w-75 ">
+                <div class="card-header">
+                  <h3 class="card-title">ปิดการขาย</h3>
+                </div>
+                <form action="/admin/open_sale/close" method="post">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <blockquote id="alertClose" class="quote-danger m-0">
+                                <h3>! กรุณาใส่ข้อมูลให้ครบ</h3>
+                            </blockquote>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="">ใส่จำนวนเงินทอน</label>
+                            <input type="number" class="form-control" name="close_n" >
+                        </div>
+                    </div>
+                    <div class="card-footer ">
+                        <button type="submit" class="btn btn-warning float-right" onclick="return vali('close')">ยืนยัน</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    <% }else{%>
+        <div class="container d-flex justify-content-center" >
+            <div class="card card-info w-75 ">
+                <div class="card-header">
+                  <h3 class="card-title">สรุปการขาย : <%= date_time %></h3>
+                </div>
+                <div class="card-body"> 
+                        <table class="table table-sm">
+                            <tr>
+                                <th>เวลาเปิดร้าน</th>
+                                <th>จำนวนเงินทอน</th>
+                            </tr>
+                            <tbody>
+                                <tr>
+                                    <td><%= open_sale[0].Os_date_time_open %></td>
+                                    <td><%= open_sale[0].Os_money_open %></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    
+                </div>
+                <div class="card-body">     
+                    <table class="table table-sm">
+                        <tr>
+                            <th>เวลาปิดร้าน</th>
+                            <th>จำนวนเงินทอน</th>
+                        </tr>
+                        <tbody>
+                            <tr>
+                                <td><%= open_sale[0].Os_date_time_close %></td>
+                                <td><%= open_sale[0].Os_money_close %></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    <% } %> 
+   
+<% } %> 
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+$("#alertOpen").addClass("d-none")
+$("#alertClose").addClass("d-none")
+
+function vali(mode){
+    if(mode === "open"){
+        let open_n = ($("input[name=open_n]").val()).trim() === "";
+        if( !open_n ){
+            return confirm("ยืนยันเปิดการขาย");
+        }else{
+            $("#alertOpen").removeClass("d-none")
+            return false;
+        }
+    }else if(mode === "close"){
+        let close_n = ($("input[name=close_n]").val()).trim() === "";
+        if( !close_n ){
+            return confirm("ยืนยันปิดการขาย");
+        }else{
+            $("#alertClose").removeClass("d-none")
+            return false;
+        }
+    }
+
+        
+}
+</script>

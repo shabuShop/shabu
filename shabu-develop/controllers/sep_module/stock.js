@@ -3,28 +3,23 @@ const data_set_material = require('../../models/sep_module/set_materials')
 const data_employ = require('../../models/manage/manage_employee')
 const data_stock = require('../../models/sep_module/stock')
 
+const getDate = require('../../config/getDate');
+
 
 exports.getStock =async (req, res,next) => {
     if(req.session.role == "admin"){
-        // create now time
-        const date = new Date();
-        const [month, day, year] = [
-            date.getMonth()+1,
-            date.getDate(),
-            date.getFullYear(),
-        ];
-        const date_time = day+"/"+month+"/"+year;
+
         // get หมวดหมู่
         let type_material = await (data_material.getMaterial().then((data)=>{return data}));
         
-        let done_stock = await (data_stock.GetMaterial_stock_date({date_time:date_time}).then((data)=>{return data}));
+        let done_stock = await (data_stock.GetMaterial_stock_date({date_time:getDate.date}).then((data)=>{return data}));
 
         res.render('template', {
             session_user_id:req.session.user_id,
             session_user:req.session.user,
             session_role:req.session.role,
             type_material:type_material,
-            date_time:date_time,
+            date_time:getDate.date,
             done_stock:done_stock,
             file:'sep_module/stock'
         });
@@ -37,18 +32,8 @@ exports.getStock_detail =async (req, res,next) => {
     console.log();
     if(req.session.role === "admin"){
 
-        // create now time
-       
-        const date = new Date();
-        const [month, day, year] = [
-            date.getMonth()+1,
-            date.getDate(),
-            date.getFullYear(),
-        ];
-        const date_time = day+"/"+month+"/"+year;
-
         // ===================================== vailidation stock =====================================
-        let done_stock = await (data_stock.GetMaterial_stock_date({date_time:date_time}).then((data)=>{return data}));
+        let done_stock = await (data_stock.GetMaterial_stock_date({date_time:getDate.date}).then((data)=>{return data}));
         if( done_stock.indexOf(parseInt(req.query.id_detail)) >= 0 ){
             res.redirect("/");
             return ;
@@ -58,7 +43,7 @@ exports.getStock_detail =async (req, res,next) => {
 
         let material = await (data_material.getMaterial_detail(req.query).then((data)=>{return data}));
         // { ID: 28, It_name: 'เกลือ', Un_Name: 'ถุง', Item_Amount: 0 },
-        let add_stock = await (data_set_material.getAdd_stock({date_time:date_time,typeMaterial:req.query.id_detail}).then((data)=>{return data}));
+        let add_stock = await (data_set_material.getAdd_stock({date_time:getDate.date,typeMaterial:req.query.id_detail}).then((data)=>{return data}));
         /**
          * {
                 ID: 20,
@@ -78,7 +63,7 @@ exports.getStock_detail =async (req, res,next) => {
             session_user_id:req.session.user_id,
             session_user:req.session.user,
             session_role:req.session.role,
-            date_time:date_time,
+            date_time:getDate.date,
             material:material,
             material_name:req.query.material_detail,
             material_ID:req.query.id_detail,
@@ -122,6 +107,47 @@ exports.setStock_detail =async (req, res) => {
             res.redirect("/admin/stock");
            
         }
+    }else{
+        res.redirect("/");
+    }
+};
+
+
+exports.getStock_summary =async (req, res,next) => {
+    if(req.session.role == "admin"){
+
+        // get หมวดหมู่
+        let type_material = await (data_material.getMaterial().then((data)=>{return data}));
+
+
+ 
+        if( req.query.date != "" ){
+            // select time 
+            let get_stock = await (data_stock.getStock_date({date_time:req.query.date}).then((data)=>{return data}));
+            console.log(get_stock);
+            res.render('template', {
+                session_user_id:req.session.user_id,
+                session_user:req.session.user,
+                session_role:req.session.role,
+                type_material:type_material,
+                date_time:req.query.date,
+                get_stock:get_stock,
+                file:'sep_module/stock_summary'
+            });
+
+        }else{
+            res.render('template', {
+                session_user_id:req.session.user_id,
+                session_user:req.session.user,
+                session_role:req.session.role,
+                type_material:type_material,
+                date_time:getDate.date,
+                get_stock:[],
+                file:'sep_module/stock_summary'
+            });
+        }
+        
+        
     }else{
         res.redirect("/");
     }

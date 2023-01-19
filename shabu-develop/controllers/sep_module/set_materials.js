@@ -2,19 +2,15 @@ const data_manage = require('../../models/sep_module/set_materials')
 const data_material = require('../../models/manage/manage_material')
 const data_stock = require('../../models/sep_module/stock')
 
+const getDate = require('../../config/getDate');
+
+
 exports.getSet_materials =async (req, res,next) => {
     if(req.session.role){
 
-        // create now time
-        const date = new Date();
-        const [month, day, year] = [
-            date.getMonth()+1,
-            date.getDate(),
-            date.getFullYear(),
-        ];
-        const date_time = day+"/"+month+"/"+year;
+       
 
-        let done_stock = await (data_stock.GetMaterial_stock_date({date_time:date_time}).then((data)=>{return data}));
+        let done_stock = await (data_stock.GetMaterial_stock_date({date_time:getDate.date}).then((data)=>{return data}));
 
         // get หมวดหมู่
         let type_material = await (data_material.getMaterial().then((data)=>{return data}));
@@ -23,7 +19,7 @@ exports.getSet_materials =async (req, res,next) => {
             session_user:req.session.user,
             session_role:req.session.role,
             type_material:type_material,
-            date_time:date_time,
+            date_time:getDate.date,
             done_stock:done_stock,
             file:'sep_module/set_materials'
         });
@@ -35,17 +31,8 @@ exports.getSet_materials =async (req, res,next) => {
 exports.getSet_materials_detail =async (req, res,next) => {
     if(req.session.role){
 
-        // create now time
-        const date = new Date();
-        const [month, day, year] = [
-            date.getMonth()+1,
-            date.getDate(),
-            date.getFullYear(),
-        ];
-        const date_time = day+"/"+month+"/"+year;
-
         // ===================================== vailidation stock =====================================
-        let done_stock = await (data_stock.GetMaterial_stock_date({date_time:date_time}).then((data)=>{return data}));
+        let done_stock = await (data_stock.GetMaterial_stock_date({date_time:getDate.date}).then((data)=>{return data}));
         if( done_stock.indexOf(parseInt(req.query.id_detail)) >= 0 ){
             res.redirect("/");
             return ;
@@ -53,7 +40,7 @@ exports.getSet_materials_detail =async (req, res,next) => {
         // ===================================== vailidation stock =====================================
  
 
-        let add_stock = await (data_manage.getAdd_stock({date_time:date_time,typeMaterial:req.query.id_detail}).then((data)=>{return data}));
+        let add_stock = await (data_manage.getAdd_stock({date_time:getDate.date,typeMaterial:req.query.id_detail}).then((data)=>{return data}));
 
         let material = await (data_material.getMaterial_detail(req.query).then((data)=>{return data}));
         let count_unit = await (data_material.getCount_unit().then((data)=>{return data}));
@@ -73,7 +60,7 @@ exports.getSet_materials_detail =async (req, res,next) => {
             session_user:req.session.user,
             session_role:req.session.role,
             add_stock:add_stock,
-            date_time:date_time,
+            date_time:getDate.date,
             material:material,
             count_unit:count_unit,
             material_name:req.query.material_detail,

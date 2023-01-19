@@ -1,0 +1,100 @@
+<div class="container-fluid">
+
+    
+
+    <div class="d-flex pt-2 justify-content-center ">
+        
+        <div class="card card-body ">
+            <div class="d-flex pt-2 justify-content-center ">
+                <h3 class="mt-1">สรุปการสต๊อก</h3><br>
+            </div>
+            <form action="" method="get">
+                <label for="">เลือกเวลา</label>
+                <input type="date" name="date">
+                <button type="submit" class="btn btn-info ">ยืนยัน</button>
+            </form>
+
+        </div>
+    </div>
+   
+
+    <% if( get_stock.length <= 0){%> 
+
+        <h1 class="text-center mt-3">ไม่พบข้อมูล</h1>
+
+    <% }else{%> 
+
+        <div class="row">
+            <div class="col-12">
+                <% for(let x of type_material){%>
+
+                        <div class="card card-body">
+                                <h3><%= x.St_Name %> : <%= date_time %> </h3>
+                                <table id="N<%=x.ID%>" class="table table-bordered table-hover " >
+                                    <thead>
+                                        <tr>
+                                            <th>รหัส</th>
+                                            <th>ชื่อวัตถุดิบ</th>
+                                            <th>หน่วยนับ</th>
+                                            <th>มีอยู่</th>
+                                            <th>รับเข้า</th>
+                                            <th>ใช้ไป</th>
+                                            <th>คงเหลือ</th>
+                                            <th>พนักงาน</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                            <% for(let i of get_stock){%>
+                                                <% if( i.St_ID === x.ID ){%> 
+
+                                                    <tr>
+                                                        <td><%= i.ID%></td>
+                                                        <td><%=i.It_name%></td>
+                                                        <td><%=i.Un_Name%></td>
+                                                        <td><%= i.Quoted%></td>
+                                                        <td><%= i.PickUp%></td>
+                                                        <td><%= i.Use%></td>
+                                                        <td><%= i.Remaining%></td>
+                                                        <td><%= i.Emp_Fname%></td>
+    
+                                                    </tr>
+
+                                                <% } %> 
+                                                
+                                            <%} %> 
+                
+                                    </tbody>
+                                </table>
+                        </div>
+                <%} %> 
+
+
+            </div>
+        </div>
+
+
+
+    <% } %> 
+
+
+
+</div>
+
+<% for(let x of type_material){%> 
+    <script>
+        $(function () {
+            $('#N<%=x.ID%>').DataTable({
+                paging: false,
+                autoWidth: false,
+                responsive: true
+            });
+        });
+    </script>
+<% } %> 
+ 
+<script>
+
+    $('input[name=date]').val('<%=date_time%>');
+
+</script>

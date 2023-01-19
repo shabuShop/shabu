@@ -63,15 +63,18 @@ router.post('/set_materials_detail/:action', conSet_materials.setSet_materials_d
 
 // ====================== Route เปิดการขาย ======================
 router.get('/open_sale', conOpen_sale.getOpen_sale);
+router.post('/open_sale/:action', conOpen_sale.setOpen_sale);
 
 // ====================== Route การขาย ======================
 router.get('/sale', conSale.getSale);
+
 
 
 // ====================== Route การ Stock ======================
 router.get('/stock', conStock.getStock);
 router.post('/stock_detail/:action', conStock.setStock_detail);
 router.get('/stock_detail', conStock.getStock_detail);
+router.get('/stock_summary', conStock.getStock_summary);
 
 // ====================== Route รายจ่าย ======================
 router.get('/expenses', conExpenses.getExpenses);

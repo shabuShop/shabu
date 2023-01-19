@@ -24,7 +24,7 @@ exports.setAdd_stock = async function(data) {
         let sql = ` INSERT  INTO Item_Add ( Item_On_Stock_ID , Item_amount ,Item_all_price , Item_date , Item_isDone )
                     VALUES( ${data.material} , ${data.amount} , ${data.price} , #${data.date}# , 0) ;
                   `
-        const con = await connection.query(sql);
+        const con = await connection.execute(sql);
     } catch (error) {
         console.log(error);
     }
