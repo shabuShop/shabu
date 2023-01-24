@@ -3,7 +3,7 @@
 const data_manage = require('../../models/manage/manage_expense')
 const data_employ = require('../../models/manage/manage_employee')
 
-
+const getDate = require('../../config/getDate');
 
 
 exports.getExpense =async (req, res) => {
@@ -17,22 +17,14 @@ exports.getExpense =async (req, res) => {
             Emp_Fname: 'ภูริกรณ์'
          */
         let expense = await (data_manage.getExpense().then((data)=>{return data}));
-        let employee = await (data_employ.getEmployee_admin().then((data)=>{return data}));
-        // create now time
-        const date = new Date();
-        const [month, day, year] = [
-            date.getMonth()+1,
-            date.getDate(),
-            date.getFullYear(),
-        ];
-        const date_time = day+"/"+month+"/"+year;
+        // let employee = await (data_employ.getEmployee_admin().then((data)=>{return data}));
+
         res.render('template', {
             session_user_id:req.session.user_id,
             session_user:req.session.user,
             session_role:req.session.role,
             expense:expense,
-            date_time:date_time,
-            employee:employee,
+            date_time:getDate.date,
             file:'manage/manage_expense'
         });
     }else{

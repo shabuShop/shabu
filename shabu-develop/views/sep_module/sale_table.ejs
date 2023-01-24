@@ -1,0 +1,427 @@
+
+<div class="container-fluid pb-2">
+    <!-- <h3 class="text-center pt-3">ชื่อโต๊ะ <%= table.Table_Name %> </h3> -->
+    <% if( table.TS_Status === 0 ){%>
+        <form id="form_use" action="/<%= session_role%>/sale_table/use" method="post">
+            <input type="number" class="d-none" name="id" value="<%= table.TB_ID%>">
+        </form>
+
+        <div class="d-flex justify-content-center pt-3" onclick="to_submit()" >
+            <div class="info-box bg-success btn w-50">
+                <div class="info-box-content">
+                    <h3 class="info-box-text fs-5">เปิดโต๊ะ<%= table.Table_Name %></h3>
+                </div>
+            </div>
+        </div>
+
+    <%}else if( table.TS_Status === 1 ){%>
+
+        <br>
+
+        <h3 class="text-center  ">โต๊ะ <%= table.Table_Name %> : <%= date %></h3>
+        
+
+        <div class="d-flex  justify-content-start mb-1">
+            <button  type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add" onclick="add()">
+                เพิ่มรายการอาหาร
+            </button>
+        </div>
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-body">
+                    
+                    <table id="employee" class="table table-bordered table-hover " >
+                        <thead>
+                            <tr>
+                                <th>รหัส</th>
+                                <th>รายการ</th>
+                                <th>ราคา</th>
+                                <th>จำนวน</th>
+                                <th>ราคารวม</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(let i of data_sale){%>
+                                <tr>
+                                    <td><%= i.BFC_ID%></td>
+                                    <td><%= i.Bf_Name%></td>
+                                    <td><%= i.Bf_Price%></td>
+                                    <td><%= i.Amount%></td>
+                                    <td><%= i.Total_Price%></td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <p class="btn btn-danger p-1 px-1 " onclick="del('<%=i.ID%>')" >ลบ</p>
+                                        </div>
+                                    </td>
+                                    
+                                </tr>
+                            <%} %> 
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- =================== Modal Add ===================-->
+        <div class="modal fade" id="modal-add">
+            <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-purple">
+                <h4 class="modal-title ">เลือกรายการอาหาร</h4>
+                <button type="button " class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-light">&times;</span>
+                </button>
+                </div>
+                <form action="/<%= session_role%>/sale_table/add" method="post">
+
+                    <div class="modal-body">
+                    <!-- ============================== Form ==============================-->
+                        <div class="form-group">
+                            <blockquote id="alert" class="quote-danger m-0">
+                                <h3>! กรุณาใส่ข้อมูลให้ครบ</h3>
+                            </blockquote>
+                        </div>
+                        <div class="form-group">
+                            <blockquote id="alert_same" class="quote-danger m-0">
+                                <h3>! ห้ามใส่ข้อมูลซ้ำ</h3>
+                            </blockquote>
+                        </div>
+                        
+                        
+                        <div class="form-group">
+                            <label >รายการอาหาร</label>
+                            <select class="form-control" name="BFC_id" >
+                                <% for(i of buffet){%> 
+
+                                    <option value="<%=i.ID%>,<%=i.Bf_Price%>"><%=i.Bf_Name%></option>
+
+                                <%} %> 
+    
+                                
+                                
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label >จำนวน</label>
+                            <input type="number" class="form-control" name="amount">
+                        </div>
+
+                    </div>
+                    
+                    <input type="number" class="d-none" name="table_id" value="<%= table.TB_ID%>">
+
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" onclick="return vali('add')">Save changes</button>
+                    </div>
+
+                </form>
+
+            </div>
+            </div>
+        </div>
+
+        <!-- =================== delete =================== -->
+        <form id="delete" action="/<%= session_role%>/sale_table/delete" method="post" class="d-inline">
+            <input type="number" name="id_del" class="d-none" value="">
+            <input type="number" class="d-none" name="table_id" value="<%= table.TB_ID%>">
+        </form>
+
+
+        <div class="card card-body w-50 ">
+            <h2 class="text-center" >ราคารวมทั้งหมด</h2>
+            <br>
+            
+            <% let total=0; %> 
+            <% for(let i of data_sale){
+                total += parseInt(i.Total_Price);
+            } %> 
+            <div  class="d-flex justify-content-center">
+                <h3  class="text-center pr-2"><%= total %> </h3>
+                <h3 > บาท</h3>
+            </div>
+            
+            
+            <br>
+            <form action="/<%= session_role%>/sale_table/paid" method="post">
+                <input type="number" class="d-none" name="table_id" value="<%= table.TB_ID%>">
+                <input type="number" class="d-none" value="<%= total %>" name="total_price">
+                <button type="submit" class="btn btn-info w-100" onclick="return confirm('ยืนยันชำระเงิน')" >ชำระเงิน</button>
+            </form>
+
+
+        </div>
+
+
+    
+
+
+    <%}else if( table.TS_Status === 2 ){%>
+        <br>
+        <h3 class="text-center  ">ชำระเงิน</h3>
+
+        <div class="card card-body  ">
+                <h4 class="" >ชื่อโต๊ะ : <%= table.Table_Name %></h4>
+                <h4 class="" >วันที่/เวลา : <%= sale_paid.Sale_Date %>  <%= sale_paid.Sale_time %></h4>
+        </div>
+
+        <!-- <h3 class="text-center  ">โต๊ะ <%= table.Table_Name %> :<%= date %></h3> -->
+    
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-body">
+                    <table id="paid" class="table table-bordered table-hover " >
+                        <thead>
+                            <tr>
+                                <th>รหัส</th>
+                                <th>รายการ</th>
+                                <th>ราคา</th>
+                                <th>จำนวน</th>
+                                <th>ราคารวม</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(let i of data_sale){%>
+                                <tr>
+                                    <td><%= i.BFC_ID%></td>
+                                    <td><%= i.Bf_Name%></td>
+                                    <td><%= i.Bf_Price%></td>
+                                    <td><%= i.Amount%></td>
+                                    <td><%= i.Total_Price%></td>
+                                </tr>
+                            <%} %> 
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-12 col-lg-6 col-md-6">
+                <div class="card card-body  ">
+                    <h3 class="text-center" >เลขที่ใบเสร็จ <%= sale_paid.ID%></h3>
+
+                    <table class="table table-borderless">
+                        <thead>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </thead>
+                        <tbody class="text-lg">
+                            <tr>
+                                <td>รวมเงิน</td>
+                                <td class="text-danger"><%= sale_paid.Sale_total_price%></td>
+                                <td>บาท</td>
+                            </tr>
+                            <tr>
+                                <td>ใส่จำนวนเงิน</td>
+                                <td >
+                                    <input type="number"class="form-control" name="getPaid" onchange="getPaid('<%= sale_paid.Sale_total_price%>')" placeholder="Input Money" style="width: 50%;">
+                                </td>
+                                <td>บาท</td>
+                            </tr>
+                            <tr>
+                                <td>จำนวนเงินทอน</td>
+                                <td id="change" class="text-info"></td>
+                                <td>บาท</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <br>
+                    <form action="/<%= session_role%>/sale_table/paid_done" method="post" >
+                        <input type="number" class="d-none" name="table_id" value="<%= table.TB_ID%>">
+                        <input type="number" class="d-none" name="getM" value="">
+                        <input type="number" class="d-none" name="changeM" value="">
+                        <button type="submit" class="btn btn-info w-100" >ชำระเงิน</button>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+    <%}else if( table.TS_Status === 3 ){%>
+
+        
+        <br>
+        <h3 class="text-center  ">ออกใบเสร็จ</h3>
+        <div class="row">
+            <div class="col-12 col-lg-4 col-md-4">
+                <div class=" bg-success btn " onclick="to_submit_form_done()">
+                       ปรับสถานะโต๊ะว่าง
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-body">
+                    <table id="paid_done" class="table  table-hover " >
+                        <thead>
+                            <tr>
+                                <th>รหัส</th>
+                                <th>รายการ</th>
+                                <th>ราคา</th>
+                                <th>จำนวน</th>
+                                <th>ราคารวม</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(let i of sale_detail){%>
+                                <tr>
+                                    <td><%= i.BFC_ID%></td>
+                                    <td><%= i.Bf_Name%></td>
+                                    <td><%= i.SD_price%></td>
+                                    <td><%= i.SD_amount%></td>
+                                    <td><%= i.SD_total_price%></td>
+                                </tr>
+                            <%} %> 
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <form id="form_done" action="/<%= session_role%>/sale_table/done" method="post">
+            <input type="number" class="d-none" name="table_id" value="<%=table.TB_ID%>">
+        </form>
+
+
+        <script>
+            $(function () {
+                $('#paid_done').DataTable({
+                    "paging": false,
+                    "searching": false,
+                    "ordering": false,
+                    "info": false,
+                    "autoWidth": false,
+                    "responsive": true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                        extend: 'print',
+                        messageTop:
+                        `
+                            <div style="text-align: center;">
+                                <img src="images/logo.jpg" width="200px" height="200px"  >
+                            </div><br>
+
+                            <h2 style='text-align: center;'>ใบเสร็จรับเงิน</h2>
+
+                            <p> <b>เลขที่ใบเสร็จ</b> <%=sale_detail[0].ID%></p>
+                            <p> <b>วันที่/เวลา</b> <%=sale_detail[0].Sale_Date%> <%=sale_detail[0].Sale_time%></p>
+                        `,
+
+                        messageBottom: 
+                        `
+                        <table style="float: right;">
+                            <tbody >
+                                <tr><td style="padding-right: 1rem;"><b>ยอดรวม</b></td><td><%=sale_detail[0].Sale_total_price%></td><td>บาท</td></tr>
+                                <tr><td style="padding-right: 1rem;"><b>รับเงิน</b></td><td><%=sale_detail[0].Get_money%></td><td>บาท</td></tr>
+                                <tr><td style="padding-right: 1rem;"><b>เงินทอน</b></td><td><%=sale_detail[0].Change_money%></td><td>บาท</td></tr>
+                            </tbody>
+                        </table>
+                        `
+                        }
+                    ]
+                });
+            })
+        </script>
+        
+
+    <%}%>
+        
+    
+
+
+    
+</div>
+
+
+<script>
+    // $('#total_price').val();
+    $(function () {
+        $('#employee').DataTable({
+            "paging": true,
+            "lengthMenu": [[5, 10, 20], [5, 10, 20]],
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+        $('#paid').DataTable({
+            "paging": true,
+            "lengthMenu": [[5, 10, 20], [5, 10, 20]],
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            
+        });
+        
+    });
+
+    $("#alert").addClass("d-none")
+    $("#alert_same").addClass("d-none")
+    function add(){
+        $("#alert").addClass("d-none")
+    }
+
+  
+    function del(id){
+        $("input[name=id_del]").val(parseInt(id))
+        if(confirm("ยืนการลบข้อมูล") == true){
+            $("#delete").submit();
+        }
+    }
+
+    function vali(mode){
+        if(mode === "add"){
+            let amount = ($("input[name=amount]").val()).trim() === "";
+            if( !amount ){
+                return true;
+            }else{
+                $("#alert").removeClass("d-none")
+                return false;
+            }
+        }
+    }
+
+    function to_submit(){
+        document.querySelector('#form_use').submit();
+    }
+    function to_submit_form_done(){
+        document.querySelector('#form_done').submit();
+    }
+
+
+    function getPaid(data){
+        let a = $("input[name=getPaid]").val();
+        document.getElementById("change").innerText = (parseInt(a) - parseInt(data) ) || 0 ;
+
+        // set parameter
+        $("input[name=getM]").val(parseInt(a));
+        $("input[name=changeM]").val((parseInt(a) - parseInt(data) ) || 0);
+
+    }
+</script>

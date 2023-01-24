@@ -15,6 +15,29 @@ exports.getOpen_sale = async function(data) {
         return [];
     }
 }
+exports.getStatus_sale = async function(data) {
+    try {
+        let sql = ` SELECT  TOP 1 Open_Sale.[ID], Open_Sale.[Os_Date], Open_Sale.[Os_date_time_open], Open_Sale.[Os_money_open], Open_Sale.[Os_date_time_close], Open_Sale.[Os_status], Open_Sale.[Os_money_close]
+                    FROM Open_Sale WHERE Open_Sale.[Os_Date] = #${data.date_time}# ;
+                  `
+            
+        const con = await connection.query(sql);
+        let status = 0;
+        if(con.length > 0){
+            if(con[0].Os_status === 1){
+                status = 1;
+            }else if(con[0].Os_status === 0){
+                status = 0;
+            }
+        }else{
+            status = -1;
+        }
+        return status;
+    } catch (error) {
+        console.log(error);
+        return 0;
+    }
+}
 
 exports.setOpen_sale = async function(data) {
     try {

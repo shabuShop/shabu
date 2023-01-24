@@ -50,7 +50,7 @@
                                         <td>0</td>
                                     <%} %> 
                                     <td>
-                                        <input type="number" name="U<%=i.ID%>" onchange="in_change('<%=i.Item_Amount%>','<%=value%>','U<%=i.ID%>','R<%=i.ID%>','<%=i.ID%>')" 
+                                        <input type="number" name="U<%=i.ID%>" class="form-control" onchange="in_change('<%=i.Item_Amount%>','<%=value%>','U<%=i.ID%>','R<%=i.ID%>','<%=i.ID%>')" 
                                         placeholder="กรอกจำนวน และ กดEnter">
                                     </td>
                                     <td id="R<%=i.ID%>"><%= value + i.Item_Amount %></td>
@@ -111,9 +111,7 @@
             <div class="form-group">
                 <label >ชื่อผู้ตัดสต๊อก</label>
                 <select class="form-control" name="emp_id" >
-                    <% for(i of employee){%> 
-                        <option id="<%=i.Emp_Fname%>" value="<%=i.Employee_ID%>" >  <%=i.Emp_Fname%> <%=i.Emp_Lname%></option>
-                    <%} %> 
+                    <option id="<%=session_user%>" value="<%=session_user_id%>" >  <%=session_user%></option>
                 </select>
             </div>
 

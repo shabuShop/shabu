@@ -102,10 +102,7 @@
                     <label >Username</label>
                     <input type="text" class="form-control" name="username" >
                 </div>
-                <div class="form-group">
-                    <label >Password</label>
-                    <input type="text" class="form-control" name="password" >
-                </div>
+      
 
                 <div class="form-group">
                     <label >ตำเเหน่ง</label>
@@ -167,14 +164,14 @@
                     <label >เบอร์โทร</label>
                     <input type="text" class="form-control" name="Utel">
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label >Username</label>
                     <input type="text" class="form-control" name="Uusername" >
                 </div>
                 <div class="form-group">
                     <label >Password</label>
                     <input type="text" class="form-control" name="Upassword" >
-                </div>
+                </div> -->
 
                 <div class="form-group">
                     <label >ตำเเหน่ง</label>
@@ -231,8 +228,6 @@
         $("input[name=ULname]").val(data[2])
         $("input[name=Uaddress]").val(data[3])
         $("input[name=Utel]").val(data[4])          
-        $("input[name=Uusername]").val(data[5]) 
-        $("input[name=Upassword]").val(data[6]) 
         $("input[name=id_update]").val(data[0])
 
 
@@ -263,9 +258,8 @@
             let address = ($("input[name=address]").val()).trim() === "";
             let tel = ($("input[name=tel]").val()).trim() === "";
             let username = ($("input[name=username]").val()).trim() === "";
-            let password = ($("input[name=password]").val()).trim() === "";
     
-            if( !Fname && !Lname && !address && !tel && !password && !username){
+            if( !Fname && !Lname && !address && !tel && !username){
                 return true;
             }else{
     
@@ -277,10 +271,8 @@
             let Lname = ($("input[name=ULname]").val()).trim() === "";
             let address = ($("input[name=Uaddress]").val()).trim() === "";
             let tel = ($("input[name=Utel]").val()).trim() === "";
-            let username = ($("input[name=Uusername]").val()).trim() === "";
-            let password = ($("input[name=Upassword]").val()).trim() === "";
-    
-            if( !Fname && !Lname && !address && !tel && !password && !username){
+
+            if( !Fname && !Lname && !address && !tel ){
                 return true;
             }else{
     

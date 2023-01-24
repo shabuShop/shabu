@@ -1,5 +1,7 @@
 const db = require('../../config/db_config')
 connection = db.connection;
+const shaJs = require("sha.js");
+
 
 
 
@@ -29,8 +31,8 @@ exports.getPosition = async function() {
 
 exports.setData_Employee = async function(data) {
     try {
-        let sql = `INSERT INTO Employee( Emp_Fname , Emp_Lname , Emp_Address , Emp_Tel , Emp_Username , Emp_Password , Position_ID) 
-                   VALUES ("${data.Fname}", "${data.Lname}", "${data.address}", "${data.tel}","${data.username}","${data.password}",${data.position});
+        let sql = `INSERT INTO Employee( Emp_Fname , Emp_Lname , Emp_Address , Emp_Tel , Emp_Username , Emp_Password , Position_ID , flag_login) 
+                   VALUES ("${data.Fname}", "${data.Lname}", "${data.address}", "${data.tel}","${data.username}","",${data.position} , 0);
                   `
         const con = await connection.execute(sql);
     } catch (error) {
@@ -50,17 +52,13 @@ exports.updateData_Employee = async function(data) {
     try {
         let sql = `UPDATE Employee SET Emp_Fname = "${data.UFname}" ,
                    Emp_Lname = "${data.ULname}" , Emp_Address = "${data.Uaddress}" ,
-                   Emp_Tel="${data.Utel}" ,Emp_Username ="${data.Uusername}" , 
-                   Emp_Password ="${data.Upassword}", Position_ID =${data.Uposition} where ID = ${data.id_update} 
+                   Emp_Tel="${data.Utel}"  , Position_ID =${data.Uposition} where ID = ${data.id_update} 
                   `
         const con = await connection.execute(sql);
     } catch (error) {
         console.log(error);
     }
 }
-
-
-
 
 exports.getEmployee_admin = async function() {
     try {
@@ -72,5 +70,48 @@ exports.getEmployee_admin = async function() {
     } catch (error) {
         console.log(error);
         return [];
+    }
+}
+
+
+exports.getLogin_username = async function(data) {
+    try {
+        let sql = ` SELECT Employee.[ID], Employee.[Emp_Username], Employee.[flag_login]
+                    FROM Employee where  Employee.[Emp_Username] = "${data.username}";
+       `
+        const con = await connection.query(sql);
+        // console.log(con);
+        return con;
+    } catch (error) {
+        console.log(error);
+        return 0;
+    }
+}
+exports.setLogin_Flag_password = async function(data) {
+    try {
+        let password = shaJs('sha256').update(data.password).digest('hex')
+
+        let sql = ` UPDATE Employee SET Emp_Password ="${password}"  , flag_login = 1  where Emp_Username ="${data.username}" ; `
+        const con = await connection.execute(sql);
+        return con;
+    } catch (error) {
+        console.log(error);
+        return 0;
+    }
+}
+exports.getLogin_username_password = async function(data) {
+    try {
+        let password = shaJs('sha256').update(data.password).digest('hex')
+        let sql = ` SELECT Employee.ID, Employee.Emp_Fname, Employee.Emp_Lname, Employee.Position_ID
+                    FROM Employee WHERE Employee.Emp_Username = "${data.username}" and Employee.Emp_Password = "${password}" ;
+                `
+
+        const con = await connection.query(sql);
+        console.log(con);
+
+        return con;
+    } catch (error) {
+        console.log(error);
+        return 0;
     }
 }

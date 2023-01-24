@@ -20,6 +20,8 @@ router.post('/set_materials_detail/:action', conSet_materials.setSet_materials_d
 
 // ====================== Route การขาย ======================
 router.get('/sale', conSale.getSale);
+router.get('/sale_table', conSale.getSale_table);
+router.post('/sale_table/:action', conSale.setSale_table);
 
 
 module.exports = router;

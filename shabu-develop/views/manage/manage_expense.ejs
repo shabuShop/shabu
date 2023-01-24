@@ -104,9 +104,7 @@
                 <div class="form-group">
                     <label >ชื่อผู้จ่าย</label>
                     <select class="form-control" name="type" >
-                        <% for(i of employee){%> 
-                            <option value="<%=i.Employee_ID%>"><%=i.Emp_Fname%> <%=i.Emp_Lname%></option>
-                        <%} %> 
+                            <option value="<%=session_user_id%>"><%=session_user%></option>
                     </select>
                 </div>
 
@@ -171,9 +169,7 @@
                 <div class="form-group">
                     <label >ชื่อผู้จ่าย</label>
                     <select class="form-control" name="Utype" >
-                        <% for(i of employee){%> 
-                            <option id="<%=i.Emp_Fname%>" value="<%=i.Employee_ID%>"><%=i.Emp_Fname%> <%=i.Emp_Lname%></option>
-                        <%} %> 
+                        <option id="<%=session_user_id%>" value="<%=session_user_id%>"><%=session_user%></option>
                     </select>
                 </div>
 
@@ -222,7 +218,6 @@
         $("#alert").addClass("d-none")
     }
 
-    let oldOp ="";
     function update(data){
         // ['1', '17/1/2023', 'ค่าน้ำ', '3000', '38', 'ภูริกรณ์']
         data = data.split(",");
@@ -232,17 +227,6 @@
         $("input[name=Umoney_exp]").val(data[3]);
         
         // Utype
-        
-
-
-        $(`option[id=${data[5]}]`).attr("selected","true");
-        if(oldOp !== data[5]){
-            if(oldOp != ""){
-                $(`option[id=${oldOp}]`).removeAttr("selected");
-            }
-            oldOp = data[5];
-        }
-        
 
         $("#Ualert").addClass("d-none")
 

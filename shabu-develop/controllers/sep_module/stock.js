@@ -3,11 +3,16 @@ const data_set_material = require('../../models/sep_module/set_materials')
 const data_employ = require('../../models/manage/manage_employee')
 const data_stock = require('../../models/sep_module/stock')
 
+const data_open_sale = require('../../models/sep_module/open_sale');
+
+
 const getDate = require('../../config/getDate');
 
 
 exports.getStock =async (req, res,next) => {
     if(req.session.role == "admin"){
+
+        let status_sale = await (data_open_sale.getStatus_sale({date_time:getDate.date}).then((data)=>{return data}));
 
         // get หมวดหมู่
         let type_material = await (data_material.getMaterial().then((data)=>{return data}));
@@ -21,6 +26,7 @@ exports.getStock =async (req, res,next) => {
             type_material:type_material,
             date_time:getDate.date,
             done_stock:done_stock,
+            status_sale:status_sale,
             file:'sep_module/stock'
         });
     }else{
@@ -29,7 +35,6 @@ exports.getStock =async (req, res,next) => {
 };
 
 exports.getStock_detail =async (req, res,next) => {
-    console.log();
     if(req.session.role === "admin"){
 
         // ===================================== vailidation stock =====================================

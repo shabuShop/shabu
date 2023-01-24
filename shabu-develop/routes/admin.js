@@ -67,6 +67,8 @@ router.post('/open_sale/:action', conOpen_sale.setOpen_sale);
 
 // ====================== Route การขาย ======================
 router.get('/sale', conSale.getSale);
+router.get('/sale_table', conSale.getSale_table);
+router.post('/sale_table/:action', conSale.setSale_table);
 
 
 

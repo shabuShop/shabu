@@ -1,6 +1,73 @@
 
 
 
-<h1>การขาย</h1>
+<!-- <h1>การขาย</h1> -->
+<% if(status_sale === 0 || status_sale === -1){ %>
+
+    <div class="row">
+        <div class="col-1"></div>
+        <div id="alert" class="alert alert-danger col-10">
+            <h3 class="text-center">! ยังไม่ได้เปิดการขาย</h3>
+        </div >
+        <div class="col-1"></div>
+    </div>
+    
 
 
+<%}else if(status_sale === 1){%>
+
+<div class="container pt-5">
+    <div class="row ">
+        
+        <% for(let i of table){%> 
+            <a class="col-md-3 col-sm-3 col-4 mt-3 " href="/<%= session_role %>/sale_table?id=<%=i.TB_ID%>" >
+                <% if(i.TS_Status === 0){%>
+                    
+                        <div class="info-box bg-success btn">
+                            <div class="info-box-content">
+                                <span class="info-box-text">Table <%=i.Table_Name%></span>
+                                <span class="info-box-number">สถานะว่าง</span>
+                            </div>
+                        </div>
+
+                <%}else if(i.TS_Status === 1){%>
+
+                        <div class="info-box bg-gray btn">
+                            <div class="info-box-content">
+                                <span class="info-box-text">Table <%=i.Table_Name%></span>
+                                <span class="info-box-number">สถานะไม่ว่าง</span>
+                            </div>
+                        </div>
+
+                <%}else if(i.TS_Status === 2){%>
+
+                    <div class="info-box bg-info btn">
+                        <div class="info-box-content">
+                            <span class="info-box-text">Table <%=i.Table_Name%></span>
+                            <span class="info-box-number">กำลังชำระเงิน</span>
+                        </div>
+                    </div>
+
+                <%}else if(i.TS_Status === 3){%>
+
+                    <div class="info-box bg-danger btn">
+                        <div class="info-box-content">
+                            <span class="info-box-text">Table <%=i.Table_Name%></span>
+                            <span class="info-box-number">ออกใบเสร็จ</span>
+                        </div>
+                    </div>
+
+                <%}%>
+
+            </a>
+            
+            
+        <%} %> 
+        
+
+   
+    </div>
+</div>
+
+
+<%}%>
