@@ -26,10 +26,13 @@ exports.getSale =async (req, res,next) => {
 
 
 exports.getSale_table =async (req, res,next) => {
-    if(req.session.role){
+
+    let status_sale = await (data_open_sale.getStatus_sale({date_time:getDate.date}).then((data)=>{return data}));
+    
+    if(req.session.role && status_sale === 1){
+        
 
         let table = await (data_table.getTable_status_once({id:req.query.id}).then((data)=>{return data}));
-        console.log(table);
 
         if(table.length > 0){
             
@@ -37,6 +40,21 @@ exports.getSale_table =async (req, res,next) => {
             // READ DATA
             let buffet = await (data_buffet.getBuffet().then((data)=>{return data}));
             let data_sale = await (data_table.getTable_sale({table_id:req.query.id}).then((data)=>{return data}));
+            let option =[];
+            for(let i = 0;i<buffet.length;i++){
+                let isMatch = false;
+                let select;
+                for(let x = 0;x<data_sale.length;x++){
+                    
+                    if(buffet[i].ID === data_sale[x].BFC_ID){
+                        isMatch = true;
+                        break;
+                    }
+                }   
+                if(isMatch === false)option.push(buffet[i]);
+            }
+            
+
             let sale_paid;
             let sale_detail;
 
@@ -60,7 +78,7 @@ exports.getSale_table =async (req, res,next) => {
                 session_user:req.session.user,
                 session_role:req.session.role,
                 table:table[0],
-                buffet:buffet,
+                option:option,
                 data_sale:data_sale,
                 sale_paid:sale_paid,
                 sale_detail:sale_detail,

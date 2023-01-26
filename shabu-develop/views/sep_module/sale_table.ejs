@@ -20,13 +20,14 @@
 
         <h3 class="text-center  ">โต๊ะ <%= table.Table_Name %> : <%= date %></h3>
         
-
+        
         <div class="d-flex  justify-content-start mb-1">
             <button  type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add" onclick="add()">
                 เพิ่มรายการอาหาร
             </button>
         </div>
 
+       
 
         <div class="row">
             <div class="col-12">
@@ -85,26 +86,24 @@
                                 <h3>! กรุณาใส่ข้อมูลให้ครบ</h3>
                             </blockquote>
                         </div>
-                        <div class="form-group">
-                            <blockquote id="alert_same" class="quote-danger m-0">
-                                <h3>! ห้ามใส่ข้อมูลซ้ำ</h3>
-                            </blockquote>
-                        </div>
-                        
-                        
+
+
                         <div class="form-group">
                             <label >รายการอาหาร</label>
                             <select class="form-control" name="BFC_id" >
-                                <% for(i of buffet){%> 
+                                
+                                <% for(i of option){%> 
 
-                                    <option value="<%=i.ID%>,<%=i.Bf_Price%>"><%=i.Bf_Name%></option>
+                                    <option  value="<%=i.ID%>,<%=i.Bf_Price%>"><%=i.Bf_Name%></option>
 
                                 <%} %> 
     
-                                
+                                <!-- data_sale -->
                                 
                             </select>
                         </div>
+
+
                         <div class="form-group">
                             <label >จำนวน</label>
                             <input type="number" class="form-control" name="amount">
@@ -116,7 +115,7 @@
 
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" onclick="return vali('add')">Save changes</button>
+                        <button type="submit" class="btn btn-primary" onclick="return vali('')">Save changes</button>
                     </div>
 
                 </form>
@@ -207,6 +206,12 @@
                 <div class="card card-body  ">
                     <h3 class="text-center" >เลขที่ใบเสร็จ <%= sale_paid.ID%></h3>
 
+                    <div class="form-group">
+                        <blockquote id="alert_paid_done" class="quote-danger m-0">
+                            <h3>! กรุณาใส่จำนวนเงิน</h3>
+                        </blockquote>
+                    </div>
+                    
                     <table class="table table-borderless">
                         <thead>
                             <th></th>
@@ -235,11 +240,12 @@
                     </table>
                     
                     <br>
+
                     <form action="/<%= session_role%>/sale_table/paid_done" method="post" >
                         <input type="number" class="d-none" name="table_id" value="<%= table.TB_ID%>">
                         <input type="number" class="d-none" name="getM" value="">
                         <input type="number" class="d-none" name="changeM" value="">
-                        <button type="submit" class="btn btn-info w-100" >ชำระเงิน</button>
+                        <button type="submit" class="btn btn-info w-100" onclick="return vali_paid_done()" >ชำระเงิน</button>
                     </form>
 
 
@@ -247,6 +253,21 @@
             </div>
         </div>
 
+        <script>
+            $("#alert_paid_done").addClass("d-none")
+            // 
+            function vali_paid_done(){
+                let a = $('input[name=getPaid]').val()
+                let b = $('#change').text()
+                if( a == "" && b == "" || parseInt(b) < 0 ){
+                    $("#alert_paid_done").removeClass("d-none")
+                    return false;
+
+                }else{
+                    return true;
+                }
+            }
+        </script>
 
 
 
@@ -386,8 +407,6 @@
     function add(){
         $("#alert").addClass("d-none")
     }
-
-  
     function del(id){
         $("input[name=id_del]").val(parseInt(id))
         if(confirm("ยืนการลบข้อมูล") == true){
@@ -396,14 +415,13 @@
     }
 
     function vali(mode){
-        if(mode === "add"){
-            let amount = ($("input[name=amount]").val()).trim() === "";
-            if( !amount ){
-                return true;
-            }else{
-                $("#alert").removeClass("d-none")
-                return false;
-            }
+        // document.querySelector("select[name=BFC_id]").value
+        let amount = ($("input[name=amount]").val()).trim() === "";
+        if( !amount ){
+            return true;
+        }else{
+            $("#alert").removeClass("d-none")
+            return false;
         }
     }
 
@@ -411,7 +429,9 @@
         document.querySelector('#form_use').submit();
     }
     function to_submit_form_done(){
-        document.querySelector('#form_done').submit();
+        if(confirm("ยีนยันการปรับโต๊ะว่าง") === true){
+            document.querySelector('#form_done').submit();
+        }
     }
 
 

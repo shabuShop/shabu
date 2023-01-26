@@ -1,6 +1,131 @@
 
 
 
-<h1>ออกรายงาน</h1>
 
 
+
+<div class="container-fluid">
+
+    <div class="d-flex pt-2 justify-content-center ">
+        <h3 class="mt-1">ออกรายงาน</h3>
+    </div>
+
+    <div class="form-group">
+        <blockquote id="alert" class="quote-danger m-0">
+            <h3>! กรุณาใส่ข้อมูลให้ครบ</h3>
+        </blockquote>
+    </div>
+
+    <div class="card card-body">
+
+        <div class=" row ">
+            <form action="" method="get" style="display: contents;">
+                <div class="col-6 col-md-3 col-lg-3">
+                    <label for="">ประเภทรายงาน</label>
+                    <select class="form-control" name="select" id="" onchange="non_date_input()">
+                        <option id="O1" value="1">ข้อมูลการขาย</option>
+                        <option id="O2" value="2">ข้อมูลเข้ารับวัตถุดิบ</option>
+                        <option id="O3" value="3">ข้อมูลรายจ่าย</option>
+
+                        <option id="O4" value="4">ข้อมูลอาหาร</option>
+                        <option id="O5" value="5">ข้อมูลพนักงาน</option>
+                        <option id="O6" value="6">ข้อมูลวัตถุดิบ</option>
+
+                    </select>
+                </div>
+                
+                <div class="col-6 col-md-3 col-lg-3 form_input_date ">
+                    <label for="">ระหว่างวันที่</label>
+                    <input class="form-control" type="date" name="date_start" id="">
+                </div>
+
+                <div class="col-6 col-md-3 col-lg-3 form_input_date">
+                    <label for="">ถึงวันที่</label>
+                    <input class="form-control" type="date" name="date_stop" id="">
+                </div>
+                
+                <div class="col-6 col-md-3 col-lg-3  align-self-end  form_input_date" >
+                    <button type="submit" class="btn btn-info " onclick="return vali()">ยืนยัน</button>
+                </div>
+                
+                <div class="col-6 col-md-3 col-lg-3 align-self-end form_none_input_date ">
+                    <button type="submit" class="btn btn-info  " onclick="">ยืนยัน</button>
+                </div>
+
+            </form>
+        
+            
+        </div>
+
+    </div>
+
+    <%- include('./template_report'); %> 
+
+</div>
+
+
+
+
+
+
+<% if(locals.select){%>
+
+    
+
+    <script>
+        $("input[name=date_start]").val('<%=date_start%>');
+        $("input[name=date_stop]").val('<%=date_stop%>');
+        $("#O<%=select%>").attr("selected",'selected');
+        $(".form_none_input_date").addClass("d-none");
+    </script>
+
+    <% if(select >= 4){%>
+        <script>
+            $(".form_none_input_date").removeClass("d-none");
+            $(".form_input_date").addClass("d-none");
+        </script>
+    <% } %> 
+
+
+
+<% }else{%>
+    <script>
+        $(".form_none_input_date").addClass("d-none");
+    </script>
+<% } %> 
+
+
+
+
+<script>
+
+    
+
+    function non_date_input(){
+        let a = $("select[name=select]").val();
+        if(parseInt(a) >= 4){
+            $(".form_input_date").addClass("d-none");
+            $(".form_none_input_date").removeClass("d-none");
+        }else{
+            $(".form_input_date").removeClass("d-none");
+            $(".form_none_input_date").addClass("d-none");
+        }
+        $("input[name=date_start]").val("")
+        $("input[name=date_stop]").val("")
+    }
+
+
+    $("#alert").addClass("d-none")
+    function vali(){
+        let a =$("input[name=date_start]").val()
+        let b =$("input[name=date_stop]").val()
+        if( a === "" || b === ""){
+            $("#alert").removeClass("d-none")
+            return false;
+        }
+        return true;
+    }
+    
+
+
+</script>

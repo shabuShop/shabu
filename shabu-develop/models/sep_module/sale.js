@@ -143,6 +143,16 @@ exports.deleteTable_sale = async function(data) {
 
 // =================================== Sale ===================================//
 
+function format_date_acess2normal(data){
+    const date = new Date(data);
+    const [month, day, year] = [
+        date.getMonth()+1,
+        date.getDate(),
+        date.getFullYear()+543,
+    ];
+    return  day+"/"+month+"/"+year;
+    
+}
 
 
 exports.addSale = async function(data) {
@@ -162,6 +172,13 @@ exports.getSale_ID = async function(data) {
                     FROM Sale WHERE  Sale.[Table_ID] = ${data.table_id} AND Sale.[Flag] = 0  ; 
                  `
         const con = await connection.query(sql);
+
+        if(con.length > 0 ){
+            for(let i of con){
+                i.Sale_Date = format_date_acess2normal(i.Sale_Date);
+            }
+        }
+
         return con[0];
     } catch (error) {
         console.log(error);
@@ -214,6 +231,11 @@ exports.getSale_Detail_From_Table_ID = async function(data) {
                     WHERE Sale.Table_ID = ${data.table_id} AND Sale.Flag = 0;
                 `
         const con = await connection.query(sql);
+        if(con.length > 0 ){
+            for(let i of con){
+                i.Sale_Date = format_date_acess2normal(i.Sale_Date);
+            }
+        }
         return con;
     } catch (error) {
         console.log(error);

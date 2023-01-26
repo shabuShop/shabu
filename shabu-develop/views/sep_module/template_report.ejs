@@ -1,0 +1,704 @@
+
+
+<% if( select === 1){%>
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body">
+                <table id="select1" class="table table-borderless border-top border-5 border-dark " >
+                    <thead class="">
+                        <tr>
+                            <th>วันที่</th>
+                            <th>เลขที่ใบเสร็จ</th>
+                            <th>ลำดับ</th>
+                            <th>รหัสรายการ</th>
+                            <th>ชื่อรายการ</th>
+                            <th>ราคา</th>
+                            <th>จำนวน</th>
+                            <th>ราคารวม</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <section>
+                            <%
+                                // หาค่าซ้ำตัวเเรก 
+                                let same;
+                                let isFirst = true;
+                                let num = 0;
+                        
+                                if(report.length > 0){
+                                        same=report[0].ID 
+                                }
+                        
+                            %> 
+                                <% for(let t=0;t<report.length;t++){%>
+                                    <% 
+                                        let i = report[t];
+                                        num+=1;
+                                    %> 
+                                    
+                        
+                                    <% if(same === report[t].ID){%>
+                        
+                                        <% if(isFirst === true){isFirst = false;%>
+                                            <!-- // เเสดงเต็ม -->
+                                            <tr>
+                                                <td><%= i.Sale_Date%></td>
+                                                <td><%= i.ID%></td>
+                                                <td><%= num%></td>
+                                                <td><%= i.BFC_ID%></td>
+                                                <td><%= i.Bf_Name%></td>
+                                                <td><%= i.SD_price%></td>
+                                                <td><%= i.SD_amount%></td>
+                                                <td><%= i.SD_total_price%></td>
+                                            </tr>
+                                            
+                        
+                                        <%}else{%> 
+                                            <!-- เเสดงไม่เต็ม -->
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td><%= num%></td>
+                                                <td><%= i.BFC_ID%></td>
+                                                <td><%= i.Bf_Name%></td>
+                                                <td><%= i.SD_price%></td>
+                                                <td><%= i.SD_amount%></td>
+                                                <td><%= i.SD_total_price%></td>
+                                            </tr>
+                                        <%} %> 
+                        
+                                    <%}else{%>
+                                        <% 
+                                            same = report[t].ID 
+                                            isFirst = true;
+                                            num = 0;
+                                            t=t-1;
+                                        %> 
+                        
+                                        <tr>
+                                            <% for(let xt = 0;xt<7;xt++){%><td>________</td><%} %> 
+                                            <td><b>ราคารวม <%= report[t].Sale_total_price%>  บาท</b></td>
+                                        </tr>
+                        
+                                    <%}%>
+                        
+                                    <% if( t == report.length-1 ){%> 
+                                        <tr>
+                                            <% for(let xt = 0;xt<7;xt++){%><td>________</td><%} %> 
+                                            <td><b>ราคารวม <%= report[t].Sale_total_price%>  บาท</b></td>
+                                        </tr>
+                                    <%}%>
+                                    
+                        
+                                <%} %> 
+                        </section>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('#select1').DataTable({
+                "paging": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "responsive": true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                    extend: 'print',
+                    messageTop:
+                    `
+                        <div style="text-align: center;">
+                            <img src="images/logo.jpg" width="200px" height="200px"  >
+                        </div><br>
+                        <h2 style='text-align: center;'>ข้อมูลการขาย</h2>
+                    `,
+
+                    messageBottom: 
+                    `
+                    
+                    `
+                    }
+                ]
+            });
+        })
+    </script>
+
+<%}else if( select === 2){%>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body">
+                <table id="select2" class="table table-borderless border-top border-5 border-dark " >
+                    <thead class="">
+                        <tr>
+                            <th>วันที่</th>
+                            <th>ลำดับ</th>
+                            <th>รหัสวัตถุดิบ</th>
+                            <th>ชื่อ</th>
+                            <th>จำนวน</th>
+                            <th>หน่วยนับ</th>
+                            <th>ราคา</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <section>
+                            <%
+                                // หาค่าซ้ำตัวเเรก 
+                                let same;
+                                let isFirst = true;
+                                let num = 0;
+                                let sum =0;
+
+                                // set 
+                                let all_column =6;
+                                if(report.length > 0){
+                                        same=report[0].Item_date 
+                                }
+                        
+                            %> 
+                                <% for(let t=0;t<report.length;t++){%>
+                                    <% 
+                                        let i = report[t];
+                                        num+=1;
+                                    %> 
+                                    
+                        
+                                    <% if(same === report[t].Item_date){%>
+                                        
+                                        <% if(isFirst === true){isFirst = false;%>
+                                            <!-- // เเสดงเต็ม -->
+                                            <% sum += parseInt( i.Item_all_price ); %> 
+                                            <tr>
+                                                <td><%= i.Item_date%></td>
+                                                <td><%= num%></td>
+                                                <td><%= i.Item_On_Stock_ID%></td>
+                                                <td><%= i.It_name%></td>
+                                                <td><%= i.Item_amount%></td>
+                                                <td><%= i.Un_Name%></td>
+                                                <td><%= i.Item_all_price%></td>
+                                            </tr>
+                                            
+                        
+                                        <%}else{%> 
+                                            <!-- เเสดงไม่เต็ม -->
+                                            <% sum += parseInt( i.Item_all_price ); %> 
+                                            <tr>
+                                                <td></td>
+                                                <td><%= num%></td>
+                                                <td><%= i.Item_On_Stock_ID%></td>
+                                                <td><%= i.It_name%></td>
+                                                <td><%= i.Item_amount%></td>
+                                                <td><%= i.Un_Name%></td>
+                                                <td><%= i.Item_all_price%></td>
+                                            </tr>
+                                        <%} %> 
+                        
+                                    <%}else{%>
+
+                                        <tr>
+                                            <% for(let xt = 0;xt < all_column ;xt++){%><td>________</td><%} %> 
+                                            <td><b>ราคารวม <%= sum %>  บาท</b></td>
+                                            <% sum = 0; %> 
+                                        </tr>
+
+                                        <% 
+                                            same = report[t].Item_date 
+                                            isFirst = true;
+                                            num = 0;
+                                            t=t-1;
+                                        %> 
+                        
+                        
+                                    <%}%>
+                        
+                                    <% if( t == report.length-1 ){%> 
+                                        <tr>
+                                            <% for(let xt = 0;xt< all_column ;xt++){%><td>________</td><%} %> 
+                                            <td><b>ราคารวม <%= sum %>  บาท</b></td>
+                                        </tr>
+                                        <% sum = 0; %> 
+                                    <%}%>
+                                    
+                        
+                                <%} %> 
+                        </section>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('#select2').DataTable({
+                "paging": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "responsive": true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                    extend: 'print',
+                    messageTop:
+                    `
+                        <div style="text-align: center;">
+                            <img src="images/logo.jpg" width="200px" height="200px"  >
+                        </div><br>
+                        <h2 style='text-align: center;'>ข้อมูลรายจ่าย</h2>
+                    `,
+
+                    messageBottom: 
+                    `
+                    
+                    `
+                    }
+                ]
+            });
+        })
+    </script>
+
+<%}else if( select === 3){%>
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body">
+                <table id="select3" class="table table-borderless border-top border-5 border-dark " >
+                    <thead class="">
+                        <tr>
+                            <th>วันที่</th>
+                            <th>ลำดับ</th>
+                            <th>เลขที่ใบเสร็จ</th>
+                            <th>ชื่อรายการ</th>
+                            <th>จำนวนเงิน</th>
+                            <th>ผู้ชำระ</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <section>
+                            <%
+                                    // หาค่าซ้ำตัวเเรก  expression
+                                let same;
+                                let isFirst = true;
+                                let num = 0;
+                        
+                                // set value
+                                let all_column = 6;
+                        
+                                if(report.length > 0){
+                                        same=report[0].Exp_Date 
+                                }
+                        
+                            %> 
+                            
+                            <% for(let t=0;t<report.length;t++){%>
+                                <% 
+                                    let i = report[t];
+                                    num+=1;
+                                %> 
+                                <% if(same === report[t].Exp_Date){%>
+                        
+                                    <% if(isFirst === true){isFirst = false;%>
+                                        <!-- // เเสดงเต็ม -->
+                                        <tr>
+                                            <td><%= i.Exp_Date%></td>
+                                            <td><%= num%></td>
+                                            <td><%= i.ID%></td>
+                                            <td><%= i.Exp_Name%></td>
+                                            <td><%= i.Exp_Money%></td>
+                                            <td><%= i.Emp_Fname%> <%= i.Emp_Lname%></td>
+                                        </tr>
+                        
+                                        <% if( t == report.length-1 ){%> 
+                                            <tr>
+                                                <% for(let xt = 0;xt< all_column ;xt++){%><td>________</td><%} %> 
+                                            </tr>
+                                        <%}%>
+                        
+                                    <%}else{%> 
+                                        <!-- เเสดงไม่เต็ม -->
+                                        <tr>
+                                            <td></td>
+                                            <td><%= num%></td>
+                                            <td><%= i.ID%></td>
+                                            <td><%= i.Exp_Name%></td>
+                                            <td><%= i.Exp_Money%></td>
+                                            <td><%= i.Emp_Fname%> <%= i.Emp_Lname%></td>
+                                        </tr>
+                                    <%} %> 
+                        
+                                <%}else{%>
+                                    <% 
+                                        same = report[t].Exp_Date 
+                                        isFirst = true;
+                                        num = 0;
+                                        t=t-1;
+                                    %> 
+                        
+                        
+                                    <tr>
+                                        <% for(let xt = 0;xt< all_column ;xt++){%><td>________</td><%} %> 
+                                    </tr>
+                        
+                                <%}%>
+                        
+                        
+                                
+                        
+                            <%} %> 
+                        </section>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('#select3').DataTable({
+                "paging": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "responsive": true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                    extend: 'print',
+                    messageTop:
+                    `
+                        <div style="text-align: center;">
+                            <img src="images/logo.jpg" width="200px" height="200px"  >
+                        </div><br>
+                        <h2 style='text-align: center;'>ข้อมูลรายจ่าย</h2>
+                    `,
+
+                    messageBottom: 
+                    `
+                    
+                    `
+                    }
+                ]
+            });
+        })
+    </script>
+
+<%}else if( select === 4){%>
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body">
+                <table id="select4" class="table table-borderless border-top border-5 border-dark " >
+                    <thead class="">
+                        <tr>
+                            <th>ประเภท</th>
+                            <th>ลำดับ</th>
+                            <th>รหัสอาหาร</th>
+                            <th>ชื่อ</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <section>
+                            <%
+                                    // หาค่าซ้ำตัวเเรก  expression
+                                let same;
+                                let isFirst = true;
+                                let num = 0;
+                        
+                                // set value
+                                let all_column = 4;
+                        
+                                if(report.length > 0){
+                                        same=report[0].Fd_Category_ID 
+                                }
+                        
+                            %> 
+                            
+                            <% for(let t=0;t<report.length;t++){%>
+                                <% 
+                                    let i = report[t];
+                                    num+=1;
+                                %> 
+                                <% if(same === report[t].Fd_Category_ID){%>
+                        
+                                    <% if(isFirst === true){isFirst = false;%>
+                                        <!-- // เเสดงเต็ม -->
+                                        <tr>
+                                            <td><%= i.Fd_Category%></td>
+                                            <td><%= num%></td>
+                                            <td><%= i.ID%></td>
+                                            <td><%= i.Fd_Name%></td>
+                                        </tr>
+                        
+                                        <% if( t == report.length-1 ){%> 
+                                            <tr>
+                                                <% for(let xt = 0;xt< all_column ;xt++){%><td>________<%} %> 
+                                            </tr>
+                                        <%}%>
+                        
+                                    <%}else{%> 
+                                        <!-- เเสดงไม่เต็ม -->
+                                        <tr>
+                                            <td></td>
+                                            <td><%= num%></td>
+                                            <td><%= i.ID%></td>
+                                            <td><%= i.Fd_Name%></td>
+                                        </tr>
+                                    <%} %> 
+                        
+                                <%}else{%>
+                                    <% 
+                                        same = report[t].Fd_Category_ID 
+                                        isFirst = true;
+                                        num = 0;
+                                        t=t-1;
+                                    %> 
+                        
+                        
+                                    <tr>
+                                        <% for(let xt = 0;xt< all_column ;xt++){%><td>________</td><%} %> 
+                                    </tr>
+                        
+                                <%}%>
+                        
+                        
+                                
+                        
+                            <%} %> 
+                        </section>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('#select4').DataTable({
+                "paging": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "responsive": true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                    extend: 'print',
+                    messageTop:
+                    `
+                        <div style="text-align: center;">
+                            <img src="images/logo.jpg" width="200px" height="200px"  >
+                        </div><br>
+                        <h2 style='text-align: center;'>ข้อมูลอาหาร</h2>
+                    `,
+
+                    messageBottom: 
+                    `
+                    
+                    `
+                    }
+                ]
+            });
+        })
+    </script>
+
+
+
+<%}else if( select === 5){%>
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body">
+                <table id="select5" class="table table-borderless border-top border-5 border-dark " >
+                    <thead class="">
+                        <tr>
+                            <th>รหัสwนักงาน</th>
+                            <th>ชื่อ/สกุล</th>
+                            <th>ที่อยู่</th>
+                            <th>เบอร์โทร</th>
+                            <th>ตำเเหน่ง</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <section>
+                            
+                            <% for(let t=0;t<report.length;t++){%>
+                                <% 
+                                    let i = report[t];
+                                %> 
+                                <tr>
+                                    <td> <%= i.ID%> </td>
+                                    <td><%= i.Emp_Fname%> <%= i.Emp_Lname%></td>
+                                    <td><%= i.Emp_Address%></td>
+                                    <td><%= i.Emp_Tel%></td>
+                                    <td><%= i.Position_Name%></td>
+                                </tr>
+                            <%} %> 
+                        </section>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('#select5').DataTable({
+                "paging": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "responsive": true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                    extend: 'print',
+                    messageTop:
+                    `
+                        <div style="text-align: center;">
+                            <img src="images/logo.jpg" width="200px" height="200px"  >
+                        </div><br>
+                        <h2 style='text-align: center;'>ข้อมูลพนักงาน</h2>
+                    `,
+
+                    messageBottom: 
+                    `
+                    
+                    `
+                    }
+                ]
+            });
+        })
+    </script>
+
+
+
+<% }else if( select === 6){%>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body">
+                <table id="select6" class="table table-borderless border-top border-5 border-dark " >
+                    <thead class="">
+                        <tr>
+                            <th>ประเภท</th>
+                            <th>ลำดับ</th>
+                            <th>รหัสวัตถุดิบ</th>
+                            <th>ชื่อวัตถุดิบ</th>
+                            <th>จำนวน</th>
+                            <th>หน่วยนับ</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <section>
+                            <%
+                                    // หาค่าซ้ำตัวเเรก  expression
+                                let same;
+                                let isFirst = true;
+                                let num = 0;
+                        
+                                // set value
+                                let all_column = 6;
+                        
+                                if(report.length > 0){
+                                        same=report[0].St_ID 
+                                }
+                        
+                            %> 
+                            
+                            <% for(let t=0;t<report.length;t++){%>
+                                <% 
+                                    let i = report[t];
+                                    num+=1;
+                                %> 
+                                <% if(same === report[t].St_ID){%>
+                        
+                                    <% if(isFirst === true){isFirst = false;%>
+                                        <!-- // เเสดงเต็ม -->
+                                        <tr>
+                                            <td><%= i.St_Name%></td>
+                                            <td><%= num%></td>
+                                            <td><%= i.ID%></td>
+                                            <td><%= i.It_name%></td>
+                                            <td><%= i.Item_Amount%></td>
+                                            <td><%= i.Un_Name%></td>
+                                        </tr>
+                        
+                                        <% if( t == report.length-1 ){%> 
+                                            <tr>
+                                                <% for(let xt = 0;xt< all_column ;xt++){%><td>________<%} %> 
+                                            </tr>
+                                        <%}%>
+                        
+                                    <%}else{%> 
+                                        <!-- เเสดงไม่เต็ม -->
+                                        <tr>
+                                            <td></td>
+                                            <td><%= num%></td>
+                                            <td><%= i.ID%></td>
+                                            <td><%= i.It_name%></td>
+                                            <td><%= i.Item_Amount%></td>
+                                            <td><%= i.Un_Name%></td>
+                                        </tr>
+                                    <%} %> 
+                        
+                                <%}else{%>
+                                    <% 
+                                        same = report[t].St_ID 
+                                        isFirst = true;
+                                        num = 0;
+                                        t=t-1;
+                                    %> 
+                        
+                        
+                                    <tr>
+                                        <% for(let xt = 0;xt< all_column ;xt++){%><td>________</td><%} %> 
+                                    </tr>
+                        
+                                <%}%>
+                        
+                        
+                                
+                        
+                            <%} %> 
+                        </section>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('#select6').DataTable({
+                "paging": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "responsive": true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                    extend: 'print',
+                    messageTop:
+                    `
+                        <div style="text-align: center;">
+                            <img src="images/logo.jpg" width="200px" height="200px"  >
+                        </div><br>
+                        <h2 style='text-align: center;'>ข้อมูลวัตถุดิบ</h2>
+                    `,
+
+                    messageBottom: 
+                    `
+                    
+                    `
+                    }
+                ]
+            });
+        })
+    </script>
+
+
+<% } %> 

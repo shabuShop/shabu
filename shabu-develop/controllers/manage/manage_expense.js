@@ -18,7 +18,7 @@ exports.getExpense =async (req, res) => {
          */
         let expense = await (data_manage.getExpense().then((data)=>{return data}));
         // let employee = await (data_employ.getEmployee_admin().then((data)=>{return data}));
-
+        // console.log(expense);
         res.render('template', {
             session_user_id:req.session.user_id,
             session_user:req.session.user,
@@ -35,9 +35,11 @@ exports.getExpense =async (req, res) => {
 
 
 exports.setExpense =async (req, res) => {
+    // console.log();
+    console.log("DEBUGJ",req.body);
+
     if(req.session.role == "admin"){
         if(req.params.action === "add"){
-            console.log(req.body);
             data_manage.setExpense(req.body).then(()=>{
                 res.redirect("/admin/manage_expense");
             });

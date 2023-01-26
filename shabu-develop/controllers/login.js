@@ -11,9 +11,9 @@ exports.logout = (req, res) => {
 
 exports.getLogin = (req, res) => {
     // test
-    // req.session.user_id = "test";
-    // req.session.user = "admin";
-    // req.session.role = "admin";
+    req.session.user_id = 47;
+    req.session.user = "admin";
+    req.session.role = "admin";
     
     if(req.session.user_id){
         res.redirect("/"+req.session.role);
