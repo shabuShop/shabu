@@ -8,7 +8,7 @@ const shaJs = require("sha.js");
 exports.getData_Employee = async function() {
     try {
         let sql = `SELECT em.ID, em.Emp_Fname, em.Emp_Lname, em.Emp_Address, em.Emp_Tel, em.Emp_Username, em.Emp_Password, ps.Position_Name
-        FROM (Employee em),[Position_data] ps WHERE em.Position_ID = ps.ID;
+        FROM (Employee em),[Position_data] ps WHERE em.Position_ID = ps.ID AND Flag_Avail = 1;
        `
         const data = await connection.query(sql);
         // console.log(data);
@@ -29,10 +29,11 @@ exports.getPosition = async function() {
     }
 }
 
+
 exports.setData_Employee = async function(data) {
     try {
-        let sql = `INSERT INTO Employee( Emp_Fname , Emp_Lname , Emp_Address , Emp_Tel , Emp_Username , Emp_Password , Position_ID , flag_login) 
-                   VALUES ("${data.Fname}", "${data.Lname}", "${data.address}", "${data.tel}","${data.username}","",${data.position} , 0);
+        let sql = `INSERT INTO Employee( Emp_Fname , Emp_Lname , Emp_Address , Emp_Tel , Emp_Username , Emp_Password , Position_ID , flag_login , Flag_Avail) 
+                   VALUES ("${data.Fname}", "${data.Lname}", "${data.address}", "${data.tel}","${data.username}","",${data.position} , 0 , 1);
                   `
         const con = await connection.execute(sql);
     } catch (error) {
@@ -41,7 +42,7 @@ exports.setData_Employee = async function(data) {
 }
 exports.deleteData_Employee = async function(data) {
     try {
-        let sql = ` DELETE FROM Employee  WHERE Employee.ID = ${data.id_del};
+        let sql = ` UPDATE Employee SET Flag_Avail = 0 WHERE Employee.ID = ${data.id_del};
                   `
         const con = await connection.execute(sql);
     } catch (error) {
@@ -115,3 +116,41 @@ exports.getLogin_username_password = async function(data) {
         return 0;
     }
 }
+
+
+
+// ===================== Validation ZONE =====================
+
+exports.getValidation_NAME_USERNAME = async function(data) {
+    try {
+        let sql = ` SELECT Employee.[ID] FROM Employee WHERE Flag_Avail = 1 AND Emp_Fname  = "${data.Fname.trim() }"   
+                    AND Emp_Lname = "${data.Lname.trim() }" OR Emp_Username = "${data.username.trim() }"; `
+        const con = await connection.query(sql);
+        let output = true;
+        if(con.length > 0){
+            output = false
+        }
+        return output;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
+exports.getValidation_NAME_update = async function(data) {
+    try {
+        let sql = ` SELECT Employee.[ID] FROM Employee WHERE Flag_Avail = 1 AND Emp_Fname  = "${data.UFname.trim() }"   
+                    AND Emp_Lname = "${data.ULname.trim() }" AND ID <> ${data.id_update}  ; `
+        const con = await connection.query(sql);
+        let output = true;
+        if(con.length > 0){
+            output = false
+        }
+        return output;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
+// ===================== Validation ZONE =====================

@@ -128,7 +128,9 @@ exports.getFood_List = async function(data) {
         // console.log(start,stop);
         // READ
         let sql = ` SELECT Food_list.ID, Food_list.Fd_Name, Food_list.Fd_Category_ID, Food_category.Fd_Category
-                    FROM Food_category INNER JOIN Food_list ON Food_category.[ID] = Food_list.[Fd_Category_ID]  ORDER BY  Food_list.Fd_Category_ID ;
+                    FROM Food_category INNER JOIN Food_list ON Food_category.[ID] = Food_list.[Fd_Category_ID] WHERE Flag_Avail = 1 
+                    ORDER BY  Food_list.Fd_Category_ID;
+                    
                     `
 
         const con = await connection.query(sql);
@@ -148,7 +150,8 @@ exports.getEmployee = async function(data) {
         // console.log(start,stop);
         // READ
         let sql = ` SELECT Employee.ID, Employee.Emp_Fname, Employee.Emp_Lname, Employee.Emp_Address, Employee.Emp_Tel, Position_data.Position_Name
-                    FROM Position_data INNER JOIN Employee ON Position_data.[ID] = Employee.[Position_ID];
+                    FROM Position_data INNER JOIN Employee ON Position_data.[ID] = Employee.[Position_ID]
+                    WHERE Flag_Avail = 1 ;
                     `
         const con = await connection.query(sql);
         return con;
@@ -168,7 +171,7 @@ exports.getItem_On_Stock = async function(data) {
         // READ
         let sql = ` SELECT Item_On_Stock.ID, Item_On_Stock.It_name, Item_On_Stock.St_ID, Count_Unit.Un_Name, Stock_Card_List.St_Name, Item_Amount.Item_Amount
                     FROM (Stock_Card_List INNER JOIN (Count_Unit INNER JOIN Item_On_Stock ON Count_Unit.[ID] = Item_On_Stock.[Un_ID]) ON Stock_Card_List.[ID] = Item_On_Stock.[St_ID]) INNER JOIN Item_Amount ON Item_On_Stock.[ID] = Item_Amount.[Item_On_Stock_ID]
-                    ORDER BY Item_On_Stock.St_ID;
+                    WHERE Item_On_Stock.Flag_Avail = 1 AND Stock_Card_List.Flag_Avail = 1 ORDER BY Item_On_Stock.St_ID;
         
                     `
         const con = await connection.query(sql);

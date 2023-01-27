@@ -231,3 +231,16 @@
     }
   
 </script>
+
+
+<!-- ============================= ERROR Zone =============================-->
+<p class="error d-none"></p>
+<% if(error === 1){%>
+        <script>
+            $('.error').click(function() {
+                toastr.error('มีชื่อบุฟเฟ่ต์นี้อยู่เเล้ว')
+            });
+            document.querySelector('.error').click()
+        </script>
+<%}%>
+<!-- ============================= ERROR Zone =============================-->

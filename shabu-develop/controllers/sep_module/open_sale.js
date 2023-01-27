@@ -40,6 +40,9 @@ exports.setOpen_sale =async (req, res) => {
             res.redirect("/admin/open_sale");
 
         }else if(req.params.action == "close"){
+
+            // close  every table have to free before close 
+            
             // [Object: null prototype] { close_n: '500' }
             await data_open_sale.setClose_sale({
                 time_close:getDate.currentTime,

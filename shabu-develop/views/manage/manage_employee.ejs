@@ -1,7 +1,9 @@
 
-<div class="container-fluid">
 
+<div class="container-fluid">
     
+    
+
     <div class="d-flex pt-2 justify-content-center">
         <h3>ข้อมูลพนักงาน</h3>
         
@@ -198,7 +200,14 @@
 
 
 
+
+
+
+
 <script>
+    
+
+    
 
     $(function () {
       $('#employee').DataTable({
@@ -284,3 +293,23 @@
     }
   
 </script>
+
+
+<!-- ============================= ERROR Zone =============================-->
+<p class="error d-none"></p>
+<% if(error === 1){%>
+        <script>
+            $('.error1').click(function() {
+                toastr.error('มีชื่อ/นามสุกลพนักงานนี้อยู่เเล้ว หรือ มี Username นี้อยู่เเล้ว')
+            });
+            document.querySelector('.error1').click()
+        </script>
+<%}else if(error === 2){%>
+    <script>
+        $('.error').click(function() {
+            toastr.error('มีชื่อ/นามสุกลพนักงานนี้อยู่เเล้ว')
+        });
+        document.querySelector('.error').click()
+    </script>
+<%} %> 
+<!-- ============================= ERROR Zone =============================-->

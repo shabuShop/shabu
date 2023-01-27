@@ -11,7 +11,8 @@ exports.getFood =async (req, res) => {
             session_user:req.session.user,
             session_role:req.session.role,
             data_food:data_food,
-            food_category,food_category,
+            food_category:food_category,
+            error: parseInt( req.query.error ) || 0 ,
             file:'manage/manage_food'
         });
     }else{
@@ -21,17 +22,44 @@ exports.getFood =async (req, res) => {
 exports.setFood =async (req, res) => {
     if(req.session.role == "admin"){
         if(req.params.action === "add"){
-            data_manage.setFood(req.body).then(()=>{
-                res.redirect("/admin/manage_food");
-            });
+
+            // Validation
+            let isVali = await data_manage.getValidation_NAME(req.body).then((data)=>{return data})
+            switch(isVali){
+                case true:
+                    data_manage.setFood(req.body).then(()=>{
+                        res.redirect("/admin/manage_food");
+                    });
+                    break;
+                case false:
+                    res.redirect("/admin/manage_food?error=1");
+                    break;
+            
+            }
+
         }else if(req.params.action === "delete"){
+            
             data_manage.deleteFood(req.body).then(()=>{
                 res.redirect("/admin/manage_food");
             });
+
         }else if(req.params.action === "update"){
-            data_manage.updateFood(req.body).then(()=>{
-                res.redirect("/admin/manage_food");
-            });
+
+            let isVali = await data_manage.getValidation_NAME_update(req.body).then((data)=>{return data})
+
+            switch(isVali){
+                case true:
+                    data_manage.updateFood(req.body).then(()=>{
+                        res.redirect("/admin/manage_food");
+                    });
+                    break;
+                case false:
+                    res.redirect("/admin/manage_food?error=1");
+                    break;
+
+            }
+
+            
         }
     }else{
         res.redirect("/");

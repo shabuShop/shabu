@@ -4,7 +4,7 @@ connection = db.connection;
 exports.getMaterial = async function() {
     try {
         let sql = ` SELECT Stock_Card_List.[ID], Stock_Card_List.[St_Name]
-                    FROM Stock_Card_List;
+                    FROM Stock_Card_List WHERE Flag_Avail = 1 ;
                   `
         const con = await connection.query(sql);
         return con;
@@ -17,8 +17,8 @@ exports.getMaterial = async function() {
 
 exports.setMaterial  = async function(data) {
     try {
-        let sql = `INSERT INTO Stock_Card_List( St_Name) 
-                   VALUES ("${data.type}");
+        let sql = `INSERT INTO Stock_Card_List( St_Name , Flag_Avail ) 
+                   VALUES ( "${data.type}" , 1 );
                   `
         const con = await connection.execute(sql);
     } catch (error) {
@@ -26,9 +26,10 @@ exports.setMaterial  = async function(data) {
         console.log(error);
     }
 }
+
 exports.deleteMaterial  = async function(data) {
     try {
-        let sql = ` DELETE FROM Stock_Card_List  WHERE Stock_Card_List.ID = ${data.id_del};
+        let sql = ` UPDATE Stock_Card_List SET Flag_Avail = 0  WHERE Stock_Card_List.ID = ${data.id_del};
                   `
         const con = await connection.execute(sql);
     } catch (error) {
@@ -47,28 +48,21 @@ exports.updateMaterial  = async function(data) {
         console.log(error);
     }
 }
+
+
+
+// ================================= Manage Detail =================================
+
+
+
 exports.getMaterial_detail = async function(data) {
 
     try {
         let sql = ` SELECT Item_On_Stock.ID, Item_On_Stock.It_name, Count_Unit.Un_Name, Item_Amount.Item_Amount
                     FROM (Count_Unit INNER JOIN Item_On_Stock ON Count_Unit.[ID] = Item_On_Stock.[Un_ID]) INNER JOIN Item_Amount ON Item_On_Stock.[ID] = Item_Amount.[Item_On_Stock_ID]
-                    WHERE Item_On_Stock.St_ID =${data.id_detail};
+                    WHERE Flag_Avail = 1 AND Item_On_Stock.St_ID =${data.id_detail} ;
                   `
 
-        const con = await connection.query(sql);
-        return con;
-    } catch (error) {
-        console.log(error);
-        return [];
-    }
-}
-
-
-exports.getAll_Material_detail = async function() {
-    try {
-        let sql = ` SELECT Item_On_Stock.ID, Item_On_Stock.It_name, Count_Unit.Un_Name
-                    FROM Count_Unit INNER JOIN Item_On_Stock ON Count_Unit.[ID] = Item_On_Stock.[Un_ID];
-                  `
         const con = await connection.query(sql);
         return con;
     } catch (error) {
@@ -80,8 +74,8 @@ exports.getAll_Material_detail = async function() {
 
 exports.setMaterial_detail  = async function(data) {
     try {
-        let sql = ` INSERT  INTO Item_On_Stock ( It_name, St_ID, Un_ID ) 
-                    VALUES("${data.type}" ,${data.id_material}  ,${data.unit});
+        let sql = ` INSERT  INTO Item_On_Stock ( It_name, St_ID, Un_ID , Flag_Avail) 
+                    VALUES("${data.type}" ,${data.id_material}  ,${data.unit}  , 1 );
                   `
         const con = await connection.execute(sql);
         console.log(con);
@@ -91,7 +85,7 @@ exports.setMaterial_detail  = async function(data) {
 }
 exports.deleteMaterial_detail  = async function(data) {
     try {
-        let sql = ` DELETE FROM Item_On_Stock  WHERE Item_On_Stock.ID = ${data.id_del};
+        let sql = ` UPDATE Item_On_Stock SET Flag_Avail = 0  WHERE Item_On_Stock.ID = ${data.id_del};
                   `
         const con = await connection.execute(sql);
     } catch (error) {
@@ -137,6 +131,7 @@ exports.setMaterial_amount  = async function(data) {
         console.log(error);
     }
 }
+
 exports.deleteMaterial_amount = async function(data) {
     try {
         let sql = ` DELETE FROM Item_Amount  WHERE Item_Amount.Item_On_Stock_ID = ${data.id_del};
@@ -174,3 +169,77 @@ exports.getCount_unit = async function(data) {
         return [];
     }
 }
+
+
+
+
+// ===================== Validation ZONE =====================
+
+exports.getManageValidation_NAME = async function(data) {
+    try {
+        let sql = ` SELECT Stock_Card_List.[ID] FROM Stock_Card_List WHERE Flag_Avail = 1 AND St_Name  = "${data.type.trim() }" `
+    
+        const con = await connection.query(sql);
+        let output = true;
+        if(con.length > 0){
+            output = false
+        }
+        return output;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
+exports.getManageValidation_NAME_update = async function(data) {
+    try {
+        let sql = ` SELECT Stock_Card_List.[ID] FROM Stock_Card_List WHERE Flag_Avail = 1 AND St_Name  = "${data.Utype.trim()}"
+                    AND ID <> ${data.id_update}; `
+
+        const con = await connection.query(sql);
+        let output = true;
+        if(con.length > 0){
+            output = false
+        }
+        return output;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
+
+exports.getDetail_Validation_NAME = async function(data) {
+    try {
+        let sql = ` SELECT  Item_On_Stock.[ID] FROM Item_On_Stock WHERE Flag_Avail = 1 AND It_name  = "${data.type.trim() }" `
+    
+        const con = await connection.query(sql);
+        let output = true;
+        if(con.length > 0){
+            output = false
+        }
+        return output;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
+exports.getDetail_Validation_NAME_update = async function(data) {
+    try {
+        let sql = ` SELECT  Item_On_Stock.[ID] FROM Item_On_Stock WHERE Flag_Avail = 1 AND It_name  = "${data.Utype.trim()}"
+                    AND ID <> ${data.id_update}; `
+
+        const con = await connection.query(sql);
+        let output = true;
+        if(con.length > 0){
+            output = false
+        }
+        return output;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
+// ===================== Validation ZONE =====================

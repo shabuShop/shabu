@@ -52,7 +52,7 @@
 </div>
 
 
-<form id="delete" action="manage_employee/food" method="post" class="d-inline">
+<form id="delete" action="manage_food/delete" method="post" class="d-inline">
     <input type="number" name="id_del" class="d-none" value="">
 </form>
 
@@ -222,3 +222,18 @@
     }
   
 </script>
+
+
+
+
+<!-- ============================= ERROR Zone =============================-->
+<p class="error d-none"></p>
+<% if(error === 1){%>
+        <script>
+            $('.error').click(function() {
+                toastr.error('มีชื่ออาหารนี้อยู่เเล้ว')
+            });
+            document.querySelector('.error').click()
+        </script>
+<%} %> 
+<!-- ============================= ERROR Zone =============================-->

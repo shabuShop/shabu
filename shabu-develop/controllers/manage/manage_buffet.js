@@ -10,26 +10,49 @@ exports.getBuffet =async (req, res) => {
             session_user:req.session.user,
             session_role:req.session.role,
             data_buffet:data_buffet,
+            error: parseInt( req.query.error ) || 0 ,
             file:'manage/manage_buffet'
         });
     }else{
         res.redirect("/");
     }
 };
-exports.setBuffet =(req, res) => {
+exports.setBuffet = async (req, res) => {
     if(req.session.role == "admin"){
         if(req.params.action === "add"){
-            data_manage.setBuffet(req.body).then(()=>{
-                res.redirect("/admin/manage_buffet");
-            });
+            
+            let isVali = await data_manage.getValidation_NAME(req.body).then((data)=>{return data})
+            switch(isVali){
+                case true:
+                    data_manage.setBuffet(req.body).then(()=>{
+                        res.redirect("/admin/manage_buffet");
+                    });
+                    break;
+                case false:
+                    res.redirect("/admin/manage_buffet?error=1");
+                    break;
+            }
+
         }else if(req.params.action === "delete"){
             data_manage.deleteBuffet(req.body).then(()=>{
                 res.redirect("/admin/manage_buffet");
             });
         }else if(req.params.action === "update"){
-            data_manage.updateBuffet(req.body).then(()=>{
-                res.redirect("/admin/manage_buffet");
-            });
+
+            let isVali = await data_manage.getValidation_NAME_update(req.body).then((data)=>{return data})
+          
+            switch(isVali){
+                case true:
+                    data_manage.updateBuffet(req.body).then(()=>{
+                        res.redirect("/admin/manage_buffet");
+                    });
+                    break;
+                case false:
+                    res.redirect("/admin/manage_buffet?error=1");
+                    break;
+                
+            }
+            
         }
     }else{
         res.redirect("/");

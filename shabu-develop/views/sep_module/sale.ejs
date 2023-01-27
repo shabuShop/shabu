@@ -3,7 +3,7 @@
 
 <!-- <h1>การขาย</h1> -->
 <% if(status_sale === 0 || status_sale === -1){ %>
-
+    <br>
     <div class="row">
         <div class="col-1"></div>
         <div id="alert" class="alert alert-danger col-10">
@@ -16,9 +16,23 @@
 
 <%}else if(status_sale === 1){%>
 
-<div class="container pt-5">
+<div class="container pt-1">
+    <div class="card card-body">
+        <h3 class=" text-center">จำนวนโต๊ะทั้งหมด <%=table.length%></h3>
+        <div class="d-flex justify-content-center">
+            <h5 class="mr-4">
+                <i class="bi bi-circle-fill text-success text-sm"></i>
+                ว่าง : <%=free_table%> 
+            </h5>
+            <h5>
+                <i class="bi bi-circle-fill text-danger text-sm"></i>
+                ไม่ว่าง : <%=busy_table%> 
+            </h5>
+        </div>
+    </div>
     <div class="row ">
         
+
         <% for(let i of table){%> 
             <a class="col-md-3 col-sm-3 col-4 mt-3 " href="/<%= session_role %>/sale_table?id=<%=i.TB_ID%>" >
                 <% if(i.TS_Status === 0){%>

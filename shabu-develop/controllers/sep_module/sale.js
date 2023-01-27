@@ -10,6 +10,17 @@ exports.getSale =async (req, res,next) => {
         let status_sale = await (data_open_sale.getStatus_sale({date_time:getDate.date}).then((data)=>{return data}));
         
         let table = await (data_table.getTable_status({}).then((data)=>{return data}));
+        let free_table = 0; 
+        let busy_table = 0; 
+        for(let i of table){
+            if(i.TS_Status === 0 ){
+                free_table+=1;
+            }else{
+                busy_table+=1;
+            }
+        }
+
+        // console.log(table);
         // [ { ID: 1, TB_ID: 1, TS_Status: 0 },Table_Name ]
         res.render('template', {
             session_user_id:req.session.user_id,
@@ -17,6 +28,8 @@ exports.getSale =async (req, res,next) => {
             session_role:req.session.role,
             table:table,
             status_sale:status_sale,
+            free_table:free_table,
+            busy_table:busy_table,
             file:'sep_module/sale'
         });
     }else{
