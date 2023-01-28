@@ -11,7 +11,8 @@ connection = db.connection;
 exports.getTable_status = async function(data) {
     try {
         let sql = ` SELECT Table_Status.ID, Table_Status.TB_ID, Table_Status.TS_Status, Table.Table_Name
-                    FROM [Table] INNER JOIN Table_Status ON Table.[ID] = Table_Status.[TB_ID];
+                    FROM [Table] INNER JOIN Table_Status ON Table.[ID] = Table_Status.[TB_ID]
+                    WHERE Table.Flag_Avail = 1;
                   `
         const con = await connection.query(sql);
         // console.log(con);
@@ -139,7 +140,17 @@ exports.deleteTable_sale = async function(data) {
         console.log(error);
     }
 }
+exports.deleteTable_sale_flag_0 = async function(data) {
+    try {
 
+        console.log(data);
+        let sql = ` DELETE FROM Table_Sale  WHERE TB_ID = ${data.table_id} AND Flag = 0  ;
+                  `
+        const con = await connection.execute(sql);
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 // =================================== Sale ===================================//
 

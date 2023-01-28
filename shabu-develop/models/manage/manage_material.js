@@ -60,7 +60,7 @@ exports.getMaterial_detail = async function(data) {
     try {
         let sql = ` SELECT Item_On_Stock.ID, Item_On_Stock.It_name, Count_Unit.Un_Name, Item_Amount.Item_Amount
                     FROM (Count_Unit INNER JOIN Item_On_Stock ON Count_Unit.[ID] = Item_On_Stock.[Un_ID]) INNER JOIN Item_Amount ON Item_On_Stock.[ID] = Item_Amount.[Item_On_Stock_ID]
-                    WHERE Flag_Avail = 1 AND Item_On_Stock.St_ID =${data.id_detail} ;
+                    WHERE Item_On_Stock.Flag_Avail = 1 AND Item_On_Stock.St_ID =${data.id_detail} ;
                   `
 
         const con = await connection.query(sql);

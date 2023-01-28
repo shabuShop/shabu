@@ -1,11 +1,12 @@
 
 const data_manage = require('../../models/manage/manage_food')
+const data_foodCategory = require('../../models/manage/manage_foodCategory')
 
 
 exports.getFood =async (req, res) => {
     if(req.session.role == "admin"){
         let data_food = await (data_manage.getFood().then((data)=>{return data}));
-        let food_category = await (data_manage.getFood_Category().then((data)=>{return data}));
+        let food_category = await (data_foodCategory.getFood_category().then((data)=>{return data}));
         res.render('template', {
             session_user_id:req.session.user_id,
             session_user:req.session.user,

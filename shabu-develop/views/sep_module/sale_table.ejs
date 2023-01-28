@@ -1,6 +1,8 @@
 
 <div class="container-fluid pb-2">
     <!-- <h3 class="text-center pt-3">ชื่อโต๊ะ <%= table.Table_Name %> </h3> -->
+
+
     <% if( table.TS_Status === 0 ){%>
         <form id="form_use" action="/<%= session_role%>/sale_table/use" method="post">
             <input type="number" class="d-none" name="id" value="<%= table.TB_ID%>">
@@ -21,10 +23,16 @@
         <h3 class="text-center  ">โต๊ะ <%= table.Table_Name %> : <%= date %></h3>
         
         
-        <div class="d-flex  justify-content-start mb-1">
+        <div class="d-flex  justify-content-between mb-1">
             <button  type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add" onclick="add()">
                 เพิ่มรายการอาหาร
             </button>
+
+            <form action="/<%= session_role%>/sale_table/cancle" method="post">
+                <input type="number" class="d-none" name="table_id" value="<%= table.TB_ID%>">
+                <button type="submit" class="btn btn-danger w-100" onclick="return confirm('ยืนยันยกเลิกรายการ')" >ยกเลิกรายการ</button>
+            </form>
+
         </div>
 
        
@@ -130,7 +138,6 @@
             <input type="number" class="d-none" name="table_id" value="<%= table.TB_ID%>">
         </form>
 
-
         <div class="card card-body w-50 ">
             <h2 class="text-center" >ราคารวมทั้งหมด</h2>
             <br>
@@ -154,6 +161,7 @@
 
 
         </div>
+
 
 
     

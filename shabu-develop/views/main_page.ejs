@@ -2,7 +2,13 @@
 <%- include('includes/header'); %>
 
 
-<h1>Welcome <%= session_user %> </h1>
+<div class="container">
+    <div class="card card-body text-center">
+        <h1><%= session_role %>  </h1>
+        <h1><%= session_user %>  </h1>
+    </div>
+
+</div>
 
 
 <%- include('includes/footer'); %>

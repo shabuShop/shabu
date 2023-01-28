@@ -12,6 +12,9 @@ const conManage_food = require('../controllers/manage/manage_food')
 const conManage_material = require('../controllers/manage/manage_material')
 const conManage_expense = require('../controllers/manage/manage_expense')
 
+const conManage_foodCategory = require('../controllers/manage/manage_foodCategory')
+const conManage_table = require('../controllers/manage/manage_table')
+const conManage_countingUnit = require('../controllers/manage/manage_countingUnit')
 
 
 
@@ -53,6 +56,18 @@ router.post('/material_detail/:action', conManage_material.setSet_materials_deta
 
 router.get('/manage_expense', conManage_expense.getExpense);
 router.post('/manage_expense/:action', conManage_expense.setExpense);
+
+
+router.get('/manage_foodCategory', conManage_foodCategory.getFoodCategory);
+router.post('/manage_foodCategory/:action', conManage_foodCategory.setFoodCategory);
+
+router.get('/manage_table', conManage_table.getTable);
+router.post('/manage_table/:action', conManage_table.setTable);
+
+router.get('/manage_countingUnit', conManage_countingUnit.getCountingUnit);
+router.post('/manage_countingUnit/:action', conManage_countingUnit.setCountingUnit);
+
+
 
 
 // ====================== Route รับวัตถุดิบเข้า======================

@@ -21,6 +21,7 @@ exports.getEmployee = async (req, res) => {
         res.redirect("/");
     }
 };
+
 exports.setEmployee =async (req, res) => {
     if(req.session.role == "admin"){
         if(req.params.action === "add"){

@@ -1,5 +1,6 @@
 
 const data_manage = require('../../models/manage/manage_material')
+const data_countingUnit = require('../../models/manage/manage_countingUnit')
 
 
 
@@ -72,7 +73,7 @@ exports.getMaterial_detail=async (req, res) => {
     if(req.session.role == "admin"){
 
         let material = await (data_manage.getMaterial_detail(req.query).then((data)=>{return data}));
-        let count_unit = await (data_manage.getCount_unit().then((data)=>{return data}));
+        let count_unit = await (data_countingUnit.getCount_Unit().then((data)=>{return data}));
 
         // let data_food = await (data_manage_food.getFood().then((data)=>{return data}));
         // buffet_dt.Food_list_ID

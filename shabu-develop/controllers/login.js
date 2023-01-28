@@ -11,12 +11,12 @@ exports.logout = (req, res) => {
 
 exports.getLogin = (req, res) => {
     // test
-    req.session.user_id = 47;
-    req.session.user = "ภูริกรณ์ ทองย้อย";
-    req.session.role = "admin";
+    // req.session.user_id = 47;
+    // req.session.user = "ภูริกรณ์ ทองย้อย";
+    // req.session.role = "admin";
     
     if(req.session.user_id){
-        res.redirect("/"+req.session.role);
+        res.redirect("/"+req.session.role+"/sale");
     }else{
         res.render('login', {status_login:[],error_code:0});
     }

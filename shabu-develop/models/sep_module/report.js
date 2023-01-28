@@ -128,7 +128,7 @@ exports.getFood_List = async function(data) {
         // console.log(start,stop);
         // READ
         let sql = ` SELECT Food_list.ID, Food_list.Fd_Name, Food_list.Fd_Category_ID, Food_category.Fd_Category
-                    FROM Food_category INNER JOIN Food_list ON Food_category.[ID] = Food_list.[Fd_Category_ID] WHERE Flag_Avail = 1 
+                    FROM Food_category INNER JOIN Food_list ON Food_category.[ID] = Food_list.[Fd_Category_ID] WHERE Food_list.Flag_Avail = 1 
                     ORDER BY  Food_list.Fd_Category_ID;
                     
                     `

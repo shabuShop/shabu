@@ -6,7 +6,7 @@ exports.getFood = async function() {
     try {
         let sql = `SELECT Food_list.ID, Food_list.Fd_Name, Food_list.Fd_Status, Food_category.Fd_Category
                    FROM Food_category INNER JOIN Food_list ON Food_category.[ID] = Food_list.[Fd_Category_ID]
-                   WHERE Flag_Avail = 1;
+                   WHERE Food_list.Flag_Avail = 1;
                   `
 
         const con = await connection.query(sql);
@@ -31,6 +31,7 @@ exports.getFood_Category = async function() {
         return [];
     }
 }
+
 exports.setFood  = async function(data) {
     try {
         let sql = `INSERT INTO Food_list( Fd_Name , Fd_Status , Fd_Category_ID , Flag_Avail) 

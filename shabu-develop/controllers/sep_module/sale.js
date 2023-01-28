@@ -170,11 +170,19 @@ exports.setSale_table =async (req, res,next) => {
 
         }else if(req.params.action === "done"){
 
-            console.log("Debug",req.body);
             
             // ACTION
             await (data_table.update_Sale_Flag_Done(req.body).then(()=>{}));
             await (data_table.updateTable_status_0(req.body).then(()=>{}));
+
+            // RENDER
+            res.redirect(`/${req.session.role}/sale`);
+
+        }else if(req.params.action === "cancle"){
+            
+            // ACTION
+            await (data_table.updateTable_status_0(req.body).then(()=>{}));
+            await (data_table.deleteTable_sale_flag_0(req.body).then(()=>{}));
 
             // RENDER
             res.redirect(`/${req.session.role}/sale`);

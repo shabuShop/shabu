@@ -146,3 +146,16 @@ function vali(mode){
         
 }
 </script>
+
+
+<!-- ============================= ERROR Zone =============================-->
+<p class="error d-none"></p>
+<% if(error === 1){%>
+        <script>
+            $('.error').click(function() {
+                toastr.error('โต๊ะยังไม่ว่าง ไม่สามารถปิดการขายได้')
+            });
+            document.querySelector('.error').click()
+        </script>
+<%} %> 
+<!-- ============================= ERROR Zone =============================-->

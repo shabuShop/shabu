@@ -298,12 +298,12 @@
 <!-- ============================= ERROR Zone =============================-->
 <p class="error d-none"></p>
 <% if(error === 1){%>
-        <script>
-            $('.error1').click(function() {
-                toastr.error('มีชื่อ/นามสุกลพนักงานนี้อยู่เเล้ว หรือ มี Username นี้อยู่เเล้ว')
-            });
-            document.querySelector('.error1').click()
-        </script>
+    <script>
+        $('.error').click(function() {
+            toastr.error('มีชื่อ/นามสุกลพนักงานนี้อยู่เเล้ว หรือ มี Username นี้อยู่เเล้ว')
+        });
+        document.querySelector('.error').click()
+    </script>
 <%}else if(error === 2){%>
     <script>
         $('.error').click(function() {
