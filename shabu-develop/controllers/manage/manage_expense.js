@@ -24,7 +24,7 @@ exports.getExpense =async (req, res) => {
             session_user:req.session.user,
             session_role:req.session.role,
             expense:expense,
-            date_time:getDate.date,
+            date_time:getDate.date(),
             file:'manage/manage_expense'
         });
     }else{

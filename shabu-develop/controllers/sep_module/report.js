@@ -5,11 +5,8 @@ const data_report = require('../../models/sep_module/report');
 const getDate = require('../../config/getDate');
 
 
-
 exports.getReport = async (req, res,next) => {
     if(req.session.role == "admin"){
-
-        // console.log("DEBUG" , req.query);
 
         if( req.query.select ){
             let report;
@@ -46,6 +43,8 @@ exports.getReport = async (req, res,next) => {
                 select:parseInt(req.query.select),
                 date_start:req.query.date_start,
                 date_stop:req.query.date_stop,
+                date:getDate.date(),
+                time:getDate.currentTime(),
                 file:'sep_module/report'
             });
 

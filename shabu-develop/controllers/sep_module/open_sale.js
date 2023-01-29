@@ -8,14 +8,14 @@ exports.getOpen_sale =async (req, res,next) => {
     if(req.session.role == "admin"){
         
         // get หมวดหมู่
-        let open_sale = await (data_open_sale.getOpen_sale({date_time:getDate.date}).then((data)=>{return data}));
+        let open_sale = await (data_open_sale.getOpen_sale({date_time:getDate.date()}).then((data)=>{return data}));
 
         res.render('template', {
             session_user_id:req.session.user_id,
             session_user:req.session.user,
             session_role:req.session.role,
             open_sale:open_sale,
-            date_time:getDate.date,
+            date_time:getDate.date(),
             error: parseInt( req.query.error ) || 0 ,
             file:'sep_module/open_sale'
             
@@ -33,8 +33,8 @@ exports.setOpen_sale =async (req, res) => {
         if(req.params.action == "open"){
             // [Object: null prototype] { open_n: '500' }
             await data_open_sale.setOpen_sale({
-                time_open:getDate.currentTime,
-                date_time:getDate.date,
+                time_open:getDate.currentTime(),
+                date_time:getDate.date(),
                 money_open:req.body.open_n
             }).then(()=>{});
 
@@ -54,8 +54,8 @@ exports.setOpen_sale =async (req, res) => {
             }
             if( isFree_table === true){
                 await data_open_sale.setClose_sale({
-                    time_close:getDate.currentTime,
-                    date_time:getDate.date,
+                    time_close:getDate.currentTime(),
+                    date_time:getDate.date(),
                     money_close:req.body.close_n
                 }).then(()=>{});
                 res.redirect("/admin/open_sale");

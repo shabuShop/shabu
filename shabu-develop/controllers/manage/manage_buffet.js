@@ -59,9 +59,6 @@ exports.setBuffet = async (req, res) => {
     }
 };
 
-
-
-
 // To get value that match betweed All Food  and Food in Buffet now
 exports.getBuffet_detail=async (req, res) => {
     if(req.session.role == "admin"){

@@ -12,19 +12,19 @@ const getDate = require('../../config/getDate');
 exports.getStock =async (req, res,next) => {
     if(req.session.role == "admin"){
 
-        let status_sale = await (data_open_sale.getStatus_sale({date_time:getDate.date}).then((data)=>{return data}));
+        let status_sale = await (data_open_sale.getStatus_sale({date_time:getDate.date()}).then((data)=>{return data}));
 
         // get หมวดหมู่
         let type_material = await (data_material.getMaterial().then((data)=>{return data}));
         
-        let done_stock = await (data_stock.GetMaterial_stock_date({date_time:getDate.date}).then((data)=>{return data}));
+        let done_stock = await (data_stock.GetMaterial_stock_date({date_time:getDate.date()}).then((data)=>{return data}));
 
         res.render('template', {
             session_user_id:req.session.user_id,
             session_user:req.session.user,
             session_role:req.session.role,
             type_material:type_material,
-            date_time:getDate.date,
+            date_time:getDate.date(),
             done_stock:done_stock,
             status_sale:status_sale,
             file:'sep_module/stock'
@@ -38,7 +38,7 @@ exports.getStock_detail =async (req, res,next) => {
     if(req.session.role === "admin"){
 
         // ===================================== vailidation stock =====================================
-        let done_stock = await (data_stock.GetMaterial_stock_date({date_time:getDate.date}).then((data)=>{return data}));
+        let done_stock = await (data_stock.GetMaterial_stock_date({date_time:getDate.date()}).then((data)=>{return data}));
         if( done_stock.indexOf(parseInt(req.query.id_detail)) >= 0 ){
             res.redirect("/");
             return ;
@@ -48,7 +48,7 @@ exports.getStock_detail =async (req, res,next) => {
 
         let material = await (data_material.getMaterial_detail(req.query).then((data)=>{return data}));
         // { ID: 28, It_name: 'เกลือ', Un_Name: 'ถุง', Item_Amount: 0 },
-        let add_stock = await (data_set_material.getAdd_stock({date_time:getDate.date,typeMaterial:req.query.id_detail}).then((data)=>{return data}));
+        let add_stock = await (data_set_material.getAdd_stock({date_time:getDate.date(),typeMaterial:req.query.id_detail}).then((data)=>{return data}));
         /**
          * {
                 ID: 20,
@@ -68,7 +68,7 @@ exports.getStock_detail =async (req, res,next) => {
             session_user_id:req.session.user_id,
             session_user:req.session.user,
             session_role:req.session.role,
-            date_time:getDate.date,
+            date_time:getDate.date(),
             material:material,
             material_name:req.query.material_detail,
             material_ID:req.query.id_detail,
@@ -146,7 +146,7 @@ exports.getStock_summary =async (req, res,next) => {
                 session_user:req.session.user,
                 session_role:req.session.role,
                 type_material:type_material,
-                date_time:getDate.date,
+                date_time:getDate.date(),
                 get_stock:[],
                 file:'sep_module/stock_summary'
             });

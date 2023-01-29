@@ -7,7 +7,7 @@ const data_open_sale = require('../../models/sep_module/open_sale');
 exports.getSale =async (req, res,next) => {
     
     if(req.session.role){
-        let status_sale = await (data_open_sale.getStatus_sale({date_time:getDate.date}).then((data)=>{return data}));
+        let status_sale = await (data_open_sale.getStatus_sale({date_time:getDate.date()}).then((data)=>{return data}));
         
         let table = await (data_table.getTable_status({}).then((data)=>{return data}));
         let free_table = 0; 
@@ -40,7 +40,7 @@ exports.getSale =async (req, res,next) => {
 
 exports.getSale_table =async (req, res,next) => {
 
-    let status_sale = await (data_open_sale.getStatus_sale({date_time:getDate.date}).then((data)=>{return data}));
+    let status_sale = await (data_open_sale.getStatus_sale({date_time:getDate.date()}).then((data)=>{return data}));
     
     if(req.session.role && status_sale === 1){
         
@@ -95,8 +95,8 @@ exports.getSale_table =async (req, res,next) => {
                 data_sale:data_sale,
                 sale_paid:sale_paid,
                 sale_detail:sale_detail,
-                date:getDate.date,
-                time:getDate.currentTime,
+                date:getDate.date(),
+                time:getDate.currentTime(),
                 file:'sep_module/sale_table'
             });
 
@@ -122,8 +122,8 @@ exports.setSale_table =async (req, res,next) => {
             
         }else if(req.params.action === "add"){
 
-            req.body.date = getDate.date;
-            req.body.time = getDate.currentTime;
+            req.body.date = getDate.date();
+            req.body.time = getDate.currentTime();
             await (data_table.addTable_sale(req.body).then((data)=>{return data}));
             res.redirect(`/${req.session.role}/sale_table?id=${req.body.table_id}`);
 
@@ -134,8 +134,8 @@ exports.setSale_table =async (req, res,next) => {
 
         }else if(req.params.action === "paid"){
 
-            req.body.date = getDate.date;
-            req.body.time = getDate.currentTime;
+            req.body.date = getDate.date();
+            req.body.time = getDate.currentTime();
 
             
             let data_sale = await (data_table.getTable_sale(req.body).then((data)=>{return data}));

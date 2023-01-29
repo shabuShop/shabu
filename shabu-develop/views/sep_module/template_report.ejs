@@ -112,10 +112,14 @@
                     extend: 'print',
                     messageTop:
                     `
+                        <p style='text-align: right;'>ออกรายงานวันที่ <%=date%> เวลา <%=time%> </p>
                         <div style="text-align: center;">
                             <img src="images/logo.jpg" width="200px" height="200px"  >
                         </div><br>
                         <h2 style='text-align: center;'>ข้อมูลการขาย</h2>
+
+                        <p style='text-align: left;'>ช่วงข้อมูลของรายงาน <%=date_start%> - <%=date_stop%> </p>
+                        
                     `,
 
                     messageBottom: 
@@ -247,10 +251,12 @@
                     extend: 'print',
                     messageTop:
                     `
+                        <p style='text-align: right;'>ออกรายงานวันที่ <%=date%> เวลา <%=time%> </p>
                         <div style="text-align: center;">
                             <img src="images/logo.jpg" width="200px" height="200px"  >
                         </div><br>
                         <h2 style='text-align: center;'>ข้อมูลรายจ่าย</h2>
+                        <p style='text-align: left;'>ช่วงข้อมูลของรายงาน <%=date_start%> - <%=date_stop%> </p>
                     `,
 
                     messageBottom: 
@@ -371,10 +377,12 @@
                     extend: 'print',
                     messageTop:
                     `
+                        <p style='text-align: right;'>ออกรายงานวันที่ <%=date%> เวลา <%=time%> </p>
                         <div style="text-align: center;">
                             <img src="images/logo.jpg" width="200px" height="200px"  >
                         </div><br>
                         <h2 style='text-align: center;'>ข้อมูลรายจ่าย</h2>
+                        <p style='text-align: left;'>ช่วงข้อมูลของรายงาน <%=date_start%> - <%=date_stop%> </p>
                     `,
 
                     messageBottom: 
@@ -390,10 +398,11 @@
 <%}else if( select === 4){%>
     <div class="row">
         <div class="col-12">
-            <div class="card card-body">
+            <div class="card card-body ">
                 <table id="select4" class="table table-borderless border-top border-5 border-dark " >
                     <thead class="">
                         <tr>
+      
                             <th>ประเภท</th>
                             <th>ลำดับ</th>
                             <th>รหัสอาหาร</th>
@@ -409,7 +418,7 @@
                                 let num = 0;
                         
                                 // set value
-                                let all_column = 4;
+                                let all_column = 6;
                         
                                 if(report.length > 0){
                                         same=report[0].Fd_Category_ID 
@@ -427,6 +436,7 @@
                                     <% if(isFirst === true){isFirst = false;%>
                                         <!-- // เเสดงเต็ม -->
                                         <tr>
+
                                             <td><%= i.Fd_Category%></td>
                                             <td><%= num%></td>
                                             <td><%= i.ID%></td>
@@ -442,6 +452,7 @@
                                     <%}else{%> 
                                         <!-- เเสดงไม่เต็ม -->
                                         <tr>
+
                                             <td></td>
                                             <td><%= num%></td>
                                             <td><%= i.ID%></td>
@@ -477,6 +488,7 @@
     <script>
         $(function () {
             $('#select4').DataTable({
+                className: "text-center",
                 "paging": false,
                 "searching": false,
                 "ordering": false,
@@ -489,6 +501,7 @@
                     extend: 'print',
                     messageTop:
                     `
+                        <p style='text-align: right;'>ออกรายงานวันที่ <%=date%> เวลา <%=time%> </p>
                         <div style="text-align: center;">
                             <img src="images/logo.jpg" width="200px" height="200px"  >
                         </div><br>
@@ -557,6 +570,7 @@
                     extend: 'print',
                     messageTop:
                     `
+                        <p style='text-align: right;'>ออกรายงานวันที่ <%=date%> เวลา <%=time%> </p>
                         <div style="text-align: center;">
                             <img src="images/logo.jpg" width="200px" height="200px"  >
                         </div><br>
@@ -684,6 +698,7 @@
                     extend: 'print',
                     messageTop:
                     `
+                        <p style='text-align: right;'>ออกรายงานวันที่ <%=date%> เวลา <%=time%> </p>
                         <div style="text-align: center;">
                             <img src="images/logo.jpg" width="200px" height="200px"  >
                         </div><br>
