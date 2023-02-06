@@ -27,8 +27,14 @@ exports.getReport = async (req, res,next) => {
                     report = await (data_report.getEmployee(req.query).then((data)=>{return data}));
                     break;
                 case 6:
-                    console.log("6 SEL");
                     report = await (data_report.getItem_On_Stock(req.query).then((data)=>{return data}));
+                    break;
+                case 7:
+                    let profit = {};
+                    profit.expen = await (data_report.getProfit_expenditure(req.query).then((data)=>{return data}));
+                    profit.itemAdd = await (data_report.getProfit_itemAdd(req.query).then((data)=>{return data}));
+                    profit.sale = await (data_report.getProfit_sale(req.query).then((data)=>{return data}));
+                    report=profit;
                     break;
                     
             }
@@ -43,6 +49,7 @@ exports.getReport = async (req, res,next) => {
                 select:parseInt(req.query.select),
                 date_start:req.query.date_start,
                 date_stop:req.query.date_stop,
+                date_month:req.query.month,
                 date:getDate.date(),
                 time:getDate.currentTime(),
                 file:'sep_module/report'

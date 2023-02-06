@@ -12,7 +12,7 @@ function format_dateTH(data){
         date.getDate(),
         date.getFullYear()+543,
     ];
-    return  day+"/"+month+"/"+year;
+    return  month+"/"+day+"/"+year;
     
 }
 function format_date_acess2normal(data){
@@ -50,6 +50,7 @@ exports.getSale = async function(data) {
         if(con.length > 0 ){
             for(let i of con){
                 i.Sale_Date = format_date_acess2normal(i.Sale_Date);
+                console.log(i.Sale_Date);
             }
         }
         // console.log(con);
@@ -81,7 +82,6 @@ exports.getExpenditure = async function(data) {
                 i.Exp_Date = format_date_acess2normal(i.Exp_Date);
             }
         }
-        console.log(con);
         return con;
     } catch (error) {
         console.log(error);
@@ -96,7 +96,6 @@ exports.getExpenditure = async function(data) {
 exports.getAdd_item = async function(data) {
     try {
 
-        // console.log(start,stop);
         // READ
         let sql = ` SELECT Item_Add.ID, Item_Add.Item_On_Stock_ID, Item_Add.Item_amount, Item_Add.Item_all_price, Item_Add.Item_date, Item_On_Stock.It_name, Count_Unit.Un_Name
                     FROM (Count_Unit INNER JOIN Item_On_Stock ON Count_Unit.[ID] = Item_On_Stock.[Un_ID]) INNER JOIN Item_Add ON Item_On_Stock.[ID] = Item_Add.[Item_On_Stock_ID]
@@ -109,7 +108,6 @@ exports.getAdd_item = async function(data) {
                 i.Item_date = format_date_acess2normal(i.Item_date);
             }
         }
-        console.log(con);
         return con;
     } catch (error) {
         console.log(error);
@@ -162,6 +160,9 @@ exports.getEmployee = async function(data) {
 }
 
 
+
+
+
 // ============================= REPORT วัตถุดิบ Item On Stock =============================
 
 exports.getItem_On_Stock = async function(data) {
@@ -176,6 +177,73 @@ exports.getItem_On_Stock = async function(data) {
                     `
         const con = await connection.query(sql);
         return con;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+}
+
+
+
+
+// ============================= REPORT กำไร Sale, Expenditure , Item-add =============================
+
+function separateYM(data){
+    let array = data.split('-');
+    array[0] = parseInt(array[0]); 
+    array[1] = parseInt(array[1]); 
+    return array;
+}
+
+
+exports.getProfit_sale = async function(data) {
+    try {
+
+        // console.log(start,stop);
+        // READ
+        let date = separateYM(data.month)
+        let sql = ` SELECT SUM(Sale.[Sale_total_price]) AS [Money]
+                    FROM Sale  Where Flag = 1 AND MONTH( Sale.Sale_Date ) = ${date[1]} AND YEAR( Sale.Sale_Date ) = ${date[0]};
+        
+                    `
+        const con = await connection.query(sql);
+        return con[0] ;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+}
+
+exports.getProfit_expenditure = async function(data) {
+    try {
+        // READ
+        let date = separateYM(data.month)
+        let sql = ` SELECT SUM ( Expenditure.[Exp_Money] ) AS [Money] 
+                    FROM Expenditure Where MONTH( Expenditure.[Exp_Date] ) = ${date[1]} AND YEAR( Expenditure.[Exp_Date] ) = ${date[0]};
+                  `
+
+
+        const con = await connection.query(sql);
+
+        return con[0] ;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+}
+exports.getProfit_itemAdd = async function(data) {
+    try {
+
+        // console.log(start,stop);
+        // READ
+        let date = separateYM(data.month)
+        let sql = ` SELECT SUM(Item_Add.[Item_all_price]) AS [Money]
+                    FROM Item_Add 
+                    Where  Item_isDone = 1 AND MONTH( Item_Add.Item_date ) = ${date[1]} AND YEAR( Item_Add.Item_date ) = ${date[0]};
+                    `
+        const con = await connection.query(sql);
+
+        return con[0]  ;
     } catch (error) {
         console.log(error);
         return [];

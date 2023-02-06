@@ -716,4 +716,100 @@
     </script>
 
 
+<% } else if( select === 7){%>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body">
+                <table id="select7" class="table table-borderless border-top border-5 border-dark " >
+                    <thead class="">
+                        <tr>
+                            <th>ประเภท</th>
+                            <th>รายระเอียด</th>
+                            <th>จำนวนเงิน</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <section>
+                            <% if( report.itemAdd.Money === null && report.expen.Money === null && report.sale.Money === null ){%>
+                            <%}else{%>
+                                <tr>
+                                    <td>รายจ่าย</td>
+                                    <td>ค่าวัตถุดิบ</td>
+                                    <td><%= report.itemAdd.Money %> </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>ค่าใช้จ่ายรายเดือน</td>
+                                    <td><%= report.expen.Money %> </td>
+                                </tr>
+                                <tr>
+                                    <td>รายรับ</td>
+                                    <td>การขาย</td>
+                                    <td><%= report.sale.Money %> </td>
+                                </tr>
+                            <%} %>
+                        </section>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    
+
+
+    <script>
+        $(function () {
+            $('#select7').DataTable({
+                "paging": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "responsive": true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                    extend: 'print',
+                    messageTop:
+                    `
+                        <p style='text-align: right;'>ออกรายงานวันที่ <%=date%> เวลา <%=time%> </p>
+                        <div style="text-align: center;">
+                            <img src="images/logo.jpg" width="200px" height="200px"  >
+                        </div><br>
+                        <h2 style='text-align: center;'>กำไรสุทธิ</h2>
+                    `,
+
+                    messageBottom: 
+                    `   
+                    <table class="float-right">
+                        <tr><td></td><td></td></tr>
+                        <tbody>
+                            <tr>
+                                <td class="text-bold">รายรับทั้งหมด </td>
+                                <td> : <%=report.sale.Money%>  บาท</td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold">รายจ่ายทั้งหมด </td>
+                                <td> : <%=report.expen.Money + report.itemAdd.Money%>  บาท</td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold">กำไรสุทธิ </td>
+                                <td> : <%= report.sale.Money - (report.expen.Money + report.itemAdd.Money) %>  บาท</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                        
+
+
+                    `
+                    }
+                ]
+            });
+        })
+    </script>
+
+
 <% } %> 

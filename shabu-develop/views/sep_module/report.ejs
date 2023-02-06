@@ -31,26 +31,33 @@
                         <option id="O5" value="5">ข้อมูลพนักงาน</option>
                         <option id="O6" value="6">ข้อมูลวัตถุดิบ</option>
 
+                        <option id="O7" value="7">กําไรสุทธิ</option>
+
                     </select>
                 </div>
-                
-                <div class="col-6 col-md-3 col-lg-3 form_input_date ">
+
+
+                <div class="col-6 col-md-3 col-lg-3  form-date">
                     <label for="">ระหว่างวันที่</label>
                     <input class="form-control" type="date" name="date_start" id="">
                 </div>
-
-                <div class="col-6 col-md-3 col-lg-3 form_input_date">
+                <div class="col-6 col-md-3 col-lg-3  form-date">
                     <label for="">ถึงวันที่</label>
                     <input class="form-control" type="date" name="date_stop" id="">
                 </div>
-                
-                <div class="col-6 col-md-3 col-lg-3  align-self-end  form_input_date" >
-                    <button type="submit" class="btn btn-info " onclick="return vali()">ยืนยัน</button>
+
+                <div class="col-6 col-md-3 col-lg-3  form-month">
+                    <label for="">เดือน</label>
+                    <input class="form-control" type="month" name="month" id="">
                 </div>
-                
-                <div class="col-6 col-md-3 col-lg-3 align-self-end form_none_input_date ">
+
+     
+
+                <div class="col-6 col-md-3 col-lg-3 align-self-end  ">
                     <button type="submit" class="btn btn-info  " onclick="">ยืนยัน</button>
                 </div>
+
+          
 
             </form>
         
@@ -76,24 +83,35 @@
         $("input[name=date_start]").val('<%=date_start%>');
         $("input[name=date_stop]").val('<%=date_stop%>');
         $("#O<%=select%>").attr("selected",'selected');
-        $(".form_none_input_date").addClass("d-none");
     </script>
 
-    <% if(select >= 4){%>
+    <% if( [1,2,3].includes(select) ){%> 
         <script>
-            $(".form_none_input_date").removeClass("d-none");
-            $(".form_input_date").addClass("d-none");
+            $(".form-month").addClass("d-none");
         </script>
-    <% } %> 
+    <%}else if( [4,5,6].includes(select) ){%> 
 
+        <script>
+            $(".form-date").addClass("d-none");
+            $(".form-month").addClass("d-none");
+        </script>
 
+    <%}else if([7].includes(select)){%> 
+        <script>
+            $(".form-date").addClass("d-none");
+            $("input[name='month']").val('<%=date_month%>');
+            // $(".form-month").addClass("d-none");
+        </script>
+
+    <%}%>
+
+    
 
 <% }else{%>
     <script>
-        $(".form_none_input_date").addClass("d-none");
+        $(".form-month").addClass("d-none");
     </script>
-<% } %> 
-
+<% } %>
 
 
 
@@ -102,14 +120,20 @@
     
 
     function non_date_input(){
-        let a = $("select[name=select]").val();
-        if(parseInt(a) >= 4){
-            $(".form_input_date").addClass("d-none");
-            $(".form_none_input_date").removeClass("d-none");
-        }else{
-            $(".form_input_date").removeClass("d-none");
-            $(".form_none_input_date").addClass("d-none");
+        let a = parseInt( $("select[name=select]").val() );
+
+        if( [1,2,3].includes(a) ){
+            $(".form-date").removeClass("d-none");
+            $(".form-month").addClass("d-none");
+        }else if( [4,5,6].includes(a) ){
+            $(".form-date").addClass("d-none");
+            $(".form-month").addClass("d-none");
+        }else if( [7].includes(a) ){
+            $(".form-date").addClass("d-none");
+            $(".form-month").removeClass("d-none");
+
         }
+
         $("input[name=date_start]").val("")
         $("input[name=date_stop]").val("")
     }
